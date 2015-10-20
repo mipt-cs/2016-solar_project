@@ -53,9 +53,6 @@ def start_execution():
     start_button['text'] = "Pause"
     start_button['command'] = stop_execution
 
-    from record import start
-    start(space, 100, __file__)
-
     execution()
     print('Started execution...')
 

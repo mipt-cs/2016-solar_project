@@ -32,10 +32,10 @@ def move_space_object(body, dt):
     """
 
     ax = body.Fx/body.m
-    body.x += x + ax*dt +ax**2*dt/2
+    body.x += body.x + ax*dt +ax**2*dt/2
     body.Vx += ax*dt
     ay = body.Fy / body.m
-    body.y += y + ay * dt + ay ** 2 * dt / 2
+    body.y += body.y + ay * dt + ay ** 2 * dt / 2
     body.Vy += ay * dt
 
 

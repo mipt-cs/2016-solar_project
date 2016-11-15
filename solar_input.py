@@ -96,11 +96,21 @@ def write_space_objects_data_to_file(output_filename, space_objects):
     """
     with open(output_filename, 'w') as out_file:
         for obj in space_objects:
-            print(out_file, "%s %d %s %f" % ('1', 2, '3', 4.5))
+            out_file.write("%s %d %s %f %f %f %f %f" % (obj.type, obj.R, obj.color, obj.m, obj.x, obj.y, obj.Vx, obj.Vy) + '\n')
 
-            # FIXME: should store real values
+def graph(objects, performance):
+    import numpy as np
+    import matplotlib.pyplot as plt
+    objects = tuple(objects)
 
-# FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл...
+    y_pos = np.arange(len(objects))
+
+    plt.bar(y_pos, performance, align='center', alpha=0.5)
+    plt.xticks(y_pos, objects)
+    plt.ylabel('Value')
+    plt.title('Bar title')
+
+    plt.show()
 
 if __name__ == "__main__":
     print("This module is not for direct call!")

@@ -32,6 +32,7 @@ def read_space_objects_data_from_file(input_filename):
 
     return objects
 
+#FIXED
 
 def parse_star_parameters(line, star):
     """Считывает данные о звезде из строки.
@@ -44,7 +45,7 @@ def parse_star_parameters(line, star):
 
     Параметры:
 
-    **line** — строка с описанием звезды.
+    **line** — строка с описание звезды.
     **star** — объект звезды.
     """
     A = line.split()
@@ -97,7 +98,7 @@ def write_space_objects_data_to_file(output_filename, space_objects):
     """
     with open(output_filename, 'w') as out_file:
         for obj in space_objects:
-             print(obj.type, obj.R, obj.color, obj.m, obj.x, obj.y, obj.Vx, obj.Vy, file=out_file)
+            print(obj.type, obj.R, obj.color, obj.m, obj.x, obj.y, obj.Vx, obj.Vy, file=out_file)
 
 # FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл...
 

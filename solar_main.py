@@ -6,7 +6,6 @@ from tkinter.filedialog import *
 from solar_vis import *
 from solar_model import *
 from solar_input import *
-import time
 
 perform_execution = False
 """Флаг цикличности выполнения расчёта"""
@@ -25,8 +24,6 @@ time_step = None
 
 space_objects = []
 """Список космических объектов."""
-
-
 
 
 def execution():

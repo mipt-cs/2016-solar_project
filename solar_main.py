@@ -1,6 +1,6 @@
 # coding: utf-8
 # license: GPLv3
-
+import matplotlib.pyplot as plt
 import tkinter
 from tkinter.filedialog import *
 from solar_vis import *
@@ -100,6 +100,21 @@ def save_file_dialog():
     out_filename = asksaveasfilename(filetypes=(("Text file", ".txt"),))
     write_space_objects_data_to_file(out_filename, space_objects)
 
+def graph():
+    j=0
+    for obj in space_objects:
+        B=[]
+        B=obj.A[:1000:5]
+        T=[]
+        j+=1
+        for i in range(100):
+          if len(T)==len(B):
+              break
+          T.append(i)
+        e=220+j
+        plt.subplot(e)
+        plt.plot(B,T)
+    plt.show()
 
 def main():
     """Главная функция главного модуля.
@@ -111,7 +126,6 @@ def main():
     global time_speed
     global space
     global start_button
-
     print('Modelling started!')
     physical_time = 0
 
@@ -144,6 +158,8 @@ def main():
     displayed_time.set(str(physical_time) + " seconds gone")
     time_label = tkinter.Label(frame, textvariable=displayed_time, width=30)
     time_label.pack(side=tkinter.RIGHT)
+    graph_button = tkinter.Button(frame, text="Graph", command=graph)
+    graph_button.pack(side=tkinter.LEFT)
 
     root.mainloop()
     print('Modelling finished!')

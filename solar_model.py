@@ -1,7 +1,7 @@
 # coding: utf-8
 # license: GPLv3
 
-gravitational_constant = 20.67408E-11
+gravitational_constant = 6.67408E-11
 """Гравитационная постоянная Ньютона G"""
 
 
@@ -38,7 +38,7 @@ def move_space_object(body, dt):
     ay = body.Fy/body.m
     body.y += body.Vy*dt
     body.Vy += ay*dt
-
+    body.me=body.m*(1/(1+(((body.vy**2+body.vx**2)**(1/2))/2)**(1/2)))
     #FIXED
 
 

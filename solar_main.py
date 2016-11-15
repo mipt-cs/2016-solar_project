@@ -6,25 +6,19 @@ from tkinter.filedialog import *
 from solar_vis import *
 from solar_model import *
 from solar_input import *
-import time
 
-perform_execution = True
+perform_execution = False
 """Флаг цикличности выполнения расчёта"""
 
 physical_time = 0
 """Физическое время от начала расчёта.
 Тип: float"""
-def button_clicked():
-    button['text'] = time.strftime('%H:%M:%S')
-root=Tk()
-button = Button(root)
-button.configure(text=time.strftime('%H:%M:%S'), command=button_clicked)
-button.pack()
-#root.mainloop()
+
+displayed_time = None
 """Отображаемое на экране время.
 Тип: переменная tkinter"""
 
-time_step = 1
+time_step = None
 """Шаг по времени при моделировании.
 Тип: float"""
 
@@ -123,7 +117,7 @@ def main():
 
     root = tkinter.Tk()
     # космическое пространство отображается на холсте типа Canvas
-    space = tkinter.Canvas(root, width=window_width, height=window_height, bg='#330066')
+    space = tkinter.Canvas(root, width=window_width, height=window_height, bg="black")
     space.pack(side=tkinter.TOP)
     # нижняя панель с кнопками
     frame = tkinter.Frame(root)

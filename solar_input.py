@@ -51,14 +51,12 @@ def parse_star_parameters(line, star):
     star=Star()
     star.R=int(a[1])
     star.color=a[2]
-    star.m=int(a[3])
-    star.x=int(a[4])
+    star.m=int(a[3][0:a[3].index('E')])*10**int(a[3][(a[3].index('E')+1):])
+    star.x=int(a[4][0:a[4].index('E')])*10**int(a[4][(a[4].index('E')+1):])
     star.y=int(a[5])
     star.Vx=int(a[6])
-    star.Vy=int(a[7])
+    star.Vy=int(a[7][0:a[7].index('E')])*10**int(a[7][(a[7].index('E')+1):])
     return star
-
-    pass  # FIXME: not done yet
 
 def parse_planet_parameters(line, planet):
     """Считывает данные о планете из строки.

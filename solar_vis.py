@@ -53,8 +53,8 @@ def scale_y(y):
 
     **y** — y-координата модели.
     """
-    return -int(y*scale_factor) + window_width//2
 
+    return -int(y*scale_factor) + window_width//2
 
 
 def create_star_image(space, star):
@@ -82,9 +82,8 @@ def create_planet_image(space, planet):
     """
     x = scale_x(planet.x)
     y = scale_y(planet.y)
-    R = planet.R
-    planet.image = space.create_oval([x - R, y - R], [x + R, y + R], fill=planet.color)
-      # FIXME: сделать как у звезды(+)
+    r = planet.R
+    planet.image = space.create_oval([x - r, y - r], [x + r, y + r], fill=planet.color)
 
 
 def update_system_name(space, system_name):

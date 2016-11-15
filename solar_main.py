@@ -6,6 +6,7 @@ from tkinter.filedialog import *
 from solar_vis import *
 from solar_model import *
 from solar_input import *
+import time
 
 perform_execution = False
 """Флаг цикличности выполнения расчёта"""
@@ -14,11 +15,12 @@ physical_time = 0
 """Физическое время от начала расчёта.
 Тип: float"""
 
-displayed_time = None
+displayed_time = Button()
+displayed_time.configure(text=time.strftime('%H:%M:%S'), command="Button['text']=time.strftime('%H:%M:%S)")
 """Отображаемое на экране время.
 Тип: переменная tkinter"""
 
-time_step = None
+time_step = 1
 """Шаг по времени при моделировании.
 Тип: float"""
 

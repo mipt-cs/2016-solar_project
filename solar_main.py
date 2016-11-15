@@ -104,14 +104,16 @@ def graph():
     j=0
     for obj in space_objects:
         B=[]
-        B=obj.A[:1000:5]
+        B=obj.A[::1000]
         T=[]
         j+=1
-        for i in range(100):
+        i=0
+        while len(T)!=len(B):
           if len(T)==len(B):
               break
+          i+=1
           T.append(i)
-        e=220+j
+        e=330+j
         plt.subplot(e)
         plt.plot(B,T)
     plt.show()
@@ -131,7 +133,7 @@ def main():
 
     root = tkinter.Tk()
     # космическое пространство отображается на холсте типа Canvas
-    space = tkinter.Canvas(root, width=window_width, height=window_height, bg="#000060")
+    space = tkinter.Canvas(root, width=window_width, height=window_height, bg="#250051")
     space.pack(side=tkinter.TOP)
     # нижняя панель с кнопками
     frame = tkinter.Frame(root)

@@ -80,7 +80,7 @@ def open_file_dialog():
         space.delete(obj.image)  # удаление старых изображений планет
     in_filename = askopenfilename(filetypes=(("Text file", ".txt"),))
     space_objects = read_space_objects_data_from_file(in_filename)
-    max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in space_objects])
+    max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in space_objects])+1
     calculate_scale_factor(max_distance)
 
     for obj in space_objects:
@@ -150,3 +150,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+#FINAL VERSION#
+
+'''l;xbiodufbdfgbhnihyvdnguyjbdrthuvrtyhbyjne'''

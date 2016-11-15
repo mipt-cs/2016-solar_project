@@ -23,6 +23,10 @@ def read_space_objects_data_from_file(input_filename):
                 star = Star()
                 parse_star_parameters(line, star)
                 objects.append(star)
+            elif object_type == 'planet':
+                planet = Planet()
+                parse_planet_parameters(line, planet)
+                objects.append(planet)
             else:
                 print("Unknown space object")
 
@@ -39,12 +43,20 @@ def parse_star_parameters(line, star):
     Star 10 red 1000 1 2 3 4
 
     Параметры:
-
     **line** — строка с описание звезды.
     **star** — объект звезды.
     """
-
-    pass  # FIXME: not done yet
+    a=line.split(' ')
+    print(a)
+    star.R=int(a[1])
+    star.color=a[2]
+    star.m=float(a[3])
+    star.x=float(a[4])
+    star.y=float(a[5])
+    star.Vx=float(a[6])
+    star.Vy=float(a[7])
+    print(star.R, star.m, star.x, star.y, star.Vx, star.Vy, star.color)
+    return star
 
 def parse_planet_parameters(line, planet):
     """Считывает данные о планете из строки.
@@ -61,8 +73,15 @@ def parse_planet_parameters(line, planet):
     **line** — строка с описание планеты.
     **planet** — объект планеты.
     """
-    pass  # FIXME: not done yet...
-
+    a=line.split(' ')
+    planet.R=float(a[1])
+    planet.color=a[2]
+    planet.m=float(a[3])
+    planet.x=float(a[4])
+    planet.y=float(a[5])
+    planet.Vx=float(a[6])
+    planet.Vy=float(a[7])
+    return planet
 
 def write_space_objects_data_to_file(output_filename, space_objects):
     """Сохраняет данные о космических объектах в файл.
@@ -77,10 +96,23 @@ def write_space_objects_data_to_file(output_filename, space_objects):
     """
     with open(output_filename, 'w') as out_file:
         for obj in space_objects:
-            print(out_file, "%s %d %s %f" % ('1', 2, '3', 4.5))
-            # FIXME: should store real values
+            out_file.write("%s %d %s %f %f %f %f %f" % (obj.type, obj.R, obj.color, obj.m, obj.x, obj.y, obj.Vx, obj.Vy) + '\n')
 
-# FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл...
+def graph(objects, performance):
+    import numpy as np
+    import matplotlib.pyplot as plt
+    objects = tuple(objects)
+
+    y_pos = np.arange(len(objects))
+
+    plt.bar(y_pos, performance, align='center', alpha=0.5)
+    plt.xticks(y_pos, objects)
+    plt.ylabel('Value')
+    plt.title('Bar title')
+
+    plt.show()
 
 if __name__ == "__main__":
     print("This module is not for direct call!")
+
+#FINAL VERSION#

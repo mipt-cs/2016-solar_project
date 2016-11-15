@@ -44,7 +44,7 @@ def parse_star_parameters(line, star):
 
     Параметры:
 
-    **line** — строка с описание звезды.
+    **line** — строка с описанием звезды.
     **star** — объект звезды.
     """
     A = line.split()

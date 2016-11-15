@@ -21,9 +21,9 @@ def calculate_force(body, space_objects):
         r = ((body.x - obj.x) ** 2 + (body.y - obj.y) ** 2) ** 0.5
         dax = obj.x - body.x
         day = obj.y - body.y
-        sin = dax / r
-        cos = day / r
-        F = gravitational_constant*body.m*obj.m/(r ** 2)
+        sin = day / r
+        cos = dax / r
+        F = (gravitational_constant * body.m * obj.m) / (r ** 2)
         body.Fx += F * cos
         body.Fy += F * sin
 
@@ -37,11 +37,11 @@ def move_space_object(body, dt):
     """
 
     ax = body.Fx / body.m
+    body.x += ax * (dt ** 2) / 2 + body.Vx * dt
     body.Vx += ax * dt
-    body.x += body.Vx * dt
     ay = body.Fy / body.m
+    body.y += ay * (dt ** 2) / 2 + body.Vy * dt
     body.Vy += ay * dt
-    body.y += body.Vy * dt
 
 
 

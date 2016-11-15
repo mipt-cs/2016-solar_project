@@ -8,7 +8,7 @@ from solar_model import *
 from solar_input import *
 import time
 
-perform_execution = False
+perform_execution = True
 """Флаг цикличности выполнения расчёта"""
 
 physical_time = 0
@@ -24,7 +24,7 @@ button.pack()
 """Отображаемое на экране время.
 Тип: переменная tkinter"""
 
-time_step = 0.001
+time_step = 1
 """Шаг по времени при моделировании.
 Тип: float"""
 

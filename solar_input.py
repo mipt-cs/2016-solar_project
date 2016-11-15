@@ -51,11 +51,11 @@ def parse_star_parameters(line, star):
     star=Star()
     star.R=int(a[1])
     star.color=a[2]
-    star.m=int(a[3][0:a[3].index('E')])*10**int(a[3][(a[3].index('E')+1):])
-    star.x=int(a[4][0:a[4].index('E')])*10**int(a[4][(a[4].index('E')+1):])
-    star.y=int(a[5])
-    star.Vx=int(a[6])
-    star.Vy=int(a[7][0:a[7].index('E')])*10**int(a[7][(a[7].index('E')+1):])
+    star.m=float(a[3])
+    star.x=float(a[4])
+    star.y=float(a[5])
+    star.Vx=float(a[6])
+    star.Vy=float(a[7])
     return star
 
 def parse_planet_parameters(line, planet):
@@ -75,16 +75,14 @@ def parse_planet_parameters(line, planet):
     """
     a=line.split(' ')
     planet=Planet()
-    planet.R=int(a[1])
+    planet.R=float(a[1])
     planet.color=a[2]
-    planet.m=int(a[3])
-    planet.x=int(a[4])
-    planet.y=int(a[5])
-    planet.Vx=int(a[6])
-    planet.Vy=int(a[7])
+    planet.m=float(a[3])
+    planet.x=float(a[4])
+    planet.y=float(a[5])
+    planet.Vx=float(a[6])
+    planet.Vy=float(a[7])
     return planet
-    pass  # FIXME: not done yet...
-
 
 def write_space_objects_data_to_file(output_filename, space_objects):
     """Сохраняет данные о космических объектах в файл.

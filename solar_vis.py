@@ -55,8 +55,6 @@ def scale_y(y):
     """
     return int(y * scale_factor) + window_height // 20
 
-    return y  # FIXME: not done yet(+)
-
 
 def create_star_image(space, star):
     """Создаёт отображаемый объект звезды.
@@ -85,7 +83,7 @@ def create_planet_image(space, planet):
     y = scale_y(planet.y)
     R = planet.R
     planet.image = space.create_oval([x - R, y - R], [x + R, y + R], fill=planet.color)
-    pass  # FIXME: сделать как у звезды(+)
+
 
 
 def update_system_name(space, system_name):

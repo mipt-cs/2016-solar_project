@@ -3,7 +3,7 @@
 
 gravitational_constant = 6.67408E-11
 """Гравитационная постоянная Ньютона G"""
-
+vc=3*(10**8)
 
 def calculate_force(body, space_objects):
     """Вычисляет силу, действующую на тело.
@@ -31,14 +31,14 @@ def move_space_object(body, dt):
 
     **body** — тело, которое нужно переместить.
     """
-
-    ax = body.Fx/body.m
+    body.me=body.m*(1/(1+(((body.Vy**2+body.Vx**2)**(1/2))/vc)**(1/2)))
+    ax = body.Fx/body.me
     body.x += body.Vx*dt
     body.Vx += ax*dt
-    ay = body.Fy/body.m
+    ay = body.Fy/body.me
     body.y += body.Vy*dt
     body.Vy += ay*dt
-
+    body.me=body.m/(1+(((body.Vy**2+body.Vx**2)**(1/2))/vc)**(1/2))
     #FIXED
 
 

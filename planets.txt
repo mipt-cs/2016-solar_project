@@ -1,0 +1,8 @@
+# Планеты вокруг двойной звезды
+Star 30 yellow 5E30 2E10 0 0 50E3
+Star 25 red 4E30 -2E10 0 0 -50E3
+Planet 5 green 5.974E24 149E9 0 0 29.76E3
+Planet 7 brown 8E25 250E9 0 0 35E3
+Planet 5 blue 7E24 155E9 0 0 27E3
+Planet 6 white 8E24 200E9 0 0 31E3
+Planet 3 pink 7E23 350E9 0 0 2E4

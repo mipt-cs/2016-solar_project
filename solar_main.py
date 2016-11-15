@@ -14,13 +14,17 @@ perform_execution = False
 physical_time = 0
 """Физическое время от начала расчёта.
 Тип: float"""
-
-displayed_time = Button()
-displayed_time.configure(text=time.strftime('%H:%M:%S'), command="Button['text']=time.strftime('%H:%M:%S)")
+def button_clicked():
+    button['text'] = time.strftime('%H:%M:%S')
+root=Tk()
+button = Button(root)
+button.configure(text=time.strftime('%H:%M:%S'), command=button_clicked)
+button.pack()
+#root.mainloop()
 """Отображаемое на экране время.
 Тип: переменная tkinter"""
 
-time_step = 1
+time_step = 0.001
 """Шаг по времени при моделировании.
 Тип: float"""
 

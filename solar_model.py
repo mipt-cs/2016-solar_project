@@ -23,6 +23,7 @@ def calculate_force(body, space_objects):
         body.Fy += gravitational_constant * body.m * obj.m * (obj.y - body.y) / r**3
 
 
+
 def move_space_object(body, dt):
     """Перемещает тело в соответствии с действующей на него силой.
 

@@ -9,11 +9,8 @@
 header_font = "Arial-16"
 """Шрифт в заголовке"""
 
-<<<<<<< HEAD
 window_width = 400
-=======
 window_width = 600
->>>>>>> 1ee8e4e6ac12153d4a8df5251babb5736f6c37b8
 """Ширина окна"""
 
 window_height = 400

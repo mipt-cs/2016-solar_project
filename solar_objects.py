@@ -10,19 +10,23 @@ class Star:
     def __init__(self, type, R, color, m, x, y, velocity_x, velocity_y):
         self.type = type
         """Признак объекта звезды"""
-        self.m = m
+
+        self.R = float(R)
+        """Радиус звезды"""
+
+        self.m = float(m)
         """Масса звезды"""
 
-        self.x = x
+        self.x = float(x)
         """Координата по оси **x**"""
 
-        self.y = y
+        self.y = float(y)
         """Координата по оси **y**"""
 
-        self.Vx = velocity_x
+        self.Vx = float(velocity_x)
         """Скорость по оси **x**"""
 
-        self.Vy = velocity_y
+        self.Vy = float(velocity_y)
         """Скорость по оси **y**"""
 
         self.Fx = 0
@@ -30,9 +34,6 @@ class Star:
 
         self.Fy = 0
         """Сила по оси **y**"""
-
-        self.R = R
-        """Радиус звезды"""
 
         self.color = color
         """Цвет звезды"""
@@ -47,22 +48,22 @@ class Planet:
     а также визуальный радиус планеты в пикселах и её цвет
     """
     def __init__(self, type, R, color, m, x, y, velocity_x, velocity_y):
-
         self.type = type
         """Признак объекта звезды"""
-        self.m = m
+
+        self.m = float(m)
         """Масса звезды"""
 
-        self.x = x
+        self.x = float(x)
         """Координата по оси **x**"""
 
-        self.y = y
+        self.y = float(y)
         """Координата по оси **y**"""
 
-        self.Vx = velocity_x
+        self.Vx = float(velocity_x)
         """Скорость по оси **x**"""
 
-        self.Vy = velocity_y
+        self.Vy = float(velocity_y)
         """Скорость по оси **y**"""
 
         self.Fx = 0
@@ -71,7 +72,7 @@ class Planet:
         self.Fy = 0
         """Сила по оси **y**"""
 
-        self.R = R
+        self.R = float(R)
         """Радиус звезды"""
 
         self.color = color

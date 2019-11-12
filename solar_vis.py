@@ -84,7 +84,7 @@ def create_planet_image(space, planet):
     x = scale_x(planet.x)
     y = scale_y(planet.y)
     r = planet.R
-    planet.image = planet.create_oval([x - r, y - r], [x + r, y + r], fill=planet.color)
+    planet.image = space.create_oval([x - r, y - r], [x + r, y + r], fill=planet.color)
 
 
 def update_system_name(space, system_name):

@@ -42,6 +42,7 @@ class Star:
     """Изображение звезды"""
 
     def __init__(self):
+        self.type = 'star'
         self.m = 0
         self.x = 0
         self.y = 0
@@ -63,37 +64,38 @@ class Planet:
     type = "Planet"
     """Признак объекта планеты"""
 
-    m = 0
+    # m = 0
     """Масса планеты"""
 
-    x = 0
+    # x = 0
     """Координата по оси **x**"""
 
-    y = 0
+    # y = 0
     """Координата по оси **y**"""
 
-    Vx = 0
+    # Vx = 0
     """Скорость по оси **x**"""
 
-    Vy = 0
+    # Vy = 0
     """Скорость по оси **y**"""
 
-    Fx = 0
+    # Fx = 0
     """Сила по оси **x**"""
 
-    Fy = 0
+    # Fy = 0
     """Сила по оси **y**"""
 
-    R = 5
+    # R = 5
     """Радиус планеты"""
 
-    color = "green"
+    # color = "green"
     """Цвет планеты"""
 
-    image = None
+    # image = None
     """Изображение планеты"""
 
     def __init__(self):
+        self.type = 'planet'
         self.m = 0
         self.x = 0
         self.y = 0

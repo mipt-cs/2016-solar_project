@@ -9,7 +9,6 @@
 header_font = "Arial-16"
 """Шрифт в заголовке"""
 
-window_width = 400
 window_width = 600
 """Ширина окна"""
 

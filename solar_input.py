@@ -18,19 +18,17 @@ def read_space_objects_data_from_file(input_filename):
         for line in input_file:
             if len(line.strip()) == 0 or line[0] == '#':
                 continue  # пустые строки и строки-комментарии пропускаем
-            object_type = line.split()[0].lower()
-
+            object_type = line.split()[0]
             if object_type == "Star":
                 star = Star()
                 parse_star_parameters(line, star)
                 objects.append(star)
-            if object_type == "Planet":  #fixed
-
+            elif object_type == "Planet":
                 planet = Planet()
                 parse_planet_parameters(line, planet)
                 objects.append(planet)
             else:
-                print("Unknown space object")
+                print("Unknown space object", object_type)
 
     return objects
 
@@ -50,16 +48,16 @@ def parse_star_parameters(line, star):
     **star** — объект звезды.
     """
 
-    starparameters = line.split
+    starparameters = line.split()
     if starparameters[0] == "Star":
         star.type = starparameters[0]
-        star.R = starparameters[1]
+        star.R = float(starparameters[1])
         star.color = starparameters[2]
-        star.m = starparameters[3]
-        star.x = starparameters[4]
-        star.y = starparameters[5]
-        star.Vx = starparameters[6]
-        star.Vy = starparameters[7]
+        star.m = float(starparameters[3])
+        star.x = float(starparameters[4])
+        star.y = float(starparameters[5])
+        star.Vx = float(starparameters[6])
+        star.Vy = float(starparameters[7])
 
 
 
@@ -79,16 +77,16 @@ def parse_planet_parameters(line, planet):
     **line** — строка с описание планеты.
     **planet** — объект планеты.
     """
-    planetparameters = line.split
+    planetparameters = line.split()
     if planetparameters[0] == "Planet":
         planet.type = planetparameters[0]
-        planet.R = planetparameters[1]
+        planet.R = float(planetparameters[1])
         planet.color = planetparameters[2]
-        planet.m = planetparameters[3]
-        planet.x = planetparameters[4]
-        planet.y = planetparameters[5]
-        planet.Vx = planetparameters[6]
-        planet.Vy = planetparameters[7]
+        planet.m = float(planetparameters[3])
+        planet.x = float(planetparameters[4])
+        planet.y = float(planetparameters[5])
+        planet.Vx = float(planetparameters[6])
+        planet.Vy = float(planetparameters[7])
 
 
 def write_space_objects_data_to_file(output_filename, space_objects):
@@ -118,6 +116,6 @@ def write_statistic_to_file(output_filename, space_objects):
     pass
 
  
-
+#read_space_objects_data_from_file('double_star.txt')
 if __name__ == "__main__":
     print("This module is not for direct call!")

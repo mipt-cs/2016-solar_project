@@ -84,7 +84,7 @@ def parse_planet_parameters(line, planet):
         planet.x = planetparameters[4]
         planet.y = planetparameters[5]
         planet.Vx = planetparameters[6]
-        planet.Vy = palnetparameters[7]
+        planet.Vy = planetparameters[7]
 
 
 def write_space_objects_data_to_file(output_filename, space_objects):
@@ -98,9 +98,9 @@ def write_space_objects_data_to_file(output_filename, space_objects):
     **output_filename** — имя входного файла
     **space_objects** — список объектов планет и звёзд
     """
-    with open(output_filename, 'w') as out_file:
+    with open(output_filename, 'w') as out_file
         for obj in space_objects:
-            file_string = obj.type + ' ' + obj.color + ' ' + str(obj.m) + ' ' + str(obj.x) + ' ' + str(obj.y) + \
+            file_string = obj.type + ' ' + str(obj.r) + ' ' + obj.color + ' ' + str(obj.m) + ' ' + str(obj.x) + ' ' + str(obj.y) + \
                           str(obj.Vx) + ' ' + str(obj.Vy) + '\n'
             out_file.write(file_string)
 

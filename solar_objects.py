@@ -11,35 +11,48 @@ class Star:
     type = "star"
     """Признак объекта звезды"""
 
-    m = 0
+    # m = 0
     """Масса звезды"""
 
-    x = 0
+    # x = 0
     """Координата по оси **x**"""
 
-    y = 0
+    # y = 0
     """Координата по оси **y**"""
 
-    Vx = 0
+    # Vx = 0
     """Скорость по оси **x**"""
 
-    Vy = 0
+    # Vy = 0
     """Скорость по оси **y**"""
 
-    Fx = 0
+    # Fx = 0
     """Сила по оси **x**"""
 
-    Fy = 0
+    # Fy = 0
     """Сила по оси **y**"""
 
-    R = 5
+    # R = 5
     """Радиус звезды"""
 
-    color = "red"
+    # color = "red"
     """Цвет звезды"""
 
-    image = None
+    # image = None
     """Изображение звезды"""
+
+    def __init__(self):
+        self.m = 0
+        self.x = 0
+        self.y = 0
+        self.Vx = 0
+        self.Vy = 0
+        self.Fx = 0
+        self.Fy = 0
+        self.R = 5
+        self.color = 'red'
+        self.image = None
+        
 
 
 class Planet:
@@ -80,3 +93,16 @@ class Planet:
 
     image = None
     """Изображение планеты"""
+
+    def __init__(self):
+        self.m = 0
+        self.x = 0
+        self.y = 0
+        self.Vx = 0
+        self.Vy = 0
+        self.Fx = 0
+        self.Fy = 0
+        self.R = 5
+        self.color = 'red'
+        self.image = None
+

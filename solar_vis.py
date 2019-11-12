@@ -3,16 +3,20 @@
 
 """Модуль визуализации.
 Нигде, кроме этого модуля, не используются экранные координаты объектов.
-Функции, создающие гaрафические объекты и перемещающие их на экране, принимают физические координаты
+Функции, создающие графические объекты и перемещающие их на экране, принимают физические координаты
 """
 
 header_font = "Arial-16"
 """Шрифт в заголовке"""
 
-window_width = 800
+<<<<<<< HEAD
+window_width = 400
+=======
+window_width = 600
+>>>>>>> 1ee8e4e6ac12153d4a8df5251babb5736f6c37b8
 """Ширина окна"""
 
-window_height = 800
+window_height = 400
 """Высота окна"""
 
 scale_factor = None
@@ -54,7 +58,7 @@ def scale_y(y):
     **y** — y-координата модели.
     """
 
-    return y  # FIXME: not done yet
+    return int(-y*scale_factor) + window_height//2  #fixed
 
 
 def create_star_image(space, star):
@@ -80,7 +84,11 @@ def create_planet_image(space, planet):
     **space** — холст для рисования.
     **planet** — объект планеты.
     """
-    pass  # FIXME: сделать как у звезды
+    x = scale_x(planet.x)
+    y = scale_y(planet.y)
+    r = planet.R
+    planet.image = space.create_oval([x - r, y - r], [x + r, y + r], fill=planet.color)
+    # fixed
 
 
 def update_system_name(space, system_name):

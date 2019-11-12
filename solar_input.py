@@ -44,7 +44,7 @@ def parse_star_parameters(line, star):
     **star** — объект звезды.
     """
     words = line.split()
-    if words[0] = "Star":
+    if words[0] == "Star":
         star.R = int(words[1])
         star.color = words[2]
         star.m = int(words[3])
@@ -71,7 +71,7 @@ def parse_planet_parameters(line, planet):
     """
     
     words = line.split()
-    if words[0] = "Planet":
+    if words[0] == "Planet":
         star.R = int(words[1])
         star.color = words[2]
         star.m = int(words[3])

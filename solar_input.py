@@ -60,6 +60,7 @@ def parse_star_parameters(line, star):
 
 
 
+
 def parse_planet_parameters(line, planet):
     """Считывает данные о планете из строки.
     Предполагается такая строка:
@@ -99,8 +100,11 @@ def write_space_objects_data_to_file(output_filename, space_objects):
     """
     with open(output_filename, 'w') as out_file:
         for obj in space_objects:
-            print(out_file, "%s %d %s %f" % ('1', 2, '3', 4.5))
-            # FIXME: should store real values
+            file_string = obj.type + ' ' + obj.color + ' ' + str(obj.m) + ' ' + str(obj.x) + ' ' + str(obj.y) + \
+                          str(obj.Vx) + ' ' + str(obj.Vy) + '\n'
+            out_file.write(file_string)
+
+
 
 
 # FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл...

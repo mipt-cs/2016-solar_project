@@ -46,13 +46,13 @@ def parse_star_parameters(line, star):
 
     starparameters = line.split
     if starparameters[0] == "Star":
-        self.R = starparameters[1]
-        self.color = starparameters[2]
-        self.m = starparameters[3]
-        self.x = starparameters[4]
-        self.y = starparameters[5]
-        self.Vx = starparameters[6]
-        self.Vy = starparameters[7]
+        star.R = starparameters[1]
+        star.color = starparameters[2]
+        star.m = starparameters[3]
+        star.x = starparameters[4]
+        star.y = starparameters[5]
+        star.Vx = starparameters[6]
+        star.Vy = starparameters[7]
 
 
 def parse_planet_parameters(line, planet):
@@ -72,13 +72,13 @@ def parse_planet_parameters(line, planet):
     """
     planetparameters = line.split
     if planetparameters[0] == "Planet":
-        self.R = planetparameters[1]
-        self.color = planetparameters[2]
-        self.m = planetparameters[3]
-        self.x = planetparameters[4]
-        self.y = planetparameters[5]
-        self.Vx = planetparameters[6]
-        self.Vy = palnetparameters[7]
+        planet.R = planetparameters[1]
+        planet.color = planetparameters[2]
+        planet.m = planetparameters[3]
+        planet.x = planetparameters[4]
+        planet.y = planetparameters[5]
+        planet.Vx = planetparameters[6]
+        planet.Vy = palnetparameters[7]
 
 
 def write_space_objects_data_to_file(output_filename, space_objects):

@@ -19,11 +19,13 @@ def read_space_objects_data_from_file(input_filename):
             if len(line.strip()) == 0 or line[0] == '#':
                 continue  # пустые строки и строки-комментарии пропускаем
             object_type = line.split()[0].lower()
-            if object_type == "star":
+
+            if object_type == "Star":
                 star = Star()
                 parse_star_parameters(line, star)
                 objects.append(star)
-            if object_type == "planet":  #fixed
+            if object_type == "Planet":  #fixed
+
                 planet = Planet()
                 parse_planet_parameters(line, planet)
                 objects.append(planet)
@@ -86,7 +88,7 @@ def parse_planet_parameters(line, planet):
         planet.x = planetparameters[4]
         planet.y = planetparameters[5]
         planet.Vx = planetparameters[6]
-        planet.Vy = palnetparameters[7]
+        planet.Vy = planetparameters[7]
 
 
 def write_space_objects_data_to_file(output_filename, space_objects):
@@ -100,9 +102,11 @@ def write_space_objects_data_to_file(output_filename, space_objects):
     **output_filename** — имя входного файла
     **space_objects** — список объектов планет и звёзд
     """
-    with open(output_filename, 'w') as out_file:
+    with open(output_filename, 'w') as out_file
         for obj in space_objects:
-            file_string = obj.type + ' ' + obj.color + ' ' + str(obj.m) + ' ' + str(obj.x) + ' ' + str(obj.y) + \
+
+            file_string = obj.type + ' ' + str(obj.r) + ' ' + obj.color + ' ' + str(obj.m) + ' ' + str(obj.x) + ' ' + str(obj.y) + \
+
                           str(obj.Vx) + ' ' + str(obj.Vy) + '\n'
             out_file.write(file_string)
 

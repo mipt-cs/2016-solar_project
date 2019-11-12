@@ -8,11 +8,7 @@ class Star:
     а также визуальный радиус звезды в пикселах и её цвет.
     """
 
-
-    def __init__(self):
-        self.type = 'Star'
-
-    type = "Star"
+    # type = "Star"
     """Признак объекта звезды"""
 
     # m = 0
@@ -65,10 +61,7 @@ class Planet:
     а также визуальный радиус планеты в пикселах и её цвет
     """
 
-
-    def __init__(self):
-        self.type = 'Planet'
-    type = "Planet"
+    # type = "Planet"
     """Признак объекта планеты"""
 
     # m = 0

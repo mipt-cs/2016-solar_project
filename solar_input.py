@@ -102,18 +102,22 @@ def write_space_objects_data_to_file(output_filename, space_objects):
     **output_filename** — имя входного файла
     **space_objects** — список объектов планет и звёзд
     """
-    with open(output_filename, 'w') as out_file
+    with open(output_filename, 'w') as out_file:
         for obj in space_objects:
-
-            file_string = obj.type + ' ' + str(obj.r) + ' ' + obj.color + ' ' + str(obj.m) + ' ' + str(obj.x) + ' ' + str(obj.y) + \
-
-                          str(obj.Vx) + ' ' + str(obj.Vy) + '\n'
-            out_file.write(file_string)
+             file_string = obj.type + ' ' + str(obj.r) + ' ' + obj.color + ' ' + str(obj.m) + ' ' + str(obj.x) + ' ' + str(obj.y) + \
+                 str(obj.Vx) + ' ' + str(obj.Vy) + '\n'
+             out_file.write(file_string)
 
 
+def write_statistic_to_file(output_filename, space_objects):
+    """
+    Сохраняет параметры движения космических объектов.
+    :param output_filename: - имя выходного файла
+    :param space_objects: - список обЪектов планет и звезд
+    """
+    pass
 
-
-# FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл...
+ 
 
 if __name__ == "__main__":
     print("This module is not for direct call!")

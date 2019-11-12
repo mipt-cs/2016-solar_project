@@ -45,13 +45,13 @@ def parse_star_parameters(line, star):
     """
     words = line.split()
     if words[0] == "Star":
-        star.R = int(words[1])
+        star.R = float(words[1])
         star.color = words[2]
-        star.m = int(words[3])
-        star.x = int(words[4])
-        star.y = int(words[5])
-        star.Vx = int(words[6])
-        star.Vy = int(words[7])
+        star.m = float(words[3])
+        star.x = float(words[4])
+        star.y = float(words[5])
+        star.Vx = float(words[6])
+        star.Vy = float(words[7])
     #pass  # FIXME: not done yet
 
 def parse_planet_parameters(line, planet):
@@ -72,13 +72,13 @@ def parse_planet_parameters(line, planet):
     
     words = line.split()
     if words[0] == "Planet":
-        star.R = int(words[1])
+        star.R = float(words[1])
         star.color = words[2]
-        star.m = int(words[3])
-        star.x = int(words[4])
-        star.y = int(words[5])
-        star.Vx = int(words[6])
-        star.Vy = int(words[7])
+        star.m = float(words[3])
+        star.x = float(words[4])
+        star.y = float(words[5])
+        star.Vx = float(words[6])
+        star.Vy = float(words[7])
     #pass  # FIXME: not done yet...
 
 

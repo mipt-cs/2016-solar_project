@@ -50,6 +50,7 @@ def parse_star_parameters(line, star):
 
     starparameters = line.split
     if starparameters[0] == "Star":
+        star.type = starparameters[0]
         star.R = starparameters[1]
         star.color = starparameters[2]
         star.m = starparameters[3]
@@ -78,6 +79,7 @@ def parse_planet_parameters(line, planet):
     """
     planetparameters = line.split
     if planetparameters[0] == "Planet":
+        star.type = planetparameters[0]
         planet.R = planetparameters[1]
         planet.color = planetparameters[2]
         planet.m = planetparameters[3]

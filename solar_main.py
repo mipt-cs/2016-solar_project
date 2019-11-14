@@ -7,6 +7,7 @@ from solar_vis import *
 from solar_model import *
 from solar_input import *
 
+
 perform_execution = False
 """Флаг цикличности выполнения расчёта"""
 
@@ -18,7 +19,7 @@ displayed_time = None
 """Отображаемое на экране время.
 Тип: переменная tkinter"""
 
-time_step = None
+time_step = 0.01 #None
 """Шаг по времени при моделировании.
 Тип: float"""
 

@@ -12,7 +12,7 @@ header_font = "Arial-16"
 window_width = 800
 """Ширина окна"""
 
-window_height = 800
+window_height = 400
 """Высота окна"""
 
 scale_factor = None
@@ -24,7 +24,7 @@ scale_factor = None
 def calculate_scale_factor(max_distance):
     """Вычисляет значение глобальной переменной **scale_factor** по данной характерной длине"""
     global scale_factor
-    scale_factor = 0.4*min(window_height, window_width)/max_distance
+    scale_factor = 0.4*min(window_height, window_width)/(max_distance + 1)
     print('Scale factor:', scale_factor)
 
 
@@ -54,7 +54,7 @@ def scale_y(y):
     **y** — y-координата модели.
     """
 
-    return y  # FIXME: not done yet
+    return int(y*scale_factor) + window_height //2 # FIXME: not done yet
 
 
 def create_star_image(space, star):
@@ -80,7 +80,12 @@ def create_planet_image(space, planet):
     **space** — холст для рисования.
     **planet** — объект планеты.
     """
-    pass  # FIXME: сделать как у звезды
+
+    x = scale_x(planet.x)
+    y = scale_y(planet.y)
+    r = planet.R
+    planet.image = space.create_oval([x - r, y - r], [x + r, y + r], fill=planet.color)
+             #pass  # FIXME: сделать как у звезды
 
 
 def update_system_name(space, system_name):

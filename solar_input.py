@@ -31,7 +31,7 @@ def parse_object_parameters(line):
         raise ValueError
 
     obj.type_ = type_
-    obj.R = int(R)
+    obj.R = float(R)
     obj.color = color
     obj.m = float(m)
     obj.y = float(y)

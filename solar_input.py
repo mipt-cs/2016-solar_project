@@ -6,24 +6,21 @@ from solar_objects import Star, Planet
 
 space_objects = []
 
+
+# Заменила функции parse_planet_parameters и parse_star_parameters на эту:
 def parse_object_parameters(line):
-    """Считывает данные о звезде из строки.
+
+    """Считывает данные о звезде или планете из строки.
     Входная строка должна иметь слеюущий формат:
     Star <радиус в пикселах> <цвет> <масса> <x> <y> <Vx> <Vy>
+    Planet <радиус в пикселах> <цвет> <масса> <x> <y> <Vx> <Vy>
 
-    Здесь (x, y) — координаты зведы, (Vx, Vy) — скорость.
+    Здесь (x, y) — координаты зведы или планеты, (Vx, Vy) — скорость.
     Пример строки:
     Star 10 red 1000 1 2 3 4
     """
-    params = line.split(' ')
-    type_ = params[0].lower()
-    R = params[1]
-    color = params[2]
-    m = params[3]
-    x = params[4]
-    y = params[5]
-    Vx = params[6]
-    Vy = params[7]
+    type_, R, color, m, x, y, Vx, Vy = line.split(' ')
+    type_ = type_.lower()
 
     if type_ == 'planet':
         obj = Planet()
@@ -36,11 +33,11 @@ def parse_object_parameters(line):
     obj.type_ = type_
     obj.R = int(R)
     obj.color = color
-    obj.m = complex(m)
-    obj.Fy = complex(y)
-    obj.Fx = complex(x)
-    obj.Vy = complex(Vy)
-    obj.Vx = complex(Vx)
+    obj.m = float(m)
+    obj.Fy = float(y)
+    obj.Fx = float(x)
+    obj.Vy = float(Vy)
+    obj.Vx = float(Vx)
 
     space_objects.append(obj)
 
@@ -87,7 +84,7 @@ def read_space_objects_data_from_file(input_filename):
 
     return objects
 # FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл...
-# Статистику чего?
+# D: Статистику чего?
 
 if __name__ == "__main__":
     print("This module is not for direct call!")

@@ -9,13 +9,13 @@
 header_font = "Arial-16"
 """Шрифт в заголовке"""
 
-window_width = 800
+window_width = 500
 """Ширина окна"""
 
-window_height = 800
+window_height = 500
 """Высота окна"""
 
-scale_factor = 100
+scale_factor = None
 """Масштабирование экранных координат по отношению к физическим.
 Тип: float
 Мера: количество пикселей на один метр."""

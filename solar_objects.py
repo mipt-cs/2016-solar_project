@@ -41,6 +41,20 @@ class Star:
     image = None
     """Изображение звезды"""
 
+    def __repr__(self):
+        return print({
+            'type': self.type_,
+            'm': self.m,
+            'x': self.x,
+            'y': self.y,
+            'Vx': self.Vx,
+            'Vy': self.Vy,
+            'Fx': self.Fx,
+            'Fy': self.Fy,
+            'R': self.R,
+            'color': self.color
+        })
+
 
 class Planet:
     """Тип данных, описывающий планету.
@@ -80,3 +94,17 @@ class Planet:
 
     image = None
     """Изображение планеты"""
+
+    def __repr__(self):
+        return print({
+            'type': self.type_,
+            'm': self.m,
+            'x': self.x,
+            'y': self.y,
+            'Vx': self.Vx,
+            'Vy': self.Vy,
+            'Fx': self.Fx,
+            'Fy': self.Fy,
+            'R': self.R,
+            'color': self.color
+        })

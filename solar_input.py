@@ -34,8 +34,8 @@ def parse_object_parameters(line):
     obj.R = int(R)
     obj.color = color
     obj.m = float(m)
-    obj.Fy = float(y)
-    obj.Fx = float(x)
+    obj.y = float(y)
+    obj.x = float(x)
     obj.Vy = float(Vy)
     obj.Vx = float(Vx)
 

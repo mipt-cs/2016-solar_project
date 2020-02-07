@@ -8,7 +8,7 @@ class Star:
     а также визуальный радиус звезды в пикселах и её цвет.
     """
 
-    type = "star"
+    type_ = "star"
     """Признак объекта звезды"""
 
     m = 0
@@ -41,6 +41,20 @@ class Star:
     image = None
     """Изображение звезды"""
 
+    def __repr__(self):
+        return print({
+            'type': self.type_,
+            'm': self.m,
+            'x': self.x,
+            'y': self.y,
+            'Vx': self.Vx,
+            'Vy': self.Vy,
+            'Fx': self.Fx,
+            'Fy': self.Fy,
+            'R': self.R,
+            'color': self.color
+        })
+
 
 class Planet:
     """Тип данных, описывающий планету.
@@ -48,7 +62,7 @@ class Planet:
     а также визуальный радиус планеты в пикселах и её цвет
     """
 
-    type = "planet"
+    type_ = "planet"
     """Признак объекта планеты"""
 
     m = 0
@@ -80,3 +94,17 @@ class Planet:
 
     image = None
     """Изображение планеты"""
+
+    def __repr__(self):
+        return print({
+            'type': self.type_,
+            'm': self.m,
+            'x': self.x,
+            'y': self.y,
+            'Vx': self.Vx,
+            'Vy': self.Vy,
+            'Fx': self.Fx,
+            'Fy': self.Fy,
+            'R': self.R,
+            'color': self.color
+        })

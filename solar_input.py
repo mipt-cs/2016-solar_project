@@ -89,7 +89,6 @@ def parse_planet_parameters(line, planet):
     return planet
 
 
-
 def write_space_objects_data_to_file(output_filename, space_objects):
     """Сохраняет данные о космических объектах в файл.
     Строки должны иметь следующий формат:
@@ -117,6 +116,17 @@ def write_space_objects_data_to_file(output_filename, space_objects):
             print(out_file, log)
 
 # FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл...
+def write_stats_to_file(output_filename, stat):
+    """Дописывает статистику в заданный файл.
+
+    Параметры:
+
+    **output_filename** — имя входного файла
+    **stat** — статистика <строка>
+    """
+
+    with open(output_filename, 'a') as out_file:
+        print(stat, file=out_file)
 
 if __name__ == "__main__":
     print("This module is not for direct call!")

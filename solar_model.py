@@ -1,7 +1,7 @@
 # coding: utf-8
 # license: GPLv3
 
-from math import sin, cos, atan2, hypot
+from math import hypot
 
 gravitational_constant = 6.67408E-11
 """Гравитационная постоянная Ньютона G"""
@@ -24,7 +24,7 @@ def calculate_force(body, space_objects):
         dy = body.y - obj.y
 
         r = hypot(dy, dx)
-        print(r)
+        # print(r)
         F = -gravitational_constant*(body.m * obj.m) / (r**2)
 
         body.Fx = F * dx/r

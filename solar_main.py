@@ -6,6 +6,7 @@ from tkinter.filedialog import *
 from solar_vis import *
 from solar_model import *
 from solar_input import *
+from math import hypot
 
 perform_execution = False
 """Флаг цикличности выполнения расчёта"""
@@ -34,7 +35,22 @@ def execution():
     """
     global physical_time
     global displayed_time
+
     recalculate_space_objects_positions(space_objects, time_step.get())
+
+    #save stats
+    for obj in space_objects:
+        if obj.type != "planet":
+            continue
+
+        stat = "t= {}, v={}, r={};".format(
+            physical_time,
+            hypot(obj.Vx, obj.Vy),
+            hypot(obj.x, obj.y)
+        )
+
+        write_stats_to_file("stats.txt", stat)
+
     for body in space_objects:
         update_object_position(space, body)
     physical_time += time_step.get()

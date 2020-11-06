@@ -59,7 +59,7 @@ def parse_star_parameters(line, star):
                 star.x = string[3]
                 star.y = string[4]
                 star.Vx = string[5]
-                star.Vy = string[6]t
+                star.Vy = string[6]
 
 def parse_planet_parameters(line, planet):
     """Считывает данные о планете из строки.

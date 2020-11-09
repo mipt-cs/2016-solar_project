@@ -45,8 +45,6 @@ def split_and_brush_values(line):
             continue  # пропускаем строки с буквенными обозначениями
         else:
             params[i] = float(params[i])  # делаем числовые параметры числами
-            print(params[i])
-    print(params)
     return params
 
 
@@ -66,6 +64,7 @@ def parse_star_parameters(line, star):
     """
 
     params = split_and_brush_values(line)
+    star.type = 'star'
     star.R = params[1]
     star.color = params[2]
     star.m = params[3]
@@ -94,6 +93,7 @@ def parse_planet_parameters(line, planet):
     """
 
     params = split_and_brush_values(line)
+    planet.type = 'planet'
     planet.R = params[1]
     planet.color = params[2]
     planet.m = params[3]

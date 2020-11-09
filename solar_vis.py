@@ -7,10 +7,11 @@
 Функции, создающие графические объекты и перемещающие их на экране, принимают физические координаты
 """
 
-from win32api import GetSystemMetrics
+import ctypes
+user32 = ctypes.windll.user32
 
-window_width = round(GetSystemMetrics(0) * 0.5)
-window_height = round(GetSystemMetrics(1) * 0.9)
+window_width = round(user32.GetSystemMetrics(0) * 0.5)
+window_height = round(user32.GetSystemMetrics(1) * 0.85)
 
 header_font = "Arial-16"
 """Шрифт в заголовке"""

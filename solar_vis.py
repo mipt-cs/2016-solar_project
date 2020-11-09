@@ -7,13 +7,18 @@
 Функции, создающие графические объекты и перемещающие их на экране, принимают физические координаты
 """
 
+from win32api import GetSystemMetrics
+
+window_width = round(GetSystemMetrics(0) * 0.5)
+window_height = round(GetSystemMetrics(1) * 0.9)
+
 header_font = "Arial-16"
 """Шрифт в заголовке"""
 
-window_width = 800
+# window_width = 800
 """Ширина окна"""
 
-window_height = 600
+# window_height = 600
 """Высота окна"""
 
 scale_factor = None

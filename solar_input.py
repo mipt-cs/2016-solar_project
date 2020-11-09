@@ -103,6 +103,5 @@ def write_space_objects_data_to_file(output_filename, space_objects):
             # FIXME: should store real values
 
 # FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл...
-
 if __name__ == "__main__":
     print("This module is not for direct call!")

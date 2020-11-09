@@ -13,7 +13,7 @@ def read_space_objects_data_from_file(input_filename):
     **input_filename** — имя входного файла
     """
 
-    objects = []
+    objects = []  # массив со звездами и планетами вперемешку
     with open(input_filename) as input_file:
         for line in input_file:
             if len(line.strip()) == 0 or line[0] == '#':
@@ -33,6 +33,16 @@ def read_space_objects_data_from_file(input_filename):
     return objects
 
 
+def split_and_brush_values(line):
+    params = line.split('').strip()  # разделение частей строки по пробелам
+    for i in range(len(params)):
+        if i == 0 or 2:
+            continue  # пропускаем строки с буквенными обозначениями
+        else:
+            params[i] = float(params[i])  # делаем числовые параметры числами
+    return params
+
+
 def parse_star_parameters(line, star):
     """Считывает данные о звезде из строки.
     Входная строка должна иметь слеюущий формат:
@@ -48,7 +58,9 @@ def parse_star_parameters(line, star):
     **star** — объект звезды.
     """
 
-    pass  # FIXME: not done yet
+    params = split_and_brush_values(line)
+
+    pass
 
 
 def parse_planet_parameters(line, planet):
@@ -86,6 +98,7 @@ def write_space_objects_data_to_file(output_filename, space_objects):
             # FIXME: should store real values
 
 # FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл...
+
 
 if __name__ == "__main__":
     print("This module is not for direct call!")

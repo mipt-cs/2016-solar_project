@@ -1,11 +1,11 @@
 # coding: utf-8
 # license: GPLv3
 
-from solar_objects import Star, Planet
+from solar_objects import Star, Planet  # импорт класса Star и Planet из solar_objects
 
 
 def read_space_objects_data_from_file(input_filename):
-    """Cчитывает данные о космических объектах из файла, создаёт сами объекты
+    """Считывает данные о космических объектах из файла, создаёт сами объекты
     и вызывает создание их графических образов
 
     Параметры:
@@ -19,10 +19,14 @@ def read_space_objects_data_from_file(input_filename):
             if len(line.strip()) == 0 or line[0] == '#':
                 continue  # пустые строки и строки-комментарии пропускаем
             object_type = line.split()[0].lower()
-            if object_type == "star":  # FIXME: do the same for planet
+            if object_type == "star":  # добавляем звезду
                 star = Star()
                 parse_star_parameters(line, star)
                 objects.append(star)
+            elif object_type == "planet":  # добавляем планету
+                planet = Planet()
+                parse_planet_parameters(line, planet)
+                objects.append(planet)
             else:
                 print("Unknown space object")
 
@@ -45,6 +49,7 @@ def parse_star_parameters(line, star):
     """
 
     pass  # FIXME: not done yet
+
 
 def parse_planet_parameters(line, planet):
     """Считывает данные о планете из строки.

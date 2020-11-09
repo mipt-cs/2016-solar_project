@@ -10,17 +10,11 @@
 import ctypes
 user32 = ctypes.windll.user32
 
-window_width = round(user32.GetSystemMetrics(0) * 0.5)
-window_height = round(user32.GetSystemMetrics(1) * 0.85)
+window_width = round(user32.GetSystemMetrics(0) * 0.5)  # ширина окна - половина ширины экрана
+window_height = round(user32.GetSystemMetrics(1) * 0.85)  # высота окна - 0.85 высоты экрана
 
 header_font = "Arial-16"
 """Шрифт в заголовке"""
-
-# window_width = 800
-"""Ширина окна"""
-
-# window_height = 600
-"""Высота окна"""
 
 scale_factor = None
 """Масштабирование экранных координат по отношению к физическим.

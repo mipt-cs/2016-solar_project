@@ -112,8 +112,6 @@ def main():
     global space
     global start_button
 
-    # тривиальная правка
-
     print('Modelling started!')
     physical_time = 0
 

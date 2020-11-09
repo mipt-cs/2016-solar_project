@@ -38,12 +38,15 @@ def split_and_brush_values(line):
     Разделяет и "очисляет" элементы принятой линии вида
     Класс(стр) радиус(числ) цвет(стр) масса(числ) коорд_x(числ) коорд_y(числ) скор_x(числ) скор_y(числ)
     """
-    params = line.split('').strip()  # разделение частей строки по пробелам
+    params = line.split(' ')  # разделение частей строки по пробелам
     for i in range(len(params)):
-        if i == 0 or 2:
+        params[i] = params[i].strip()
+        if i == 0 or i == 2:
             continue  # пропускаем строки с буквенными обозначениями
         else:
             params[i] = float(params[i])  # делаем числовые параметры числами
+            print(params[i])
+    print(params)
     return params
 
 

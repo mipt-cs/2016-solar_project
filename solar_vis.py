@@ -112,6 +112,7 @@ def update_object_position(space, body):
     y = scale_y(body.y)
     r = body.R
     space.coords(body.image, x - r, y - r, x + r, y + r)
+    space.update()
 
 
 if __name__ == "__main__":

@@ -34,6 +34,10 @@ def read_space_objects_data_from_file(input_filename):
 
 
 def split_and_brush_values(line):
+    """
+    Разделяет и "очисляет" элементы принятой линии вида
+    Класс(стр) радиус(числ) цвет(стр) масса(числ) коорд_x(числ) коорд_y(числ) скор_x(числ) скор_y(числ)
+    """
     params = line.split('').strip()  # разделение частей строки по пробелам
     for i in range(len(params)):
         if i == 0 or 2:
@@ -59,6 +63,13 @@ def parse_star_parameters(line, star):
     """
 
     params = split_and_brush_values(line)
+    star.R = params[1]
+    star.color = params[2]
+    star.m = params[3]
+    star.x = params[4]
+    star.y = params[5]
+    star.Vx = params[6]
+    star.Vy = params[7]
 
     pass
 
@@ -78,7 +89,17 @@ def parse_planet_parameters(line, planet):
     **line** — строка с описание планеты.
     **planet** — объект планеты.
     """
-    pass  # FIXME: not done yet...
+
+    params = split_and_brush_values(line)
+    planet.R = params[1]
+    planet.color = params[2]
+    planet.m = params[3]
+    planet.x = params[4]
+    planet.y = params[5]
+    planet.Vx = params[6]
+    planet.Vy = params[7]
+
+    pass
 
 
 def write_space_objects_data_to_file(output_filename, space_objects):

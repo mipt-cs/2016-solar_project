@@ -6,6 +6,7 @@ from tkinter.filedialog import *
 from solar_vis import *
 from solar_model import *
 from solar_input import *
+from solar_plots import *
 
 perform_execution = False
 """Флаг цикличности выполнения расчёта"""
@@ -145,6 +146,7 @@ def main():
     time_label = tkinter.Label(frame, textvariable=displayed_time, width=30)
     time_label.pack(side=tkinter.RIGHT)
 
+    draw_and_save_plots()
     root.mainloop()
     print('Modelling finished!')
 

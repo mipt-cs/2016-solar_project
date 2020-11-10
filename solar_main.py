@@ -102,6 +102,13 @@ def save_file_dialog():
     write_space_objects_data_to_file(out_filename, space_objects)
 
 
+def save_data_objects_file():
+    global physical_time
+    name = 'stats.txt'
+    write_stats_data_to_file(name, space_objects, physical_time)
+    draw_and_save_plots()
+
+
 def main():
     """Главная функция главного модуля.
     Создаёт объекты графического дизайна библиотеки tkinter: окно, холст, фрейм с кнопками, кнопки.
@@ -140,13 +147,14 @@ def main():
     load_file_button.pack(side=tkinter.LEFT)
     save_file_button = tkinter.Button(frame, text="Save to file...", command=save_file_dialog)
     save_file_button.pack(side=tkinter.LEFT)
+    save_data_button = tkinter.Button(frame, text='Save data to file...', command=save_data_objects_file)
+    save_data_button.pack(side=tkinter.LEFT)
 
     displayed_time = tkinter.StringVar()
     displayed_time.set(str(physical_time) + " seconds gone")
     time_label = tkinter.Label(frame, textvariable=displayed_time, width=30)
     time_label.pack(side=tkinter.RIGHT)
 
-    draw_and_save_plots()
     root.mainloop()
     print('Modelling finished!')
 

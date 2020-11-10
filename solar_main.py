@@ -103,6 +103,7 @@ def save_file_dialog():
 
 
 def save_data_objects_file():
+    """Функция записывает данные о системе в файл"""
     global physical_time
     name = 'stats.txt'
     write_stats_data_to_file(name, space_objects, physical_time)

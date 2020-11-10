@@ -89,8 +89,24 @@ def write_space_objects_data_to_file(output_filename, space_objects):
     """
     with open(output_filename, 'w') as out_file:
         for obj in space_objects:
+<<<<<<< Updated upstream
             print(out_file, "{0} {1} {2} {3} {4} {5} {6} {7}\n".format(obj.type.capitalize(), obj.R, obj.color, obj.m, obj.x, obj.y, obj.Vx, obj.Vy))
             # FIXME: should store real values
+=======
+            param_list = [0, 0, 0, 0, 0, 0, 0, 0]
+            param_list[0] = obj.type
+            param_list[1] = str(round(obj.R, 2))
+            param_list[2] = obj.color
+            param_list[3] = str(round(obj.m, 2))
+            param_list[4] = str(round(obj.x, 2))
+            param_list[5] = str(round(obj.y, 2))
+            param_list[6] = str(round(obj.Vx, 2))
+            param_list[7] = str(round(obj.Vy, 2))
+            parameters = ' '.join(param_list)
+            print(out_file, parameters)
+            out_file.write(parameters + "\n")
+        out_file.close()
+>>>>>>> Stashed changes
 
 # FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл.
 

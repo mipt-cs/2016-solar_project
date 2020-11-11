@@ -104,6 +104,12 @@ def write_space_objects_data_to_file(output_filename, space_objects):
 # FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл...
 
 
+def delete_last_stats(output_filename):
+    """Функция удаляет предыдущие значения, записанные в файл stats.txt"""
+    with open(output_filename, 'w') as out_file:
+        print('', file=out_file)
+
+
 def write_stats_data_to_file(output_filename, space_objects, t):
     """ Функция сохраняет координаты, скорости и время. Строки имеют следующий формат:
     <x>, <y>, <Vx>, <Vy>, <time>"""

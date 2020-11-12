@@ -108,7 +108,6 @@ def save_data_objects_file():
     global physical_time
     name = 'stats.txt'
     write_stats_data_to_file(name, space_objects, physical_time)
-    draw_and_save_plots()
 
 
 def main():
@@ -151,6 +150,8 @@ def main():
     save_file_button.pack(side=tkinter.LEFT)
     save_data_button = tkinter.Button(frame, text='Save data to file...', command=save_data_objects_file)
     save_data_button.pack(side=tkinter.LEFT)
+    save_plot_button = tkinter.Button(frame, text='Save plot', command=draw_and_save_plots)
+    save_plot_button.pack(side=tkinter.LEFT)
 
     displayed_time = tkinter.StringVar()
     displayed_time.set(str(physical_time) + " seconds gone")

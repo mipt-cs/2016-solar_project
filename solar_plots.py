@@ -26,7 +26,7 @@ def read_data(file_name):
 
     Parameters:
 
-    ***file_name*** - name of reading file
+    ***file_name*** - name of reading file.
 
     Returns:
 
@@ -132,3 +132,7 @@ def draw_and_save_plots():
     plt.subplots_adjust(wspace=0.5, hspace=0.5)
 
     plt.savefig('plot.png', dpi=300)
+
+
+if __name__ == "__main__":
+    print("This module is not for direct call!")

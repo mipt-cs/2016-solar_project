@@ -121,15 +121,13 @@ def write_stats_data_to_file(output_filename, space_objects, t):
     for i in range(len(file_list)):
         file_list[i] = file_list[i].rstrip()
     output_file.close()
-    for obj in space_objects:
-
-        x = '{} '.format(obj.x)
-        y = '{} '.format(obj.y)
-        Vx = '{} '.format(obj.Vx)
-        Vy = '{} '.format(obj.Vy)
-        t = '{}'.format(t)
-        line = x + y + Vx + Vy + t
-        file_list.append(line)
+    x = '{} '.format(space_objects[1].x)
+    y = '{} '.format(space_objects[1].y)
+    Vx = '{} '.format(space_objects[1].Vx)
+    Vy = '{} '.format(space_objects[1].Vy)
+    t = '{}'.format(t)
+    line = x + y + Vx + Vy + t
+    file_list.append(line)
 
     output_file = open(output_filename, 'w')
     if not masses_written:

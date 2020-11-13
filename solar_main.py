@@ -1,5 +1,6 @@
 # coding: utf-8
 # license: GPLv3
+# Сяйфетдинов, Хомяков, Серебряков
 
 import tkinter
 from tkinter.filedialog import *

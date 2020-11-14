@@ -6,6 +6,7 @@ from tkinter.filedialog import *
 from solar_vis import *
 from solar_model import *
 from solar_input import *
+from solar_plots import *
 
 perform_execution = False
 """Флаг цикличности выполнения расчёта"""
@@ -82,6 +83,7 @@ def open_file_dialog():
     space_objects = read_space_objects_data_from_file(in_filename)
     max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in space_objects])
     calculate_scale_factor(max_distance)
+    delete_last_stats('stats.txt')
 
     for obj in space_objects:
         if obj.type == 'star':
@@ -99,6 +101,13 @@ def save_file_dialog():
     """
     out_filename = asksaveasfilename(filetypes=(("Text file", ".txt"),))
     write_space_objects_data_to_file(out_filename, space_objects)
+
+
+def save_data_objects_file():
+    """Функция записывает данные о системе в файл"""
+    global physical_time
+    name = 'stats.txt'
+    write_stats_data_to_file(name, space_objects, physical_time)
 
 
 def main():
@@ -139,6 +148,10 @@ def main():
     load_file_button.pack(side=tkinter.LEFT)
     save_file_button = tkinter.Button(frame, text="Save to file...", command=save_file_dialog)
     save_file_button.pack(side=tkinter.LEFT)
+    save_data_button = tkinter.Button(frame, text='Save data to file...', command=save_data_objects_file)
+    save_data_button.pack(side=tkinter.LEFT)
+    save_plot_button = tkinter.Button(frame, text='Save plot', command=draw_and_save_plots)
+    save_plot_button.pack(side=tkinter.LEFT)
 
     displayed_time = tkinter.StringVar()
     displayed_time.set(str(physical_time) + " seconds gone")

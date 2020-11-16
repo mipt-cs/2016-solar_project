@@ -51,8 +51,8 @@ def execution():
     global physical_time
     global displayed_time
     recalculate_space_objects_positions(space_objects, time_step.get())
-    for body in space_objects:
-        update_object_position(space, body)
+    for i, body in enumerate(space_objects):
+        update_object_position(space, body, i)
         if is_recording_on:
             get_moment(body, physical_time)
     physical_time += time_step.get()

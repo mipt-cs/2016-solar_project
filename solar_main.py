@@ -6,6 +6,7 @@ from tkinter.filedialog import *
 from solar_vis import *
 from solar_model import *
 from solar_input import *
+from solar_graphics import *
 
 perform_execution = False
 """Флаг цикличности выполнения расчёта"""
@@ -57,6 +58,15 @@ def execution():
 
     if perform_execution:
         space.after(101 - int(time_speed.get()), execution)
+
+
+def recording():
+    for body in space_objects:
+        get_moment(body, physical_time)
+
+    if is_recording_on:
+        space.after(101 - int(time_speed.get()), recording())
+    pass
 
 
 def start_execution():
@@ -122,13 +132,24 @@ def start_recording():
     """
     Начинает запись информации в специальный файл данных о движении всех тел от времени
     """
-    global perform_execution
-    perform_execution = True
-    start_button['text'] = "Pause"
-    start_button['command'] = stop_execution
+    global is_recording_on
+    is_recording_on = True
+    graph_button['text'] = "Stop recording"
+    graph_button['command'] = stop_recording
 
     execution()
-    print('Started execution...')
+    print('Recording began')
+
+
+def stop_recording():
+    """
+    Останавливает запись информации в файл данных о движении тел
+    """
+    global perform_execution
+    perform_execution = False
+    graph_button['text'] = "Start recording"
+    graph_button['command'] = start_recording
+    print('Recording stopped')
 
 
 def main():
@@ -173,7 +194,8 @@ def main():
     save_file_button = tkinter.Button(frame, text="Save to file...", command=save_file_dialog)
     save_file_button.pack(side=tkinter.LEFT)
 
-    graph_button = tkinter.Button(frame, text="Start/Stop Recording...", command=start_recording)
+    graph_button = tkinter.Button(frame, text="Start recording...", command=start_recording)
+    graph_button.pack(side=tkinter.LEFT)
 
     displayed_time = tkinter.StringVar()
     displayed_time.set(str(physical_time) + " seconds gone")

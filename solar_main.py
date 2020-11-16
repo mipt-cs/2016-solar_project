@@ -52,9 +52,9 @@ def execution():
     global displayed_time
     recalculate_space_objects_positions(space_objects, time_step.get())
     for i, body in enumerate(space_objects):
-        update_object_position(space, body, i)
+        update_object_position(space, body)
         if is_recording_on:
-            get_moment(body, physical_time)
+            get_moment(body, physical_time, i)
     physical_time += time_step.get()
     displayed_time.set("%.1f" % physical_time + " seconds gone")
 

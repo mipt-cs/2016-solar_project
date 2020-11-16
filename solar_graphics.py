@@ -9,7 +9,7 @@ from matplotlib import pyplot as pl
 
 
 def get_moment(obj, time):  # собирает информацию об объекте в некоторый момент времени
-
+    print('got moment! =)')
     pass
 
 

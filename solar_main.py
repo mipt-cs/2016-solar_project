@@ -53,20 +53,13 @@ def execution():
     recalculate_space_objects_positions(space_objects, time_step.get())
     for body in space_objects:
         update_object_position(space, body)
+        if is_recording_on:
+            get_moment(body, physical_time)
     physical_time += time_step.get()
     displayed_time.set("%.1f" % physical_time + " seconds gone")
 
     if perform_execution:
         space.after(101 - int(time_speed.get()), execution)
-
-
-def recording():
-    for body in space_objects:
-        get_moment(body, physical_time)
-
-    if is_recording_on:
-        space.after(101 - int(time_speed.get()), recording())
-    pass
 
 
 def start_execution():
@@ -136,8 +129,8 @@ def start_recording():
     is_recording_on = True
     graph_button['text'] = "Stop recording"
     graph_button['command'] = stop_recording
-
-    execution()
+    if not perform_execution:
+        start_execution()
     print('Recording began')
 
 
@@ -145,11 +138,13 @@ def stop_recording():
     """
     Останавливает запись информации в файл данных о движении тел
     """
-    global perform_execution
-    perform_execution = False
+    global is_recording_on
+    is_recording_on = False
     graph_button['text'] = "Start recording"
     graph_button['command'] = start_recording
     print('Recording stopped')
+    if perform_execution:
+        stop_execution()
 
 
 def main():

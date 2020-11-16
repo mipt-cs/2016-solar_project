@@ -10,6 +10,9 @@ from solar_input import *
 perform_execution = False
 """Флаг цикличности выполнения расчёта"""
 
+is_recording_on = False
+"""Флаг запуска записи данных"""
+
 physical_time = 0
 """Физическое время от начала расчёта.
 Тип: float"""
@@ -33,6 +36,9 @@ space = []
 
 start_button = []
 """Кнопка Start"""
+
+graph_button = []
+"""Кнопка Graphic"""
 
 
 def execution():
@@ -112,6 +118,19 @@ def save_file_dialog():
     write_space_objects_data_to_file(out_filename, space_objects)
 
 
+def start_recording():
+    """
+    Начинает запись информации в специальный файл данных о движении всех тел от времени
+    """
+    global perform_execution
+    perform_execution = True
+    start_button['text'] = "Pause"
+    start_button['command'] = stop_execution
+
+    execution()
+    print('Started execution...')
+
+
 def main():
     """Главная функция главного модуля.
     Создаёт объекты графического дизайна библиотеки tkinter: окно, холст, фрейм с кнопками, кнопки.
@@ -122,6 +141,7 @@ def main():
     global time_speed
     global space
     global start_button
+    global graph_button
 
     print('Modelling started!')
     physical_time = 0
@@ -152,6 +172,8 @@ def main():
     load_file_button.pack(side=tkinter.LEFT)
     save_file_button = tkinter.Button(frame, text="Save to file...", command=save_file_dialog)
     save_file_button.pack(side=tkinter.LEFT)
+
+    graph_button = tkinter.Button(frame, text="Start/Stop Recording...", command=start_recording)
 
     displayed_time = tkinter.StringVar()
     displayed_time.set(str(physical_time) + " seconds gone")

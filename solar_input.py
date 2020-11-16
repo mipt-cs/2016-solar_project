@@ -38,7 +38,7 @@ def split_and_brush_values(line):
     Разделяет и "очисляет" элементы принятой линии вида
     Класс(стр) радиус(числ) цвет(стр) масса(числ) коорд_x(числ) коорд_y(числ) скор_x(числ) скор_y(числ)
     """
-    params = line.split(' ')  # разделение частей строки по пробелам
+    params = line.strip().split(' ')  # разделение частей строки по пробелам
     for i in range(len(params)):
         params[i] = params[i].strip()
         if i == 0 or i == 2:
@@ -118,8 +118,8 @@ def write_space_objects_data_to_file(output_filename, space_objects):
     """
     with open(output_filename, 'w') as out_file:
         for obj in space_objects:  # для каждого объекта среди всех движущихся...
-            out_file.write("%s %d %s %f %f %f %f \n"
-                               % (obj.type, obj.R, obj.color, obj.x, obj.y, obj.Vx, obj.Vy))
+            out_file.write("%s %d %s %f %f %f %f %f \n"
+                               % (obj.type, obj.R, obj.color, obj.m, obj.x, obj.y, obj.Vx, obj.Vy))
         # нужно как-то сделать запись чисел в стандартном виде!
 
 # FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл...

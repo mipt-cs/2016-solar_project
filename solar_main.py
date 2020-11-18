@@ -35,11 +35,11 @@ def execution():
     global physical_time
     global displayed_time
     recalculate_space_objects_positions(space_objects, time_step.get())
+    data(space_objects, physical_time)
     for body in space_objects:
         update_object_position(space, body)
     physical_time += time_step.get()
     displayed_time.set("%.1f" % physical_time + " seconds gone")
-
     if perform_execution:
         space.after(101 - int(time_speed.get()), execution)
 
@@ -52,7 +52,6 @@ def start_execution():
     perform_execution = True
     start_button['text'] = "Pause"
     start_button['command'] = stop_execution
-
     execution()
     print('Started execution...')
 
@@ -65,6 +64,8 @@ def stop_execution():
     perform_execution = False
     start_button['text'] = "Start"
     start_button['command'] = start_execution
+    data(space_objects, physical_time)
+    graph(space_objects)
     print('Paused execution.')
 
 
@@ -114,7 +115,6 @@ def main():
 
     print('Modelling started!')
     physical_time = 0
-
     root = tkinter.Tk()
     # космическое пространство отображается на холсте типа Canvas
     space = tkinter.Canvas(root, width=window_width, height=window_height, bg="black")
@@ -139,13 +139,13 @@ def main():
     load_file_button.pack(side=tkinter.LEFT)
     save_file_button = tkinter.Button(frame, text="Save to file...", command=save_file_dialog)
     save_file_button.pack(side=tkinter.LEFT)
-
     displayed_time = tkinter.StringVar()
     displayed_time.set(str(physical_time) + " seconds gone")
     time_label = tkinter.Label(frame, textvariable=displayed_time, width=30)
     time_label.pack(side=tkinter.RIGHT)
 
     root.mainloop()
+    graph()
     print('Modelling finished!')
 
 if __name__ == "__main__":

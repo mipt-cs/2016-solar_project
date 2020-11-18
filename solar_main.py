@@ -39,7 +39,13 @@ start_button = []
 """Кнопка Start"""
 
 graph_button = []
-"""Кнопка Graphic"""
+"""Кнопка Start/Stop Recording"""
+
+create_button = []
+"""Кнопка Show Graphics"""
+
+every_num = 0
+"""Счётчик данных"""
 
 
 def execution():
@@ -50,11 +56,14 @@ def execution():
     """
     global physical_time
     global displayed_time
+    global every_num
     recalculate_space_objects_positions(space_objects, time_step.get())
     for i, body in enumerate(space_objects):
         update_object_position(space, body)
-        if is_recording_on:
+        if is_recording_on and every_num % 10 == 0:
             get_moment(body, physical_time, i)
+            every_num = 0
+    every_num += 1
     physical_time += time_step.get()
     displayed_time.set("%.1f" % physical_time + " seconds gone")
 
@@ -129,9 +138,10 @@ def start_recording():
     is_recording_on = True
     graph_button['text'] = "Stop recording"
     graph_button['command'] = stop_recording
+    delete_previous()  # очистить предыдущие данные из файла
     if not perform_execution:
         start_execution()
-    print('Recording began')
+    print('Recording began...')
 
 
 def stop_recording():
@@ -147,6 +157,14 @@ def stop_recording():
         stop_execution()
 
 
+def show_graphics():
+    if perform_execution:
+        stop_execution()
+    if is_recording_on:
+        stop_recording()
+    draw_graph()
+
+
 def main():
     """Главная функция главного модуля.
     Создаёт объекты графического дизайна библиотеки tkinter: окно, холст, фрейм с кнопками, кнопки.
@@ -158,6 +176,7 @@ def main():
     global space
     global start_button
     global graph_button
+    global create_button
 
     print('Modelling started!')
     physical_time = 0
@@ -189,8 +208,10 @@ def main():
     save_file_button = tkinter.Button(frame, text="Save to file...", command=save_file_dialog)
     save_file_button.pack(side=tkinter.LEFT)
 
+    create_button = tkinter.Button(frame, text="Show graphics", command=show_graphics)
+    create_button.pack(side=tkinter.RIGHT)
     graph_button = tkinter.Button(frame, text="Start recording...", command=start_recording)
-    graph_button.pack(side=tkinter.LEFT)
+    graph_button.pack(side=tkinter.RIGHT)
 
     displayed_time = tkinter.StringVar()
     displayed_time.set(str(physical_time) + " seconds gone")

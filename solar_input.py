@@ -85,46 +85,45 @@ def write_space_objects_data_to_file(output_filename, space_objects):
     """
 
     with open(output_filename, 'w') as out_file:
-        c = []
+        output = []
         for obj in space_objects:
-            a = [str(obj.type), str(obj.R), str(obj.color), str(obj.m), str(obj.x), str(obj.y), str(obj.Vx),
-                 str(obj.Vy)]
-            a = ' '.join(a)
-            b = a + '\n'
-            c.append(b)
-        c = ''.join(c)
-        out_file.write(c)
+            planet = [str(obj.type), str(obj.R), str(obj.color), str(obj.m), str(obj.x), str(obj.y), str(obj.Vx),
+                      str(obj.Vy)]
+            planet = ' '.join(planet)
+            planet = planet + '\n'
+            output.append(planet)
+        output = ''.join(output)
+        out_file.write(output)
 
 
 def data(space_objects, dt):
     with open('data.txt', 'a') as file:
-        c = []
+        output_data = []
         for body in space_objects:
             for obj in space_objects:
                 if body == obj or obj.type == 'star':
                     continue
-                a = [str((obj.Vx ** 2 + obj.Vy ** 2) ** (1 / 2)),
-                     str(((body.x - obj.x) ** 2 + (body.y - obj.y) ** 2) ** 0.5), str(dt)]
-                a = ' '.join(a)
-                a = a + '\n'
-                c.append(a)
-        c = ''.join(c)
-        file.write(c)
+                planet_data = [str((obj.Vx ** 2 + obj.Vy ** 2) ** (1 / 2)),
+                               str(((body.x - obj.x) ** 2 + (body.y - obj.y) ** 2) ** 0.5), str(dt)]
+                planet_data = ' '.join(planet_data)
+                planet_data = planet_data + '\n'
+                output_data.append(planet_data)
+        output_data = ''.join(output_data)
+        file.write(output_data)
 
 
-# FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл...
-def graph(space_objects):
-    d = []
+def graph():
+    input_data = []
     speed = []
     distance = []
     time = []
     with open('data.txt', 'r') as file:
         for line in file:
-            d.append(line.split())
-    for i in range(len(d)):
-        speed.append(np.log(int(float(d[i][0]))) / np.log(10))
-        distance.append(np.log(int(float(d[i][1]))) / np.log(10))
-        time.append(np.log(int(float(d[i][2]))) / np.log(10))
+            input_data.append(line.split())
+    for i in range(len(input_data)):
+        speed.append(np.log(int(float(input_data[i][0]))) / np.log(10))
+        distance.append(np.log(int(float(input_data[i][1]))) / np.log(10))
+        time.append(np.log(int(float(input_data[i][2]))) / np.log(10))
     plt.subplot(221)
     plt.plot(time, speed)
     plt.xlabel(r'$log_{10} t$')
@@ -141,10 +140,10 @@ def graph(space_objects):
     plt.ylabel(r'$log_{10} Vx$')
     plt.title('Модуль скорости от расстояния')
     plt.subplots_adjust(hspace=0.552, wspace=0.574, top=0.952)
-    plt.savefig('figure_with_legend.png')
+    plt.savefig('graph.png')
     plt.show()
-    '''with open('data.txt', 'w') as file:
-        file.close()'''
+    file = open('data.txt', 'w')
+    file.close()
 
 
 if __name__ == "__main__":

@@ -139,15 +139,13 @@ def main():
     load_file_button.pack(side=tkinter.LEFT)
     save_file_button = tkinter.Button(frame, text="Save to file...", command=save_file_dialog)
     save_file_button.pack(side=tkinter.LEFT)
-    '''data(space_objects, physical_time)'''
     displayed_time = tkinter.StringVar()
     displayed_time.set(str(physical_time) + " seconds gone")
     time_label = tkinter.Label(frame, textvariable=displayed_time, width=30)
     time_label.pack(side=tkinter.RIGHT)
+
     root.mainloop()
-    graph(space_objects)
-
-
+    graph()
     print('Modelling finished!')
 
 if __name__ == "__main__":

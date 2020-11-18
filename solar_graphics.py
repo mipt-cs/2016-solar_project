@@ -32,7 +32,9 @@ def get_moment(obj, time, i):
         i: номер тела среди всех тел
     """
     with open('_program_data\data.txt', 'a') as open_file:
-        open_file.write("%s %f %f %i \n" % (i+1, py(obj.x, obj.y), py(obj.Vx, obj.Vy), int(time)))
+        r = py(obj.x, obj.y)
+        v = py(obj.Vx, obj.Vy)
+        open_file.write("%s %f %f %i \n" % (i+1, r, v, int(time)))
     pass
 
 
@@ -61,6 +63,7 @@ def read_graph():
                 all_the_needed_data[num-1][i].append(float(line[i]))  # float r и V
             else:
                 all_the_needed_data[num-1][i].append(int(line[i]))  # int time
+    print(elements)
     return all_the_needed_data
 
 
@@ -71,7 +74,7 @@ def draw_graph():
     """
     data = read_graph()
     for k in range(len(data)):
-        pl.scatter(data[k][3], data[k][2])  # v(t)
+        pl.scatter(data[k][3], data[k][1], 2)  # v(t)
     pl.show()
     pass
 

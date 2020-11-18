@@ -44,9 +44,6 @@ graph_button = []
 create_button = []
 """Кнопка Show Graphics"""
 
-every_num = 0
-"""Счётчик данных"""
-
 
 def execution():
     """Функция исполнения -- выполняется циклически, вызывая обработку всех небесных тел,
@@ -56,14 +53,11 @@ def execution():
     """
     global physical_time
     global displayed_time
-    global every_num
     recalculate_space_objects_positions(space_objects, time_step.get())
     for i, body in enumerate(space_objects):
         update_object_position(space, body)
-        if is_recording_on and every_num % 10 == 0:
+        if is_recording_on:
             get_moment(body, physical_time, i)
-            every_num = 0
-    every_num += 1
     physical_time += time_step.get()
     displayed_time.set("%.1f" % physical_time + " seconds gone")
 

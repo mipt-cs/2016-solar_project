@@ -122,8 +122,6 @@ def write_space_objects_data_to_file(output_filename, space_objects):
                            % (obj.type, obj.R, obj.color, obj.m, obj.x, obj.y, obj.Vx, obj.Vy))
         # нужно как-то сделать запись чисел в стандартном виде!
 
-# FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл...
-
 
 if __name__ == "__main__":
     print("This module is not for direct call!")

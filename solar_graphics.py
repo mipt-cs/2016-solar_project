@@ -19,7 +19,7 @@ def delete_previous():
     """
     Функция очищает файл data.txt перед началом записи
     """
-    open_file = open('_program_data\data.txt', 'w')
+    open_file = open('data.txt', 'w')
     open_file.close()
     pass
 
@@ -31,7 +31,7 @@ def get_moment(obj, time, i):
         time: текущий момент времени
         i: номер тела среди всех тел
     """
-    with open('_program_data\data.txt', 'a') as open_file:
+    with open('data.txt', 'a') as open_file:
         r = py(obj.x, obj.y)
         v = py(obj.Vx, obj.Vy)
         open_file.write("%s %f %f %i \n" % (i+1, r, v, int(time)))
@@ -44,7 +44,7 @@ def read_graph():
     В файле находятся строки вида
     № тела; расстояние до точки 0,0; скорость тела; время
     """
-    with open('_program_data\data.txt', 'r') as open_file:
+    with open('data.txt', 'r') as open_file:
         data = open_file.readlines()
     for i, line in enumerate(data):
         data[i] = line.strip().split(' ')
@@ -74,7 +74,17 @@ def draw_graph():
     """
     data = read_graph()
     for k in range(len(data)):
-        pl.scatter(data[k][3], data[k][1], 2)  # v(t)
+        sp = pl.subplot(221)
+        pl.title(r'$v(t)$')
+        pl.plot(data[k][3], data[k][2], 2)  # v(t)
+
+        sp = pl.subplot(222)
+        pl.title(r'$r(t)$')
+        pl.plot(data[k][3], data[k][1], 2) #r(t)
+
+        sp = pl.subplot(223)
+        pl.title(r'$v(r)$')
+        pl.plot(data[k][1], data[k][2], 2) #v(r)
     pl.show()
     pass
 

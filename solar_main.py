@@ -6,9 +6,13 @@ from tkinter.filedialog import *
 from solar_vis import *
 from solar_model import *
 from solar_input import *
+from solar_graphics import *
 
 perform_execution = False
 """Флаг цикличности выполнения расчёта"""
+
+is_recording_on = False
+"""Флаг запуска записи данных"""
 
 physical_time = 0
 """Физическое время от начала расчёта.
@@ -25,6 +29,21 @@ time_step = None
 space_objects = []
 """Список космических объектов."""
 
+time_speed = 0
+"""Скорость преобразования времени при моделировании к реальногму времени"""
+
+space = []
+"""Пространство, где движутся объекты"""
+
+start_button = []
+"""Кнопка Start"""
+
+graph_button = []
+"""Кнопка Start/Stop Recording"""
+
+create_button = []
+"""Кнопка Show Graphics"""
+
 
 def execution():
     """Функция исполнения -- выполняется циклически, вызывая обработку всех небесных тел,
@@ -35,8 +54,10 @@ def execution():
     global physical_time
     global displayed_time
     recalculate_space_objects_positions(space_objects, time_step.get())
-    for body in space_objects:
+    for i, body in enumerate(space_objects):
         update_object_position(space, body)
+        if is_recording_on:
+            get_moment(body, physical_time, i)
     physical_time += time_step.get()
     displayed_time.set("%.1f" % physical_time + " seconds gone")
 
@@ -75,6 +96,7 @@ def open_file_dialog():
     """
     global space_objects
     global perform_execution
+    global physical_time
     perform_execution = False
     for obj in space_objects:
         space.delete(obj.image)  # удаление старых изображений планет
@@ -82,6 +104,7 @@ def open_file_dialog():
     space_objects = read_space_objects_data_from_file(in_filename)
     max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in space_objects])
     calculate_scale_factor(max_distance)
+    physical_time = 0  # при открытии нового файла обнуляем время
 
     for obj in space_objects:
         if obj.type == 'star':
@@ -101,6 +124,41 @@ def save_file_dialog():
     write_space_objects_data_to_file(out_filename, space_objects)
 
 
+def start_recording():
+    """
+    Начинает запись информации в специальный файл данных о движении всех тел от времени
+    """
+    global is_recording_on
+    is_recording_on = True
+    graph_button['text'] = "Stop recording"
+    graph_button['command'] = stop_recording
+    delete_previous()  # очистить предыдущие данные из файла
+    if not perform_execution:
+        start_execution()
+    print('Recording began...')
+
+
+def stop_recording():
+    """
+    Останавливает запись информации в файл данных о движении тел
+    """
+    global is_recording_on
+    is_recording_on = False
+    graph_button['text'] = "Start recording"
+    graph_button['command'] = start_recording
+    print('Recording stopped')
+    if perform_execution:
+        stop_execution()
+
+
+def show_graphics():
+    if perform_execution:
+        stop_execution()
+    if is_recording_on:
+        stop_recording()
+    draw_graph()
+
+
 def main():
     """Главная функция главного модуля.
     Создаёт объекты графического дизайна библиотеки tkinter: окно, холст, фрейм с кнопками, кнопки.
@@ -111,6 +169,8 @@ def main():
     global time_speed
     global space
     global start_button
+    global graph_button
+    global create_button
 
     print('Modelling started!')
     physical_time = 0
@@ -119,6 +179,7 @@ def main():
     # космическое пространство отображается на холсте типа Canvas
     space = tkinter.Canvas(root, width=window_width, height=window_height, bg="black")
     space.pack(side=tkinter.TOP)
+
     # нижняя панель с кнопками
     frame = tkinter.Frame(root)
     frame.pack(side=tkinter.BOTTOM)
@@ -126,6 +187,7 @@ def main():
     start_button = tkinter.Button(frame, text="Start", command=start_execution, width=6)
     start_button.pack(side=tkinter.LEFT)
 
+    # шаг времени
     time_step = tkinter.DoubleVar()
     time_step.set(1)
     time_step_entry = tkinter.Entry(frame, textvariable=time_step)
@@ -140,6 +202,11 @@ def main():
     save_file_button = tkinter.Button(frame, text="Save to file...", command=save_file_dialog)
     save_file_button.pack(side=tkinter.LEFT)
 
+    create_button = tkinter.Button(frame, text="Show graphics", command=show_graphics)
+    create_button.pack(side=tkinter.RIGHT)
+    graph_button = tkinter.Button(frame, text="Start recording...", command=start_recording)
+    graph_button.pack(side=tkinter.RIGHT)
+
     displayed_time = tkinter.StringVar()
     displayed_time.set(str(physical_time) + " seconds gone")
     time_label = tkinter.Label(frame, textvariable=displayed_time, width=30)
@@ -147,6 +214,7 @@ def main():
 
     root.mainloop()
     print('Modelling finished!')
+
 
 if __name__ == "__main__":
     main()

@@ -1,19 +1,20 @@
 # coding: utf-8
 # license: GPLv3
 
-"""Модуль визуализации.
-Нигде, кроме этого модуля, не используются экранные координаты объектов.
-Функции, создающие гaрафические объекты и перемещающие их на экране, принимают физические координаты
 """
+Модуль визуализации.
+Нигде, кроме этого модуля, не используются экранные координаты объектов.
+Функции, создающие графические объекты и перемещающие их на экране, принимают физические координаты
+"""
+
+import ctypes
+user32 = ctypes.windll.user32
+
+window_width = round(user32.GetSystemMetrics(0) * 0.8)  # ширина окна - половина ширины экрана
+window_height = round(user32.GetSystemMetrics(1) * 0.85)  # высота окна - 0.85 высоты экрана
 
 header_font = "Arial-16"
 """Шрифт в заголовке"""
-
-window_width = 800
-"""Ширина окна"""
-
-window_height = 800
-"""Высота окна"""
 
 scale_factor = None
 """Масштабирование экранных координат по отношению к физическим.
@@ -24,7 +25,7 @@ scale_factor = None
 def calculate_scale_factor(max_distance):
     """Вычисляет значение глобальной переменной **scale_factor** по данной характерной длине"""
     global scale_factor
-    scale_factor = 0.4*min(window_height, window_width)/max_distance
+    scale_factor = 0.48*min(window_height, window_width)/max_distance
     print('Scale factor:', scale_factor)
 
 
@@ -54,7 +55,7 @@ def scale_y(y):
     **y** — y-координата модели.
     """
 
-    return y  # FIXME: not done yet
+    return int((window_height-y)*scale_factor) + window_height//2
 
 
 def create_star_image(space, star):
@@ -80,7 +81,11 @@ def create_planet_image(space, planet):
     **space** — холст для рисования.
     **planet** — объект планеты.
     """
-    pass  # FIXME: сделать как у звезды
+    pass
+    x = scale_x(planet.x)
+    y = scale_y(planet.y)
+    r = planet.R
+    planet.image = space.create_oval([x - r, y - r], [x + r, y + r], fill=planet.color)
 
 
 def update_system_name(space, system_name):
@@ -106,10 +111,8 @@ def update_object_position(space, body):
     x = scale_x(body.x)
     y = scale_y(body.y)
     r = body.R
-    if x + r < 0 or x - r > window_width or y + r < 0 or y - r > window_height:
-        space.coords(body.image, window_width + r, window_height + r,
-                     window_width + 2*r, window_height + 2*r)  # положить за пределы окна
     space.coords(body.image, x - r, y - r, x + r, y + r)
+    space.update()
 
 
 if __name__ == "__main__":

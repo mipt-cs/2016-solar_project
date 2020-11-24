@@ -1,11 +1,12 @@
 # coding: utf-8
 # license: GPLv3
+# Сяйфетдинов, Хомяков, Серебряков
 
 import tkinter
 from tkinter.filedialog import *
-from solar_vis import *
-from solar_model import *
-from solar_input import *
+import solar_vis as sv
+import solar_model as sm
+import solar_input as si
 
 perform_execution = False
 """Флаг цикличности выполнения расчёта"""
@@ -34,9 +35,9 @@ def execution():
     """
     global physical_time
     global displayed_time
-    recalculate_space_objects_positions(space_objects, time_step.get())
+    sm.recalculate_space_objects_positions(space_objects, time_step.get())
     for body in space_objects:
-        update_object_position(space, body)
+        sv.update_object_position(space, body)
     physical_time += time_step.get()
     displayed_time.set("%.1f" % physical_time + " seconds gone")
 
@@ -79,15 +80,15 @@ def open_file_dialog():
     for obj in space_objects:
         space.delete(obj.image)  # удаление старых изображений планет
     in_filename = askopenfilename(filetypes=(("Text file", ".txt"),))
-    space_objects = read_space_objects_data_from_file(in_filename)
+    space_objects = si.read_space_objects_data_from_file(in_filename)
     max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in space_objects])
-    calculate_scale_factor(max_distance)
+    sv.calculate_scale_factor(max_distance)
 
     for obj in space_objects:
         if obj.type == 'star':
-            create_star_image(space, obj)
+            sv.create_star_image(space, obj)
         elif obj.type == 'planet':
-            create_planet_image(space, obj)
+            sv.create_planet_image(space, obj)
         else:
             raise AssertionError()
 
@@ -98,7 +99,7 @@ def save_file_dialog():
     Считанные объекты сохраняются в глобальный список space_objects
     """
     out_filename = asksaveasfilename(filetypes=(("Text file", ".txt"),))
-    write_space_objects_data_to_file(out_filename, space_objects)
+    si.write_space_objects_data_to_file(out_filename, space_objects)
 
 
 def main():
@@ -117,7 +118,7 @@ def main():
 
     root = tkinter.Tk()
     # космическое пространство отображается на холсте типа Canvas
-    space = tkinter.Canvas(root, width=window_width, height=window_height, bg="black")
+    space = tkinter.Canvas(root, width=sv.window_width, height=sv.window_height, bg="black")
     space.pack(side=tkinter.TOP)
     # нижняя панель с кнопками
     frame = tkinter.Frame(root)
@@ -147,6 +148,7 @@ def main():
 
     root.mainloop()
     print('Modelling finished!')
+
 
 if __name__ == "__main__":
     main()

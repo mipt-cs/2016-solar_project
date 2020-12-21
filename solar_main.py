@@ -18,7 +18,7 @@ displayed_time = None
 """Отображаемое на экране время.
 Тип: переменная tkinter"""
 
-time_step = None
+time_step = 0
 """Шаг по времени при моделировании.
 Тип: float"""
 
@@ -82,7 +82,6 @@ def open_file_dialog():
     space_objects = read_space_objects_data_from_file(in_filename)
     max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in space_objects])
     calculate_scale_factor(max_distance)
-
     for obj in space_objects:
         if obj.type == 'star':
             create_star_image(space, obj)

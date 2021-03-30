@@ -54,10 +54,10 @@ def scale_y(y):
     **y** — y-координата модели.
     """
 
-    return y  # FIXME: not done yet
+    return int(y*scale_factor) + window_height//2
 
 
-def create_star_image(space, star):
+def create_space_object_image(space, sp_obj):
     """Создаёт отображаемый объект звезды.
 
     Параметры:
@@ -66,21 +66,10 @@ def create_star_image(space, star):
     **star** — объект звезды.
     """
 
-    x = scale_x(star.x)
-    y = scale_y(star.y)
-    r = star.R
-    star.image = space.create_oval([x - r, y - r], [x + r, y + r], fill=star.color)
-
-
-def create_planet_image(space, planet):
-    """Создаёт отображаемый объект планеты.
-
-    Параметры:
-
-    **space** — холст для рисования.
-    **planet** — объект планеты.
-    """
-    pass  # FIXME: сделать как у звезды
+    x = scale_x(sp_obj.x)
+    y = scale_y(sp_obj.y)
+    r = sp_obj.R
+    sp_obj.image = space.create_oval([x - r, y - r], [x + r, y + r], fill=sp_obj.color)
 
 
 def update_system_name(space, system_name):

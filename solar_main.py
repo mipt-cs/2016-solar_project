@@ -84,12 +84,7 @@ def open_file_dialog():
     calculate_scale_factor(max_distance)
 
     for obj in space_objects:
-        if obj.type == 'star':
-            create_star_image(space, obj)
-        elif obj.type == 'planet':
-            create_planet_image(space, obj)
-        else:
-            raise AssertionError()
+        create_space_object_image(space, obj)
 
 
 def save_file_dialog():
@@ -127,7 +122,7 @@ def main():
     start_button.pack(side=tkinter.LEFT)
 
     time_step = tkinter.DoubleVar()
-    time_step.set(1)
+    time_step.set(1000)
     time_step_entry = tkinter.Entry(frame, textvariable=time_step)
     time_step_entry.pack(side=tkinter.LEFT)
 

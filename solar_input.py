@@ -1,7 +1,7 @@
 # coding: utf-8
 # license: GPLv3
 
-from solar_objects import Star, Planet
+from solar_objects import *
 from tkinter import messagebox
 
 
@@ -20,26 +20,17 @@ def read_space_objects_data_from_file(input_filename):
             if len(line.strip()) == 0 or line[0] == '#':
                 continue  # пустые строки и строки-комментарии пропускаем
             object_type = line.split()[0].lower()
-            if object_type == "star":  # FIXME: do the same for planet
-                star = Star()
-                parse_star_parameters(line, star)
-                objects.append(star)
-            else:
-                print("Unknown space object")
-
-            if object_type == "planet":
-                planet = Planet()
-                parse_planet_parameters(line, planet)
-                objects.append(planet)
+            if object_type == "star" or object_type == "planet":
+                objectt = SpaceObject()
+                parse_parameters(line, objectt)
+                objects.append(objectt)
             else:
                 print("Unknown space object")
 
     return objects
 
 
-
-
-def parse_star_parameters(line, star):
+def parse_parameters(line, object):
     """Считывает данные о звезде из строки.
     Входная строка должна иметь слеюущий формат:
     Star <радиус в пикселах> <цвет> <масса> <x> <y> <Vx> <Vy>
@@ -53,53 +44,17 @@ def parse_star_parameters(line, star):
     **line** — строка с описание звезды.
     **star** — объект звезды.
     """
-    file1 = open("solar_system.txt", "r")
-
-    while True:
-        # считываем строку
-        line = file1.readline()
-        # прерываем цикл, если строка пустая
-        if not line:
-            break
-        # выводим строку
-        print(line.strip())
-
-    # закрываем файл
-    file1.close
-
-    pass  # FIXME: not done yet
-
-
-def parse_planet_parameters(line, planet):
-    """Считывает данные о планете из строки.
-    Предполагается такая строка:
-    Входная строка должна иметь слеюущий формат:
-    Planet <радиус в пикселах> <цвет> <масса> <x> <y> <Vx> <Vy>
-
-    Здесь (x, y) — координаты планеты, (Vx, Vy) — скорость.
-    Пример строки:
-    Planet 10 red 1000 1 2 3 4
-
-    Параметры:
-
-    **line** — строка с описание планеты.
-    **planet** — объект планеты.
-    """
-
-    file1 = open("one_satellite.txt", "r")
-
-    while True:
-        # считываем строку
-        line = file1.readline()
-        # прерываем цикл, если строка пустая
-        if not line:
-            break
-        # выводим строку
-        print(line.strip())
-
-    # закрываем файл
-    file1.close
-    pass  # FIXME: not done yet...
+    line = line.replace('\n', '')
+    line = line.split(' ')
+    object.type = line[0]
+    object.R = int(line[1])
+    object.color = line[2]
+    object.m = float(line[3])
+    object.x = float(line[4])
+    object.y = float(line[5])
+    object.Vx = float(line[6])
+    object.Vy = float(line[7])
+    print(object.Vy)
 
 
 def write_space_objects_data_to_file(output_filename, space_objects):

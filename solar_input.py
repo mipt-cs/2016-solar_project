@@ -56,51 +56,19 @@ def parse_star_parameters(line, star):
     **line** — строка с описание звезды.
     **star** — объект звезды.
     """
-    root = Tk()
-    root.title(" Star")
+    file1 = open("solar_system.txt", "r")
 
-    radius = StringVar()
-    colour = StringVar()
-    weight = StringVar()
-    coord_x = StringVar()
-    coord_y = StringVar()
-    coord_vx = StringVar()
-    coord_vy = StringVar()
+    while True:
+        # считываем строку
+        line = file1.readline()
+        # прерываем цикл, если строка пустая
+        if not line:
+            break
+        # выводим строку
+        print(line.strip())
 
-    radius_label = Label(text="Введите радиус в пикселях:")
-    colour_label = Label(text="Введите цвет:")
-    weight_label = Label(text="Введите массу:")
-    coord_x_label = Label(text="Введите координату по x:")
-    coord_y_label = Label(text="Введите координату по y:")
-    coord_vx_label = Label(text="Введите скорость по x:")
-    coord_vy_label = Label(text="Введите скорость по y:")
-
-    radius_label.grid(row=0, column=0, sticky="w")
-    colour_label.grid(row=1, column=0, sticky="w")
-    weight_label.grid(row=1, column=0, sticky="w")
-    coord_x_label.grid(row=1, column=0, sticky="w")
-    coord_y_label.grid(row=1, column=0, sticky="w")
-    coord_vx_label.grid(row=1, column=0, sticky="w")
-    coord_vy_label.grid(row=1, column=0, sticky="w")
-
-    radius_entry = Entry(textvariable=radius)
-    colour_entry = Entry(textvariable=colour)
-    weight_entry = Entry(textvariable=weight)
-    coord_x_entry = Entry(textvariable=coord_x)
-    coord_y_entry = Entry(textvariable=coord_y)
-    coord_vx_entry = Entry(textvariable=coord_vx)
-    coord_vy_entry = Entry(textvariable=coord_vy)
-
-    radius_entry.grid(row=0, column=1, padx=5, pady=5)
-    colour_entry.grid(row=1, column=1, padx=5, pady=5)
-    weight_entry.grid(row=1, column=1, padx=5, pady=5)
-    coord_x_entry.grid(row=1, column=1, padx=5, pady=5)
-    coord_y_entry.grid(row=1, column=1, padx=5, pady=5)
-    coord_vx_entry.grid(row=1, column=1, padx=5, pady=5)
-    coord_vy_entry.grid(row=1, column=1, padx=5, pady=5)
-
-    message_button = Button(text="Click Me", command=display_full_name)
-    message_button.grid(row=2, column=1, padx=5, pady=5, sticky="e")
+    # закрываем файл
+    file1.close
 
     pass  # FIXME: not done yet
 

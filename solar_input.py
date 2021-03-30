@@ -21,7 +21,7 @@ def read_space_objects_data_from_file(input_filename):
             object_type = line.split()[0].lower()
             if object_type == "star":  # FIXME: do the same for planet
                 star = Star()
-                parse_star_parameters(line, star)####
+                parse_star_parameters(line, star)
                 objects.append(star)
             else:
                 print("Unknown space object")
@@ -45,13 +45,13 @@ def parse_star_parameters(line, star):
     """
     parametrs = line.split()
     star.type = parametrs[0]
-    star.R = int(parametrs[1])
+    star.R = float(parametrs[1])
     star.color = parametrs[2]
-    star.m = int(parametrs[3])
-    star.x = int(parametrs[4])
-    star.y = int(parametrs[5])
-    star.vx = int(parametrs[6])
-    star.vy = int(parametrs[7])
+    star.m = float(parametrs[3])
+    star.x = float(parametrs[4])
+    star.y = float(parametrs[5])
+    star.vx = float(parametrs[6])
+    star.vy = float(parametrs[7])
 
 def parse_planet_parameters(line, planet):
     """Считывает данные о планете из строки.
@@ -70,13 +70,13 @@ def parse_planet_parameters(line, planet):
     """
     parametrs = line.split()
     planet.type = parametrs[0]
-    planet.R = int(parametrs[1])
+    planet.R = float(parametrs[1])
     planet.color = parametrs[2]
-    planet.m = int(parametrs[3])
-    planet.x = int(parametrs[4])
-    planet.y = int(parametrs[5])
-    planet.vx = int(parametrs[6])
-    planet.vy = int(parametrs[7])
+    planet.m = float(parametrs[3])
+    planet.x = float(parametrs[4])
+    planet.y = float(parametrs[5])
+    planet.vx = float(parametrs[6])
+    planet.vy = float(parametrs[7])
 
 
 

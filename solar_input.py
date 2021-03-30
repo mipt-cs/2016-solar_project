@@ -85,7 +85,20 @@ def parse_planet_parameters(line, planet):
     **line** — строка с описание планеты.
     **planet** — объект планеты.
     """
-    
+
+    file1 = open("one_satellite.txt", "r")
+
+    while True:
+        # считываем строку
+        line = file1.readline()
+        # прерываем цикл, если строка пустая
+        if not line:
+            break
+        # выводим строку
+        print(line.strip())
+
+    # закрываем файл
+    file1.close
     pass  # FIXME: not done yet...
 
 

@@ -14,7 +14,6 @@ def calculate_force(body, space_objects):
     **space_objects** — список объектов, которые воздействуют на тело.
     """
 
-    body.Fx = body.Fy = 0
     for obj in space_objects:
         if body == obj:
             continue  # тело не действует гравитационной силой на само себя!
@@ -27,20 +26,18 @@ def calculate_force(body, space_objects):
         body.Fx += F * math.cos(angle) * numpy.sign(obj.x - body.x)
         body.Fy += F * math.sin(angle) * numpy.sign(obj.y - body.y)
 
-
 def move_space_object(body, dt):
     """Перемещает тело в соответствии с действующей на него силой.
     Параметры:
     **body** — тело, которое нужно переместить.
     """
-
+    print(body.Vy)
     ax = body.Fx / body.m
     ay = body.Fy / body.m
     body.Vx += ax * dt
     body.Vy += ay * dt
     body.x += body.Vx
     body.y += body.Vy
-
 
 
 def recalculate_space_objects_positions(space_objects, dt):

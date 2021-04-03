@@ -70,18 +70,13 @@ def write_space_objects_data_to_file(output_filename, space_objects):
     """
     with open(output_filename, 'w') as out_file:
         for obj in space_objects:
+            out_file.write(str(obj.type) + ' ' + str(obj.R) + ' ' + str(obj.color) + ' ' + str(obj.m) + ' ' + str(obj.x)
+                           + ' ' + str(obj.y) + ' ' + str(obj.Vx) + ' ' + str(obj.Vy) + '\n')
             print(out_file, "%s %d %s %f" % ('1', 2, '3', 4.5))
             # FIXME: should store real values
 
 
 # FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл...
-
-def stats(body):
-    data_f = [body.x, body.y, body.Vx, body.Vy]
-    with open("stats.txt.", "w") as f:
-            f.write(data_f)
-    f.close()
-    print(data_f)
 
 
 if __name__ == "__main__":

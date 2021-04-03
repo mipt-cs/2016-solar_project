@@ -76,5 +76,13 @@ def write_space_objects_data_to_file(output_filename, space_objects):
 
 # FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл...
 
+def stats(body):
+    data_f = [body.x, body.y, body.Vx, body.Vy]
+    with open("stats.txt.", "w") as f:
+            f.write(data_f)
+    f.close()
+    print(data_f)
+
+
 if __name__ == "__main__":
     print("This module is not for direct call!")

@@ -3,6 +3,7 @@
 
 from solar_objects import Star, Planet
 
+#space_objects = [Star(), Planet()]
 
 def read_space_objects_data_from_file(input_filename):
     """Cчитывает данные о космических объектах из файла, создаёт сами объекты
@@ -52,11 +53,11 @@ def parse_star_parameters(line_, star):
 
     star_data = line_.split()
 
-    star.R = int(star_data[1])
+    star.R = float(star_data[1])
     star.color = star_data[2]
-    star.m = int(star_data[3])
-    star.x, star.y = int(star_data[4]), int(star_data[5])
-    star.Vx, star.Vy = int(star_data[6]), int(star_data[7])
+    star.m = float(star_data[3])
+    star.x, star.y = float(star_data[4]), float(star_data[5])
+    star.Vx, star.Vy = float(star_data[6]), float(star_data[7])
 
 def parse_planet_parameters(line_, planet):
     """Считывает данные о планете из строки.
@@ -75,11 +76,11 @@ def parse_planet_parameters(line_, planet):
     """
     planet_data = line_.split()
 
-    planet.R = int(planet_data[1])
+    planet.R = float(planet_data[1])
     planet.color = planet_data[2]
-    planet.m = int(planet_data[3])
-    planet.x, planet.y = int(planet_data[4]), int(planet_data[5])
-    planet.Vx, planet.Vy = int(planet_data[6]), int(planet_data[7])
+    planet.m = float(planet_data[3])
+    planet.x, planet.y = float(planet_data[4]), float(planet_data[5])
+    planet.Vx, planet.Vy = float(planet_data[6]), float(planet_data[7])
 
 
 def write_space_objects_data_to_file(output_filename, space_objects):
@@ -114,3 +115,8 @@ def write_space_objects_data_to_file(output_filename, space_objects):
 
 if __name__ == "__main__":
     print("This module is not for direct call!")
+
+
+# print(space_objects)
+
+# read_space_objects_data_from_file('solar_system.txt')

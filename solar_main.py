@@ -2,6 +2,7 @@
 # license: GPLv3
 
 import tkinter
+from tkinter import Button
 from tkinter.filedialog import *
 from solar_vis import *
 from solar_model import *
@@ -123,7 +124,7 @@ def main():
     frame = tkinter.Frame(root)
     frame.pack(side=tkinter.BOTTOM)
 
-    start_button = tkinter.Button(frame, text="Start", command=start_execution, width=6)
+    start_button: Button = tkinter.Button(frame, text="Start", command=start_execution, width=6)
     start_button.pack(side=tkinter.LEFT)
 
     time_step = tkinter.DoubleVar()

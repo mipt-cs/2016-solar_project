@@ -20,7 +20,7 @@ Planet 20 yellow 1.899E27 778.41E9 0 0 13.07E3
 Planet 15 white 5.685E26 1429.4E9 0 0 9.67E3
 
 # Уран
-#Planet 8 gray 8.685E25 2871.0E9 0 0 6.84E3
+Planet 8 gray 8.685E25 2871.0E9 0 0 6.84E3
 
 # Нептун
-#Planet 7 blue 1.024E26 4498.3E9 0 0 5.48E3
+Planet 7 blue 1.024E26 4498.3E9 0 0 5.48E3

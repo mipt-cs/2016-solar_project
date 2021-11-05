@@ -7,6 +7,13 @@ from tkinter.filedialog import *
 from solar_vis import *
 from solar_model import *
 from solar_input import *
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+array_of_r = []
+array_of_t = []
+array_of_V = []
 
 perform_execution = False
 """Флаг цикличности выполнения расчёта"""
@@ -35,6 +42,14 @@ def execution():
     """
     global physical_time
     global displayed_time
+
+    global array_of_r, array_of_V, array_of_t, space_objects
+    obj = space_objects[1]
+    array_of_r.append(obj.x ** 2 + obj.y ** 2)
+    array_of_t.append(physical_time)
+    array_of_V.append(obj.Vx ** 2 + obj.Vy ** 2)
+
+    
     recalculate_space_objects_positions(space_objects, time_step.get())
     for body in space_objects:
         update_object_position(space, body)
@@ -151,3 +166,18 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# Строим графики:
+
+array_of_V = np.array(array_of_V)
+array_of_r = np.array(array_of_r)
+array_of_t = np.array(array_of_t)
+
+fig, (ax1, ax2, ax3) = plt.subplots(3)
+ax1.scatter(array_of_t, array_of_r, label=r'$r(t)$')
+ax2.scatter(array_of_t, array_of_V, color='red', label=r'$V(t)$')
+ax3.scatter(array_of_V, array_of_r, color='green')
+
+fig.tight_layout(pad=2.0)
+
+plt.show()

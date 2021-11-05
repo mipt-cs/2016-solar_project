@@ -3,8 +3,6 @@
 
 from solar_objects import Star, Planet
 
-#space_objects = [Star(), Planet()]
-
 def read_space_objects_data_from_file(input_filename):
     """Cчитывает данные о космических объектах из файла, создаёт сами объекты
     и вызывает создание их графических образов
@@ -105,18 +103,11 @@ def write_space_objects_data_to_file(output_filename, space_objects):
             ob_y = str(obj.y)
             ob_Vy = str(obj.Vy)
             ob_Vx = str(obj.Vx)
-
             line_about_object = ob_type + ' ' + ob_R + ' ' + ob_color + ' ' + ob_m + ' ' + ob_x + ' ' + ob_y + ' ' + ob_Vx + ' ' + ob_Vy
-            print(line_about_object)
-            print(out_file, line_about_object)
+            print(line_about_object, file=out_file)
             # FIXME: should store real values
 
 # FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл...
 
 if __name__ == "__main__":
     print("This module is not for direct call!")
-
-
-# print(space_objects)
-
-# read_space_objects_data_from_file('solar_system.txt')

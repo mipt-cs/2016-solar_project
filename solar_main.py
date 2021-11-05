@@ -8,7 +8,6 @@ from solar_vis import *
 from solar_model import *
 from solar_input import *
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
 
 array_of_r = []
@@ -45,9 +44,9 @@ def execution():
 
     global array_of_r, array_of_V, array_of_t, space_objects
     obj = space_objects[1]
-    array_of_r.append(obj.x ** 2 + obj.y ** 2)
+    array_of_r.append((obj.x ** 2 + obj.y ** 2) ** 0.5)
     array_of_t.append(physical_time)
-    array_of_V.append(obj.Vx ** 2 + obj.Vy ** 2)
+    array_of_V.append((obj.Vx ** 2 + obj.Vy ** 2) ** 0.5)
 
     
     recalculate_space_objects_positions(space_objects, time_step.get())
@@ -117,6 +116,23 @@ def save_file_dialog():
     write_space_objects_data_to_file(out_filename, space_objects)
 
 
+def draw_graphs(r = array_of_r, V = array_of_V, t = array_of_t):
+    """Выводит графики r(t), V(t), V(r) первой планеты из списка
+    """
+    fig, (ax1, ax2, ax3) = plt.subplots(3)
+    sp = plt.subplot(311)
+    plt.plot(t, r, label=r'$r(t)$')#, s = 1)
+    plt.title('$r(t)$')
+    sp = plt.subplot(312)
+    plt.plot(t, V, color='red', label=r'$V(t)$')#, s = 1)
+    plt.title('$V(t)$')
+    sp = plt.subplot(313)
+    plt.plot(r, V, color='green')#, s = 1)
+    plt.title('$V(r)$')
+    fig.tight_layout(pad=2.0)
+    plt.show()
+
+
 def main():
     """Главная функция главного модуля.
     Создаёт объекты графического дизайна библиотеки tkinter: окно, холст, фрейм с кнопками, кнопки.
@@ -155,6 +171,8 @@ def main():
     load_file_button.pack(side=tkinter.LEFT)
     save_file_button = tkinter.Button(frame, text="Save to file...", command=save_file_dialog)
     save_file_button.pack(side=tkinter.LEFT)
+    graph_button = tkinter.Button(frame, text="Graph", command=draw_graphs)
+    graph_button.pack(side=tkinter.LEFT)
 
     displayed_time = tkinter.StringVar()
     displayed_time.set(str(physical_time) + " seconds gone")
@@ -166,18 +184,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-# Строим графики:
-
-array_of_V = np.array(array_of_V)
-array_of_r = np.array(array_of_r)
-array_of_t = np.array(array_of_t)
-
-fig, (ax1, ax2, ax3) = plt.subplots(3)
-ax1.scatter(array_of_t, array_of_r, label=r'$r(t)$')
-ax2.scatter(array_of_t, array_of_V, color='red', label=r'$V(t)$')
-ax3.scatter(array_of_V, array_of_r, color='green')
-
-fig.tight_layout(pad=2.0)
-
-plt.show()

@@ -7,6 +7,8 @@ from solar_vis import *
 from solar_model import *
 from solar_input import *
 
+fast = 10 ** 5 #коэф ускорения
+
 perform_execution = False
 """Флаг цикличности выполнения расчёта"""
 
@@ -34,10 +36,10 @@ def execution():
     """
     global physical_time
     global displayed_time
-    recalculate_space_objects_positions(space_objects, time_step.get())
+    recalculate_space_objects_positions(space_objects, fast * time_step.get())
     for body in space_objects:
         update_object_position(space, body)
-    physical_time += time_step.get()
+    physical_time += fast * time_step.get()
     displayed_time.set("%.1f" % physical_time + " seconds gone")
 
     if perform_execution:

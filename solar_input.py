@@ -52,11 +52,11 @@ def parse_star_parameters(line_, star):
 
     star_data = line_.split()
 
-    star.R = star_data[1]
+    star.R = int(star_data[1])
     star.color = star_data[2]
-    star.m = star_data[3]
-    star.x, star.y = star_data[4], star_data[5]
-    star.Vx, star.Vy = star_data[6], star_data[7]
+    star.m = int(star_data[3])
+    star.x, star.y = int(star_data[4]), int(star_data[5])
+    star.Vx, star.Vy = int(star_data[6]), int(star_data[7])
 
 def parse_planet_parameters(line_, planet):
     """Считывает данные о планете из строки.
@@ -75,11 +75,11 @@ def parse_planet_parameters(line_, planet):
     """
     planet_data = line_.split()
 
-    planet.R = planet_data[1]
+    planet.R = int(planet_data[1])
     planet.color = planet_data[2]
-    planet.m = planet_data[3]
-    planet.x, planet.y = planet_data[4], planet_data[5]
-    planet.Vx, planet.Vy = planet_data[6], planet_data[7]
+    planet.m = int(planet_data[3])
+    planet.x, planet.y = int(planet_data[4]), int(planet_data[5])
+    planet.Vx, planet.Vy = int(planet_data[6]), int(planet_data[7])
 
 
 def write_space_objects_data_to_file(output_filename, space_objects):
@@ -95,7 +95,19 @@ def write_space_objects_data_to_file(output_filename, space_objects):
     """
     with open(output_filename, 'w') as out_file:
         for obj in space_objects:
-            print(out_file, "%s %d %s %f" % ('1', 2, '3', 4.5))
+#            print(out_file, "%s %d %s %f" % ('1', 2, '3', 4.5))
+            ob_type = obj.type.capitalize()
+            ob_R = str(obj.R)
+            ob_color = obj.color
+            ob_m = str(obj.m)
+            ob_x = str(obj.x)
+            ob_y = str(obj.y)
+            ob_Vy = str(obj.Vy)
+            ob_Vx = str(obj.Vx)
+
+            line_about_object = ob_type + ' ' + ob_R + ' ' + ob_color + ' ' + ob_m + ' ' + ob_x + ' ' + ob_y + ' ' + ob_Vx + ' ' + ob_Vy
+            print(line_about_object)
+            print(out_file, line_about_object)
             # FIXME: should store real values
 
 # FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл...

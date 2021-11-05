@@ -1,5 +1,6 @@
 # coding: utf-8
 # license: GPLv3
+# use time_step.set() to make the time tick faster
 
 import tkinter
 from tkinter.filedialog import *
@@ -127,7 +128,7 @@ def main():
     start_button.pack(side=tkinter.LEFT)
 
     time_step = tkinter.DoubleVar()
-    time_step.set(1)
+    time_step.set(3000)
     time_step_entry = tkinter.Entry(frame, textvariable=time_step)
     time_step_entry.pack(side=tkinter.LEFT)
 

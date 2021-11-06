@@ -12,10 +12,10 @@ header_font = "Arial-16"
 window_width = 800
 """Ширина окна"""
 
-window_height = 800
+window_height = 700
 """Высота окна"""
 
-scale_factor = None
+scale_factor = 0
 """Масштабирование экранных координат по отношению к физическим.
 Тип: float
 Мера: количество пикселей на один метр."""
@@ -23,9 +23,10 @@ scale_factor = None
 
 def calculate_scale_factor(max_distance):
     """Вычисляет значение глобальной переменной **scale_factor** по данной характерной длине"""
-    global scale_factor
-    scale_factor = 0.4 * min(window_height, window_width) / max_distance
-    print('Scale factor:', scale_factor)
+    _scale_factor = 0
+    if max_distance != 0:
+        _scale_factor = 0.4 * min(window_height, window_width) / max_distance
+    print('Scale factor:', _scale_factor)
 
 
 def scale_x(x):

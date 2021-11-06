@@ -11,52 +11,12 @@ from solar_vis import calculate_scale_factor, create_star_image, create_planet_i
     update_object_position, window_height, window_width
 
 
-# def start():
-#     """Главная функция главного модуля.
-#     Создаёт объекты графического дизайна библиотеки tkinter: окно, холст, фрейм с кнопками, кнопки.
-#     """
-#
-#     print('Modelling started!')
-#     _physical_time = 0
-#
-#     root = tkinter.Tk()
-#     # космическое пространство отображается на холсте типа Canvas
-#     space = tkinter.Canvas(root, width=window_width, height=window_height, bg="black")
-#     space.pack(side=tkinter.TOP)
-#     # нижняя панель с кнопками
-#     frame = tkinter.Frame(root)
-#     frame.pack(side=tkinter.BOTTOM)
-#
-#     start_button = tkinter.Button(frame, text="Start", command=start_execution, width=6)
-#     start_button.pack(side=tkinter.LEFT)
-#
-#     _time_step = tkinter.DoubleVar()
-#     _time_step.set(1)
-#     time_step_entry = tkinter.Entry(frame, textvariable=_time_step)
-#     time_step_entry.pack(side=tkinter.LEFT)
-#
-#     _time_speed = tkinter.DoubleVar()
-#     scale = tkinter.Scale(frame, variable=_time_speed, orient=tkinter.HORIZONTAL)
-#     scale.pack(side=tkinter.LEFT)
-#
-#     load_file_button = tkinter.Button(frame, text="Open file...", command=open_file_dialog)
-#     load_file_button.pack(side=tkinter.LEFT)
-#     save_file_button = tkinter.Button(frame, text="Save to file...", command=save_file_dialog)
-#     save_file_button.pack(side=tkinter.LEFT)
-#
-#     _displayed_time = tkinter.StringVar()
-#     _displayed_time.set(str(_physical_time) + " seconds gone")
-#     time_label = tkinter.Label(frame, textvariable=_displayed_time, width=30)
-#     time_label.pack(side=tkinter.RIGHT)
-#
-#     return root, space, frame, start_button, _time_step, time_step_entry, _time_speed, scale, load_file_button, \
-#            save_file_button, _displayed_time, time_label
-
-
 class App:
 
     def __init__(self):
-        print('Modelling started!')
+        """
+        Инициализация параметров приложения
+        """
 
         self.perform_execution = False
         """Флаг цикличности выполнения расчёта"""
@@ -107,6 +67,10 @@ class App:
         self.time_label.pack(side=tkinter.RIGHT)
 
     def main(self):
+        """
+        Функция запуска окна приложения
+        """
+        print('Modelling started!')
         self.root.mainloop()
         print('Modelling finished!')
 

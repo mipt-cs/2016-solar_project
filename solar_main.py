@@ -2,152 +2,143 @@
 # license: GPLv3
 
 import tkinter
-from tkinter.filedialog import *
-from solar_vis import *
-from solar_model import *
-from solar_input import *
+from tkinter import Button
+from tkinter.filedialog import asksaveasfilename, askopenfilename
 
-perform_execution = False
-"""Флаг цикличности выполнения расчёта"""
-
-physical_time = 0
-"""Физическое время от начала расчёта.
-Тип: float"""
-
-displayed_time = 0.1
-"""Отображаемое на экране время.
-Тип: переменная tkinter"""
-
-time_step = None
-"""Шаг по времени при моделировании.
-Тип: float"""
-
-space_objects = []
-"""Список космических объектов."""
+from solar_input import read_space_objects_data_from_file, write_space_objects_data_to_file
+from solar_model import recalculate_space_objects_positions
+from solar_vis import calculate_scale_factor, create_star_image, create_planet_image, \
+    update_object_position, window_height, window_width
 
 
-def execution():
-    """Функция исполнения -- выполняется циклически, вызывая обработку всех небесных тел,
-    а также обновляя их положение на экране.
-    Цикличность выполнения зависит от значения глобальной переменной perform_execution.
-    При perform_execution == True функция запрашивает вызов самой себя по таймеру через от 1 мс до 100 мс.
-    """
-    global physical_time
-    global displayed_time
-    recalculate_space_objects_positions(space_objects, time_step.get())
-    for body in space_objects:
-        update_object_position(space, body)
-    physical_time += time_step.get()
-    displayed_time.set("%.1f" % physical_time + " seconds gone")
+class App:
 
-    if perform_execution:
-        space.after(101 - int(time_speed.get()), execution)
+    def __init__(self):
+        """
+        Инициализация параметров приложения
+        """
 
+        self.perform_execution = False
+        """Флаг цикличности выполнения расчёта"""
 
-def start_execution():
-    """Обработчик события нажатия на кнопку Start.
-    Запускает циклическое исполнение функции execution.
-    """
-    global perform_execution
-    perform_execution = True
-    start_button['text'] = "Pause"
-    start_button['command'] = stop_execution
+        self.physical_time = 0
+        """Физическое время от начала расчёта.
+        Тип: float"""
 
-    execution()
-    print('Started execution...')
+        self.displayed_time = None
+        """Отображаемое на экране время.
+        Тип: переменная tkinter"""
 
+        self.time_step = None
+        """Шаг по времени при моделировании.
+        Тип: float"""
 
-def stop_execution():
-    """Обработчик события нажатия на кнопку Start.
-    Останавливает циклическое исполнение функции execution.
-    """
-    global perform_execution
-    perform_execution = False
-    start_button['text'] = "Start"
-    start_button['command'] = start_execution
-    print('Paused execution.')
+        self.space_objects = []
+        """Список космических объектов."""
 
+        self.root = tkinter.Tk()
+        # космическое пространство отображается на холсте типа Canvas
+        self.space = tkinter.Canvas(self.root, width=window_width, height=window_height, bg="black")
+        self.space.pack(side=tkinter.TOP)
+        # нижняя панель с кнопками
+        self.frame = tkinter.Frame(self.root)
+        self.frame.pack(side=tkinter.BOTTOM)
 
-def open_file_dialog():
-    """Открывает диалоговое окно выбора имени файла и вызывает
-    функцию считывания параметров системы небесных тел из данного файла.
-    Считанные объекты сохраняются в глобальный список space_objects
-    """
-    global space_objects
-    global perform_execution
-    perform_execution = False
-    for obj in space_objects:
-        space.delete(obj.image)  # удаление старых изображений планет
-    in_filename = askopenfilename(filetypes=(("Text file", ".txt"),))
-    space_objects = read_space_objects_data_from_file(in_filename)
-    max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in space_objects])
-    calculate_scale_factor(max_distance)
+        self.start_button = Button(self.frame, text="Start", command=self.start_execution, width=6)
+        self.start_button.pack(side=tkinter.LEFT)
 
-    for obj in space_objects:
-        if obj.type == 'star':
-            create_star_image(space, obj)
-        elif obj.type == 'planet':
-            create_planet_image(space, obj)
-        else:
-            raise AssertionError()
+        self.time_step = tkinter.DoubleVar()
+        self.time_step.set(1)
+        self.time_step_entry = tkinter.Entry(self.frame, textvariable=self.time_step)
+        self.time_step_entry.pack(side=tkinter.LEFT)
 
+        self.time_speed = tkinter.DoubleVar()
+        self.scale = tkinter.Scale(self.frame, variable=self.time_speed, orient=tkinter.HORIZONTAL)
+        self.scale.pack(side=tkinter.LEFT)
 
-def save_file_dialog():
-    """Открывает диалоговое окно выбора имени файла и вызывает
-    функцию считывания параметров системы небесных тел из данного файла.
-    Считанные объекты сохраняются в глобальный список space_objects
-    """
-    out_filename = asksaveasfilename(filetypes=(("Text file", ".txt"),))
-    write_space_objects_data_to_file(out_filename, space_objects)
+        self.load_file_button = tkinter.Button(self.frame, text="Open file...", command=self.open_file_dialog)
+        self.load_file_button.pack(side=tkinter.LEFT)
+        self.save_file_button = tkinter.Button(self.frame, text="Save to file...", command=self.save_file_dialog)
+        self.save_file_button.pack(side=tkinter.LEFT)
 
+        self.displayed_time = tkinter.StringVar()
+        self.displayed_time.set(str(self.physical_time) + " seconds gone")
+        self.time_label = tkinter.Label(self.frame, textvariable=self.displayed_time, width=30)
+        self.time_label.pack(side=tkinter.RIGHT)
 
-def main():
-    """Главная функция главного модуля.
-    Создаёт объекты графического дизайна библиотеки tkinter: окно, холст, фрейм с кнопками, кнопки.
-    """
-    global physical_time
-    global displayed_time
-    global time_step
-    global time_speed
-    global space
-    global start_button
+    def main(self):
+        """
+        Функция запуска окна приложения
+        """
+        print('Modelling started!')
+        self.root.mainloop()
+        print('Modelling finished!')
 
-    print('Modelling started!')
-    physical_time = 0
+    def save_file_dialog(self):
+        """Открывает диалоговое окно выбора имени файла и вызывает
+        функцию считывания параметров системы небесных тел из данного файла.
+        Считанные объекты сохраняются в глобальный список space_objects
+        """
+        out_filename = asksaveasfilename(filetypes=(("Text file", ".txt"),))
+        write_space_objects_data_to_file(out_filename, self.space_objects)
 
-    root = tkinter.Tk()
-    # космическое пространство отображается на холсте типа Canvas
-    space = tkinter.Canvas(root, width=window_width, height=window_height, bg="black")
-    space.pack(side=tkinter.TOP)
-    # нижняя панель с кнопками
-    frame = tkinter.Frame(root)
-    frame.pack(side=tkinter.BOTTOM)
+    def open_file_dialog(self):
+        """Открывает диалоговое окно выбора имени файла и вызывает
+        функцию считывания параметров системы небесных тел из данного файла.
+        Считанные объекты сохраняются в глобальный список space_objects
+        """
+        self.perform_execution = False
+        for obj in self.space_objects:
+            self.space.delete(obj.image)  # удаление старых изображений планет
+        in_filename = askopenfilename(filetypes=(("Text file", ".txt"),))
+        self.space_objects = read_space_objects_data_from_file(in_filename)
+        max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in self.space_objects])
+        calculate_scale_factor(max_distance)
 
-    start_button = tkinter.Button(frame, text="Start", command=start_execution, width=6)
-    start_button.pack(side=tkinter.LEFT)
+        for obj in self.space_objects:
+            if obj.type == 'star':
+                create_star_image(self.space, obj)
+            elif obj.type == 'planet':
+                create_planet_image(self.space, obj)
+            else:
+                raise AssertionError()
 
-    time_step = tkinter.DoubleVar()
-    time_step.set(1)
-    time_step_entry = tkinter.Entry(frame, textvariable=time_step)
-    time_step_entry.pack(side=tkinter.LEFT)
+    def stop_execution(self):
+        """Обработчик события нажатия на кнопку Start.
+        Останавливает циклическое исполнение функции execution.
+        """
+        self.perform_execution = False
+        self.start_button['text'] = "Start"
+        self.start_button['command'] = self.start_execution
+        print('Paused execution.')
 
-    time_speed = tkinter.DoubleVar()
-    scale = tkinter.Scale(frame, variable=time_speed, orient=tkinter.HORIZONTAL)
-    scale.pack(side=tkinter.LEFT)
+    def start_execution(self):
+        """Обработчик события нажатия на кнопку Start.
+        Запускает циклическое исполнение функции execution.
+        """
+        self.perform_execution = True
+        self.start_button['text'] = "Pause"
+        self.start_button['command'] = self.stop_execution
 
-    load_file_button = tkinter.Button(frame, text="Open file...", command=open_file_dialog)
-    load_file_button.pack(side=tkinter.LEFT)
-    save_file_button = tkinter.Button(frame, text="Save to file...", command=save_file_dialog)
-    save_file_button.pack(side=tkinter.LEFT)
+        self.execution()
+        print('Started execution...')
 
-    displayed_time = tkinter.StringVar()
-    displayed_time.set(str(physical_time) + " seconds gone")
-    time_label = tkinter.Label(frame, textvariable=displayed_time, width=30)
-    time_label.pack(side=tkinter.RIGHT)
+    def execution(self):
+        """Функция исполнения -- выполняется циклически, вызывая обработку всех небесных тел,
+        а также обновляя их положение на экране.
+        Цикличность выполнения зависит от значения глобальной переменной perform_execution.
+        При perform_execution == True функция запрашивает вызов самой себя по таймеру через от 1 мс до 100 мс.
+        """
+        recalculate_space_objects_positions(self.space_objects, self.time_step.get())
+        for body in self.space_objects:
+            update_object_position(self.space, body)
+        self.physical_time += self.time_step.get()
+        self.displayed_time.set("%.1f" % self.physical_time + " seconds gone")
 
-    root.mainloop()
-    print('Modelling finished!')
+        if self.perform_execution:
+            self.space.after(101 - int(self.time_speed.get()), self.execution)
 
 
 if __name__ == "__main__":
-    main()
+    app = App()
+    app.main()

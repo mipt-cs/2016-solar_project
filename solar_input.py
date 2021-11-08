@@ -47,7 +47,19 @@ def parse_star_parameters(line, star):
     line = line.split(' ')
     star.r = int(line[1])
     star.color = line[2]
-    star.m = int(line[3])
+    #Переводит экспоненциальную запись числа в нормальную
+    sum1 = float(line[3][0])
+    i = 2
+    a = line[3][i]
+    while a != 'E':
+        sum1 += float(a) * 10 ** (-i + 1)
+        i += 1
+        a = line[3][i]
+    power = 0
+    for l in range(i + 1, len(line[3]), 1):
+        power += int(line[3][l]) * 10 ** (len(line[3]) - i - 2)
+           
+    star.m = sum1 * 10 ** power
     star.x = float(line[4])
     star.y = float(line[5])
     star.vx = float(line[6])
@@ -73,7 +85,19 @@ def parse_planet_parameters(line, planet):
     line = line.split(' ')
     planet.r = int(line[1])
     planet.color = line[2]
-    planet.m = int(line[3])
+    #Переводит экспоненциальную запись числа в нормальную
+    sum1 = float(line[3][0])
+    i = 2
+    a = line[3][i]
+    while a != 'E':
+        sum1 += float(a) * 10 ** (-i + 1)
+        i += 1
+        a = line[3][i]
+    power = 0
+    for l in range(i + 1, len(line[3]), 1):
+        power += int(line[3][l]) * 10 ** (len(line[3]) - i - 2)
+        
+    planet.m = sum1 * 10 ** power
     planet.x = float(line[4])
     planet.y = float(line[5])
     planet.vx = float(line[6])

@@ -19,11 +19,11 @@ def read_space_objects_data_from_file(input_filename):
             if len(line.strip()) == 0 or line[0] == '#':
                 continue  # пустые строки и строки-комментарии пропускаем
             object_type = line.split()[0].lower()
-            if object_type == "star":  # FIXED?: do the same for planet
+            if object_type == "star":
                 star = Star()
                 parse_star_parameters(line, star)
                 objects.append(star)
-            if object_type == "planet":
+            if object_type == "planet":  # FIXED?: do the same for planet
                 planet = Planet()
                 parse_planet_parameters(line, planet)
                 objects.append(planet)
@@ -47,8 +47,25 @@ def parse_star_parameters(line, star):
     **line** — строка с описание звезды.
     **star** — объект звезды.
     """
+    type, R, color, *physical_parameters = line.split()
 
-    pass  # FIXME: not done yet
+    R = int(R)
+    m, x, y, Vx, Vy = map(float, physical_parameters)
+
+    star.R = R
+
+    star.color = color
+
+    star.m = m
+
+    star.x = x
+
+    star.y = y
+
+    star.Vx = Vx
+
+    star.Vy = Vy
+    # FIXED?: assign fileds of object from input
 
 
 def parse_planet_parameters(line, planet):
@@ -66,7 +83,26 @@ def parse_planet_parameters(line, planet):
     **line** — строка с описание планеты.
     **planet** — объект планеты.
     """
-    pass  # FIXME: not done yet...
+
+    type, R, color, *physical_parameters = line.split()
+
+    R = int(R)
+    m, x, y, Vx, Vy = map(float, physical_parameters)
+
+    planet.R = R
+
+    planet.color = color
+
+    planet.m = m
+
+    planet.x = x
+
+    planet.y = y
+
+    planet.Vx = Vx
+
+    planet.Vy = Vy
+    # FIXED?: assign fileds of object from input
 
 
 def write_space_objects_data_to_file(output_filename, space_objects):

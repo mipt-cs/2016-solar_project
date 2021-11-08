@@ -23,7 +23,7 @@ def read_space_objects_data_from_file(input_filename):
                 star = Star()
                 parse_star_parameters(line, star)
                 objects.append(star)
-            if object_type == "planet":  # FIXED?: do the same for planet
+            elif object_type == "planet":  # FIXED: do the same for planet
                 planet = Planet()
                 parse_planet_parameters(line, planet)
                 objects.append(planet)
@@ -65,7 +65,7 @@ def parse_star_parameters(line, star):
     star.Vx = Vx
 
     star.Vy = Vy
-    # FIXED?: assign fileds of object from input
+    # FIXED: assign fileds of object from input
 
 
 def parse_planet_parameters(line, planet):
@@ -102,7 +102,7 @@ def parse_planet_parameters(line, planet):
     planet.Vx = Vx
 
     planet.Vy = Vy
-    # FIXED?: assign fileds of object from input
+    # FIXED: assign fileds of object from input
 
 
 def write_space_objects_data_to_file(output_filename, space_objects):

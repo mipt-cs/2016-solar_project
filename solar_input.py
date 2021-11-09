@@ -43,7 +43,13 @@ def parse_star_parameters(line, star):
     **line** — строка с описание звезды.
     **star** — объект звезды.
     """
-
+    file1 = open ( "solar_system.txt", "r")
+    while True:
+        line = file1.readline()
+        if not line:
+            break
+        print(line.strip())
+    file1.close
     pass  # FIXME: not done yet
 
 def parse_planet_parameters(line, planet):

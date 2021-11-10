@@ -19,10 +19,14 @@ def read_space_objects_data_from_file(input_filename):
             if len(line.strip()) == 0 or line[0] == '#':
                 continue  # пустые строки и строки-комментарии пропускаем
             object_type = line.split()[0].lower()
-            if object_type == "star":  # FIXME: do the same for planet
+            if object_type == "star":
                 star = Star()
                 parse_star_parameters(line, star)
                 objects.append(star)
+            elif object_type == "planet":
+                planet = Planet()
+                parse_planet_parameters(line, planet)
+                objects.append(planet)
             else:
                 print("Unknown space object")
 
@@ -42,9 +46,21 @@ def parse_star_parameters(line, star):
 
     **line** — строка с описание звезды.
     **star** — объект звезды.
-    """
 
-    pass  # FIXME: not done yet
+    Нумерует пробелы. Радиус - то, что между первым и вторым пробелом в строке, и так далее.
+    """
+    star_list = []
+    for i in range(len(line)):
+        if line[i] == ' ':
+            starlist.append(i)
+    star.r = int(line[star_list[0] + 1:star_list[1]])
+    star.color = (line[star_list[1] + 1:star_list[2]])
+    star.m = int(line[star_list[2] + 1:star_list[3]])
+    star.x = int(line[star_list[3] + 1:star_list[4]])
+    star.y = int(line[star_list[4] + 1:star_list[5]])
+    star.Vx = int(line[star_list[5] + 1:star_list[6]])
+    star.Vy = int(line[star_list[6] + 1:])
+
 
 def parse_planet_parameters(line, planet):
     """Считывает данные о планете из строки.
@@ -60,8 +76,20 @@ def parse_planet_parameters(line, planet):
 
     **line** — строка с описание планеты.
     **planet** — объект планеты.
+
+    Нумерует пробелы. Радиус - то, что между первым и вторым пробелом в строке, и так далее.
     """
-    pass  # FIXME: not done yet...
+    planet_list = []
+    for i in range(len(line)):
+        if line[i] == ' ':
+            planet_list.append(i)
+    planet.r = int(line[planet_list[0] + 1:planet_list[1]])
+    planet.color = (line[planet_list[1] + 1:planet_list[2]])
+    planet.m = int(line[planet_list[2] + 1:planet_list[3]])
+    planet.x = int(line[planet_list[3] + 1:planet_list[4]])
+    planet.y = int(line[planet_list[4] + 1:planet_list[5]])
+    planet.Vx = int(line[planet_list[5] + 1:planet_list[6]])
+    planet.Vy = int(line[planet_list[6] + 1:])
 
 
 def write_space_objects_data_to_file(output_filename, space_objects):

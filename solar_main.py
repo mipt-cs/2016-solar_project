@@ -36,6 +36,11 @@ class App:
         self.space_objects = []
         """Список космических объектов."""
 
+        self.scale_factor = None
+        """Масштабирование экранных координат по отношению к физическим.
+        Тип: float
+        Мера: количество пикселей на один метр."""
+
         self.root = tkinter.Tk()
         # космическое пространство отображается на холсте типа Canvas
         self.space = tkinter.Canvas(self.root, width=window_width, height=window_height, bg="black")
@@ -93,13 +98,13 @@ class App:
         in_filename = askopenfilename(filetypes=(("Text file", ".txt"),))
         self.space_objects = read_space_objects_data_from_file(in_filename)
         max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in self.space_objects])
-        calculate_scale_factor(max_distance)
+        self.scale_factor = calculate_scale_factor(max_distance)
 
         for obj in self.space_objects:
             if obj.type == 'star':
-                create_star_image(self.space, obj)
+                create_star_image(self.space, obj, self.scale_factor)
             elif obj.type == 'planet':
-                create_planet_image(self.space, obj)
+                create_planet_image(self.space, obj, self.scale_factor)
             else:
                 raise AssertionError()
 
@@ -129,9 +134,9 @@ class App:
         Цикличность выполнения зависит от значения глобальной переменной perform_execution.
         При perform_execution == True функция запрашивает вызов самой себя по таймеру через от 1 мс до 100 мс.
         """
-        recalculate_space_objects_positions(self.space_objects, self.time_step.get())
+        self.space_objects = recalculate_space_objects_positions(self.space_objects, self.time_step.get())
         for body in self.space_objects:
-            update_object_position(self.space, body)
+            update_object_position(self.space, body, self.scale_factor)
         self.physical_time += self.time_step.get()
         self.displayed_time.set("%.1f" % self.physical_time + " seconds gone")
 

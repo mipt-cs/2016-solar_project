@@ -33,10 +33,10 @@ def read_space_objects_data_from_file(input_filename):
     return objects
 
 
-def parse_star_parameters(line, star):
-    """ Считывает данные о звезде из строки.
+def parse_star8planets_parameters(line, obj):
+    """ Считывает данные об объекте из строки.
     Входная строка должна иметь слеюущий формат:
-    Star <радиус в пикселах> <цвет> <масса> <x> <y> <Vx> <Vy>
+    Obj.type <радиус в пикселах> <цвет> <масса> <x> <y> <Vx> <Vy>
 
     Здесь (x, y) — координаты зведы, (Vx, Vy) — скорость.
     Пример строки:
@@ -44,50 +44,34 @@ def parse_star_parameters(line, star):
 
     Параметры:
 
-    **line** — строка с описанием звезды.
-    **star** — объект звезды.
+    **line** — строка с описанием объекта.
+    **obj** — объект.
 
     """
+    if isinstance(obj, Star) or isinstance(obj, Planet):
+        obj_type, r, color, m, x, y, vx, vy = line.split()
+        obj.R = float(r)
+        obj.color = color
+        obj.m = float(m)
+        obj.x = float(x)
+        obj.y = float(y)
+        obj.Vx = float(vx)
+        obj.Vy = float(vy)
 
-    obj_type, r, color, m, x, y, vx, vy = line.split()
-    star.R = float(r)
-    star.color = color
-    star.m = float(m)
-    star.x = float(x)
-    star.y = float(y)
-    star.Vx = float(vx)
-    star.Vy = float(vy)
+    return obj
 
+
+def parse_star_parameters(line, star):
+    """ Вызывает функцию считывания данных из строки для звезды
+    """
+    star = parse_star8planets_parameters(line, star)
     return star
 
 
 def parse_planet_parameters(line, planet):
-    """ Считывает данные о планете из строки.
-    Предполагается такая строка:
-    Входная строка должна иметь слеюущий формат:
-    Planet <радиус в пикселах> <цвет> <масса> <x> <y> <Vx> <Vy>
-
-    Здесь (x, y) — координаты планеты, (Vx, Vy) — скорость.
-    Пример строки:
-    Planet 10 red 1000 1 2 3 4
-
-    Параметры:
-
-    **line** — строка с описание планеты.
-    **planet** — объект планеты.
-
-    Нумерует пробелы. Радиус - то, что между первым и вторым пробелом в строке, и так далее.
+    """ Вызывает функцию считывания данных из строки для планеты
     """
-
-    obj_type, r, color, m, x, y, vx, vy = line.split()
-    planet.R = float(r)
-    planet.color = color
-    planet.m = float(m)
-    planet.x = float(x)
-    planet.y = float(y)
-    planet.Vx = float(vx)
-    planet.Vy = float(vy)
-
+    planet = parse_star8planets_parameters(line, planet)
     return planet
 
 

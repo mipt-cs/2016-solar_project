@@ -1,6 +1,6 @@
 # coding: utf-8
 # license: GPLv3
-
+import _tkinter
 import tkinter
 from tkinter import Button
 from tkinter.filedialog import asksaveasfilename, askopenfilename
@@ -9,6 +9,15 @@ from solar_input import read_space_objects_data_from_file, write_space_objects_d
 from solar_model import recalculate_space_objects_positions
 from solar_vis import calculate_scale_factor, create_star_image, create_planet_image, \
     update_object_position, window_height, window_width
+
+from math import exp, log
+
+
+class EmptyException(Exception):
+    def __init__(self, _app):
+        print("Value of time_speed is empty")
+        if _app.perform_execution:
+            _app.space.after(int(exp((100 - _app.time_speed.get()) / 100 * log(100))), _app.execution)
 
 
 class App:
@@ -134,14 +143,17 @@ class App:
         Цикличность выполнения зависит от значения глобальной переменной perform_execution.
         При perform_execution == True функция запрашивает вызов самой себя по таймеру через от 1 мс до 100 мс.
         """
-        recalculate_space_objects_positions(self.space_objects, self.time_step.get())
-        for body in self.space_objects:
-            update_object_position(self.space, body, self.scale_factor)
-        self.physical_time += self.time_step.get()
-        self.displayed_time.set("%.1f" % self.physical_time + " seconds gone")
+        try:
+            recalculate_space_objects_positions(self.space_objects, self.time_step.get())
+            for body in self.space_objects:
+                update_object_position(self.space, body, self.scale_factor)
+            self.physical_time += self.time_step.get()
+            self.displayed_time.set("%.1f" % self.physical_time + " seconds gone")
+        except _tkinter.TclError:
+            raise EmptyException(self)
 
         if self.perform_execution:
-            self.space.after(101 - int(self.time_speed.get()), self.execution)
+            self.space.after(int(exp((100 - self.time_speed.get()) / 100 * log(100))), self.execution)
 
 
 if __name__ == "__main__":

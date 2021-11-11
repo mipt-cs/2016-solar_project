@@ -54,6 +54,20 @@ def scale_y(y, scale_factor):
     return int(y * scale_factor) + window_height // 2  # !? FIXME: not done yet
 
 
+def create_circle_obj(space, obj, scale_factor):
+    """Создаёт отображаемый круглый объект.
+
+    Параметры:
+
+    **space** — холст для рисования.
+    **star** — объект звезды.
+    """
+    x = scale_x(obj.x, scale_factor)
+    y = scale_y(obj.y, scale_factor)
+    r = obj.R
+    obj.image = space.create_oval([x - r, y - r], [x + r, y + r], fill=obj.color)
+
+
 def create_star_image(space, star, scale_factor):
     """Создаёт отображаемый объект звезды.
 
@@ -62,11 +76,7 @@ def create_star_image(space, star, scale_factor):
     **space** — холст для рисования.
     **star** — объект звезды.
     """
-
-    x = scale_x(star.x, scale_factor)
-    y = scale_y(star.y, scale_factor)
-    r = star.R
-    star.image = space.create_oval([x - r, y - r], [x + r, y + r], fill=star.color)
+    create_circle_obj(space, star, scale_factor)
 
 
 def create_planet_image(space, planet, scale_factor):
@@ -77,10 +87,7 @@ def create_planet_image(space, planet, scale_factor):
     **space** — холст для рисования.
     **planet** — объект планеты.
     """
-    x = scale_x(planet.x, scale_factor)
-    y = scale_y(planet.y, scale_factor)
-    r = planet.R
-    planet.image = space.create_oval([x - r, y - r], [x + r, y + r], fill=planet.color)
+    create_circle_obj(space, planet, scale_factor)
 
 
 def update_system_name(space, system_name):

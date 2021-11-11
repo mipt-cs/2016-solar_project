@@ -1,6 +1,8 @@
 # coding: utf-8
 # license: GPLv3
 
+from math import copysign
+
 gravitational_constant = 6.67408E-11
 """Гравитационная постоянная Ньютона G"""
 
@@ -18,18 +20,12 @@ def calculate_force(body, space_objects):
     for obj in space_objects:
         if body != obj:
             r = ((body.x - obj.x) ** 2 + (body.y - obj.y) ** 2) ** 0.5
-            if obj.x - body.x > 0:
-                body.Fx += gravitational_constant * body.m * obj.m / r ** 2 / (
-                        1 + ((obj.y - body.y) / (obj.x - body.x)) ** 2) ** 0.5
-            if obj.x - body.x < 0:
-                body.Fx -= gravitational_constant * body.m * obj.m / r ** 2 / (
-                        1 + ((obj.y - body.y) / (obj.x - body.x)) ** 2) ** 0.5
-            if obj.y - body.y > 0:
-                body.Fy += gravitational_constant * body.m * obj.m / r ** 2 / (
-                        1 + ((obj.x - body.x) / (obj.y - body.y)) ** 2) ** 0.5
-            if obj.y - body.y < 0:
-                body.Fy -= gravitational_constant * body.m * obj.m / r ** 2 / (
-                        1 + ((obj.x - body.x) / (obj.y - body.y)) ** 2) ** 0.5
+            if obj.x - body.x != 0:
+                body.Fx += copysign(1, obj.x - body.x) * (gravitational_constant * body.m * obj.m / r ** 2 / (
+                        1 + ((obj.y - body.y) / (obj.x - body.x)) ** 2) ** 0.5)
+            if obj.y - body.y != 0:
+                body.Fy += copysign(1, obj.y - body.y) * (gravitational_constant * body.m * obj.m / r ** 2 / (
+                        1 + ((obj.x - body.x) / (obj.y - body.y)) ** 2) ** 0.5)
 
 
 def move_space_object(body, dt):

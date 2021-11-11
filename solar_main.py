@@ -134,7 +134,7 @@ class App:
         Цикличность выполнения зависит от значения глобальной переменной perform_execution.
         При perform_execution == True функция запрашивает вызов самой себя по таймеру через от 1 мс до 100 мс.
         """
-        self.space_objects = recalculate_space_objects_positions(self.space_objects, self.time_step.get())
+        recalculate_space_objects_positions(self.space_objects, self.time_step.get())
         for body in self.space_objects:
             update_object_position(self.space, body, self.scale_factor)
         self.physical_time += self.time_step.get()

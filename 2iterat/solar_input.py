@@ -49,10 +49,10 @@ def parse_star_parameters(line, star):
     star.R = int(line[1])
     star.color = line[2]           
     star.m = exp_to_alg(line[3])
-    star.x = exp_to_alg(line[4])
-    star.y = exp_to_alg(line[5])
-    star.Vx = exp_to_alg(line[6])
-    star.Vy = exp_to_alg(line[7])
+    star.x = float(line[4])
+    star.y = float(line[5])
+    star.Vx = float(line[6])
+    star.Vy = float(line[7])
     
 
 def parse_planet_parameters(line, planet):
@@ -75,19 +75,35 @@ def parse_planet_parameters(line, planet):
             
     planet.m = exp_to_alg(line[3])
     planet.x = exp_to_alg(line[4])
-    planet.y = exp_to_alg(line[5])
-    planet.Vx = exp_to_alg(line[6])
+    planet.y = float(line[5])
+    planet.Vx = float(line[6])
     planet.Vy = exp_to_alg(line[7])
 
 
 def exp_to_alg(s):
-  s1=s
-  s = s.rstrip()
-  if 'E' in s:
-    s2=s1.split('E')
-    s1=float(s2[0])*10**(float(s2[1])) 
-    return s1
-  else: return float(s1)
+    s = s.rstrip()
+    sum1 = ''
+    i = 0
+    a = s[i]
+    while a != '.':
+        sum1 += a
+        i += 1
+        a = s[i]
+    sum1 = float(sum1)
+    i += 1
+    a = s[i]
+    after_comma = -1
+    while a != 'E':
+        sum1 += float(a) * 10 ** after_comma
+        after_comma -= 1
+        i += 1
+        a = s[i] 
+    power = 0
+    for l in range(i + 1, len(s), 1):
+        power += int(s[l]) * 10 ** (len(s) - l - 1)
+        
+    return sum1 * 10 ** power   
+    
 
 
 

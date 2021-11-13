@@ -43,8 +43,18 @@ def parse_star_parameters(line, star):
     **line** — строка с описание звезды.
     **star** — объект звезды.
     """
+    par=line.split()
+    star.R=par[1]
+    star.color=par[2]
+    star.m=par[3]
+    star.x=par[4]
+    star.y=par[5]
+    star.vx=par[6]
+    star.Vy=par[7]
 
-    pass  # FIXME: not done yet
+
+
+
 
 def parse_planet_parameters(line, planet):
     """Считывает данные о планете из строки.
@@ -61,7 +71,14 @@ def parse_planet_parameters(line, planet):
     **line** — строка с описание планеты.
     **planet** — объект планеты.
     """
-    pass  # FIXME: not done yet...
+    par = line.split()
+    planet.R = par[1]
+    planet.color = par[2]
+    planet.m = par[3]
+    planet.x = par[4]
+    planet.y = par[5]
+    planet.vx = par[6]
+    planet.Vy = par[7]
 
 
 def write_space_objects_data_to_file(output_filename, space_objects):

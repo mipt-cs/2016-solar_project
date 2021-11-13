@@ -9,10 +9,10 @@
 header_font = "Arial-16"
 """Шрифт в заголовке"""
 
-window_width = 700
+window_width = 800
 """Ширина окна"""
 
-window_height = 700
+window_height = 800
 """Высота окна"""
 
 scale_factor = None

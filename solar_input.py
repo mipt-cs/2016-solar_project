@@ -49,7 +49,7 @@ def parse_star_parameters(line, star):
     star.m=par[3]
     star.x=par[4]
     star.y=par[5]
-    star.vx=par[6]
+    star.Vx=par[6]
     star.Vy=par[7]
 
 
@@ -77,7 +77,7 @@ def parse_planet_parameters(line, planet):
     planet.m = par[3]
     planet.x = par[4]
     planet.y = par[5]
-    planet.vx = par[6]
+    planet.Vx = par[6]
     planet.Vy = par[7]
 
 

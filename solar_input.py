@@ -79,13 +79,13 @@ def parse_planet_parameters(line, planet):
     for i in range(len(line)):
         if line[i] == ' ':
             planet_list.append(i)
-    planet.R = int(float(line[planet_list[0] + 1:planet_list[1] - 1]))
-    planet.color = (line[planet_list[1] + 1:planet_list[2] - 1])
-    planet.m = int(float(line[planet_list[2] + 1:planet_list[3] - 1]))
-    planet.x = int(float(line[planet_list[3] + 1:planet_list[4] - 1]))
-    planet.y = int(float(line[planet_list[4] + 1:planet_list[5] - 1]))
-    planet.Vx = int(float(line[planet_list[5] + 1:planet_list[6] - 1]))
-    planet.Vy = int(float(line[planet_list[6] + 1:planet_list[7] - 1]))
+    planet.R = int(float(line[planet_list[0] + 1:planet_list[1]]))
+    planet.color = (line[planet_list[1] + 1:planet_list[2]])
+    planet.m = int(float(line[planet_list[2] + 1:planet_list[3]]))
+    planet.x = int(float(line[planet_list[3] + 1:planet_list[4]]))
+    planet.y = int(float(line[planet_list[4] + 1:planet_list[5]]))
+    planet.Vx = int(float(line[planet_list[5] + 1:planet_list[6]]))
+    planet.Vy = int(float(line[planet_list[6] + 1:]))
 
 
 def write_space_objects_data_to_file(output_filename, space_objects):

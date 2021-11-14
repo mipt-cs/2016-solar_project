@@ -1,175 +1,147 @@
 # coding: utf-8
 # license: GPLv3
 
-import pygame as pg
-from solar_vis import *
-from solar_model import *
+import tkinter
+from tkinter.filedialog import *
+
 from solar_input import *
-from solar_objects import *
-import thorpy
-import time
-import numpy as np
-
-timer = None
-
-alive = True
-
-perform_execution = False
-"""Флаг цикличности выполнения расчёта"""
-
-model_time = 0
-"""Физическое время от начала расчёта.
-Тип: float"""
-
-time_scale = 1000.0
-"""Шаг по времени при моделировании.
-Тип: float"""
-
-space_objects = []
-"""Список космических объектов."""
+from solar_model import *
+from solar_vis import *
 
 
-def execution(delta):
-    """Функция исполнения -- выполняется циклически, вызывая обработку всех небесных тел,
-    а также обновляя их положение на экране.
-    Цикличность выполнения зависит от значения глобальной переменной perform_execution.
-    При perform_execution == True функция запрашивает вызов самой себя по таймеру через от 1 мс до 100 мс.
-    """
-    global model_time
-    global displayed_time
-    recalculate_space_objects_positions([dr.obj for dr in space_objects], delta)
-    model_time += delta
+class SolarSystemModel:
+    """Класс SolarSystemModel (Модель Солнечной системы)"""
+    def __init__(self):
 
+        self.perform_execution = False
+        """Флаг цикличности выполнения расчёта"""
 
-def start_execution():
-    """Обработчик события нажатия на кнопку Start.
-    Запускает циклическое исполнение функции execution.
-    """
-    global perform_execution
-    perform_execution = True
+        self.physical_time = 0
+        """Физическое время от начала расчёта.
+        Тип: float"""
 
+        self.displayed_time = None
+        """Отображаемое на экране время.
+        Тип: переменная tkinter"""
 
-def pause_execution():
-    global perform_execution
-    perform_execution = False
+        self.time_step = None
+        """Шаг по времени при моделировании.
+        Тип: float"""
 
+        self.space_objects = []
+        """Список космических объектов."""
 
-def stop_execution():
-    """Обработчик события нажатия на кнопку Start.
-    Останавливает циклическое исполнение функции execution.
-    """
-    global alive
-    alive = False
+        self.physical_time = 0
 
+        self.scale_factor = None
+        """Масштабирование экранных координат по отношению к физическим.
+        Тип: float
+        Мера: количество пикселей на один метр."""
 
-def open_file():
-    """Открывает диалоговое окно выбора имени файла и вызывает
-    функцию считывания параметров системы небесных тел из данного файла.
-    Считанные объекты сохраняются в глобальный список space_objects
-    """
-    global space_objects
-    global browser
-    global model_time
+        print('Modelling started!')
 
-    model_time = 0.0
-    in_filename = "solar_system.txt"
-    space_objects = read_space_objects_data_from_file(in_filename)
-    max_distance = max([max(abs(obj.obj.x), abs(obj.obj.y)) for obj in space_objects])
-    calculate_scale_factor(max_distance)
+        self.root = tkinter.Tk()
+        # космическое пространство отображается на холсте типа Canvas
+        self.space = tkinter.Canvas(self.root, width=window_width, height=window_height, bg="white")
+        self.space.pack(side=tkinter.TOP)
+        # нижняя панель с кнопками
+        self.frame = tkinter.Frame(self.root)
+        self.frame.pack(side=tkinter.BOTTOM)
 
+        self.start_button = tkinter.Button(self.frame, text="Start", command=self.start_execution, width=6)
+        self.start_button.pack(side=tkinter.LEFT)
 
-def handle_events(events, menu):
-    global alive
-    for event in events:
-        menu.react(event)
-        if event.type == pg.QUIT:
-            alive = False
+        self.time_step = tkinter.DoubleVar()
+        self.time_step.set(1)
+        self.time_step_entry = tkinter.Entry(self.frame, textvariable=self.time_step)
+        self.time_step_entry.pack(side=tkinter.LEFT)
 
+        self.time_speed = tkinter.DoubleVar()
+        self.scale = tkinter.Scale(self.frame, variable=self.time_speed, orient=tkinter.HORIZONTAL)
+        self.scale.pack(side=tkinter.LEFT)
 
-def slider_to_real(val):
-    return np.exp(5 + val)
+        self.load_file_button = tkinter.Button(self.frame, text="Open file...", command=self.open_file_dialog)
+        self.load_file_button.pack(side=tkinter.LEFT)
+        self.save_file_button = tkinter.Button(self.frame, text="Save to file...", command=self.save_file_dialog)
+        self.save_file_button.pack(side=tkinter.LEFT)
 
+        self.displayed_time = tkinter.StringVar()
+        self.displayed_time.set(str(self.physical_time) + " seconds gone")
+        self.time_label = tkinter.Label(self.frame, textvariable=self.displayed_time, width=30)
+        self.time_label.pack(side=tkinter.RIGHT)
 
-def slider_reaction(event):
-    global time_scale
-    time_scale = slider_to_real(event.el.get_value())
+        self.root.mainloop()
 
+        print('Modelling finished!')
 
-def init_ui(screen):
-    global browser
-    slider = thorpy.SliderX(100, (-10, 10), "Simulation speed")
-    slider.user_func = slider_reaction
-    button_stop = thorpy.make_button("Quit", func=stop_execution)
-    button_pause = thorpy.make_button("Pause", func=pause_execution)
-    button_play = thorpy.make_button("Play", func=start_execution)
-    timer = thorpy.OneLineText("Seconds passed")
+    def execution(self):
+        """Функция исполнения -- выполняется циклически, вызывая обработку всех небесных тел,
+        а также обновляя их положение на экране.
+        Цикличность выполнения зависит от значения глобальной переменной perform_execution.
+        При perform_execution == True функция запрашивает вызов самой себя по таймеру через от 1 мс до 100 мс.
+        """
+        recalculate_space_objects_positions(self.space_objects, self.time_step.get())
+        for body in self.space_objects:
+            update_object_position(self.space, body)
+        self.physical_time += self.time_step.get()
+        self.displayed_time.set("%.1f" % self.physical_time + " seconds gone")
 
-    button_load = thorpy.make_button(text="Load a file", func=open_file)
+        if self.perform_execution:
+            self.space.after(101 - int(self.time_speed.get()), self.execution)
 
-    box = thorpy.Box(elements=[
-        slider,
-        button_pause,
-        button_stop,
-        button_play,
-        button_load,
-        timer])
-    reaction1 = thorpy.Reaction(reacts_to=thorpy.constants.THORPY_EVENT,
-                                reac_func=slider_reaction,
-                                event_args={"id": thorpy.constants.EVENT_SLIDE},
-                                params={},
-                                reac_name="slider reaction")
-    box.add_reaction(reaction1)
+    def start_execution(self):
+        """Обработчик события нажатия на кнопку Start.
+        Запускает циклическое исполнение функции execution.
+        """
+        self.perform_execution = True
+        self.start_button['text'] = "Pause"
+        self.start_button['command'] = self.stop_execution
 
-    menu = thorpy.Menu(box)
-    for element in menu.get_population():
-        element.surface = screen
+        self.execution()
+        print('Started execution...')
 
-    box.set_topleft((0, 0))
-    box.blit()
-    box.update()
-    return menu, box, timer
+    def stop_execution(self):
+        """Обработчик события нажатия на кнопку Start.
+        Останавливает циклическое исполнение функции execution.
+        """
+        self.perform_execution = False
+        self.start_button['text'] = "Start"
+        self.start_button['command'] = self.start_execution
+        print('Paused execution.')
+
+    def open_file_dialog(self):
+        """Открывает диалоговое окно выбора имени файла и вызывает
+        функцию считывания параметров системы небесных тел из данного файла.
+        Считанные объекты сохраняются в список space_objects
+        """
+        self.perform_execution = False
+        for obj in self.space_objects:
+            self.space.delete(obj.image)  # удаление старых изображений планет
+        in_filename = askopenfilename(filetypes=(("Text file", ".txt"),))
+        self.space_objects = read_space_objects_data_from_file(in_filename)
+        max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in self.space_objects])
+        self.scale_factor = calculate_scale_factor(max_distance)
+
+        for obj in self.space_objects:
+            if obj.type == 'star':
+                create_star_image(self.space, obj)
+            elif obj.type == 'planet':
+                create_planet_image(self.space, obj)
+            else:
+                raise AssertionError()
+
+    def save_file_dialog(self):
+        """Открывает диалоговое окно для создания файла с текущими параметрами
+        небесных тел и вызывает функцию записи этих параметров в созданный файл.
+        """
+        out_filename = asksaveasfilename(filetypes=(("Text file", ".txt"),))
+        write_space_objects_data_to_file(out_filename, self.space_objects)
 
 
 def main():
-    """Главная функция главного модуля.
-    Создаёт объекты графического дизайна библиотеки tkinter: окно, холст, фрейм с кнопками, кнопки.
-    """
-
-    global physical_time
-    global displayed_time
-    global time_step
-    global time_speed
-    global space
-    global start_button
-    global perform_execution
-    global timer
-
-    print('Modelling started!')
-    physical_time = 0
-
-    pg.init()
-
-    width = 1000
-    height = 900
-    screen = pg.display.set_mode((width, height))
-    last_time = time.perf_counter()
-    drawer = Drawer(screen)
-    menu, box, timer = init_ui(screen)
-    perform_execution = True
-
-    while alive:
-        handle_events(pg.event.get(), menu)
-        cur_time = time.perf_counter()
-        if perform_execution:
-            execution((cur_time - last_time) * time_scale)
-            text = "%d seconds passed" % (int(model_time))
-            timer.set_text(text)
-
-        last_time = cur_time
-        drawer.update(space_objects, box)
-        time.sleep(1.0 / 60)
-
-    print('Modelling finished!')
+    """Функция запускает программу."""
+    model = SolarSystemModel()
+    return model
 
 
 if __name__ == "__main__":

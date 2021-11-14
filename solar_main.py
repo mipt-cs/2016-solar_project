@@ -6,6 +6,7 @@ from tkinter.filedialog import *
 from solar_vis import *
 from solar_model import *
 from solar_input import *
+from solar_graph import *
 
 perform_execution = False
 """Флаг цикличности выполнения расчёта"""
@@ -36,11 +37,11 @@ def execution():
     global displayed_time
     global collect_stats
     recalculate_space_objects_positions(space_objects, time_step.get())
-    if collect_stats:
-        write_obj_stats(physical_time, space_objects, False)
     for body in space_objects:
         update_object_position(space, body)
     physical_time += time_step.get()
+    if collect_stats:
+        write_obj_stats(physical_time, space_objects, False)
     # print(int(physical_time)/31536000)
     displayed_time.set("%.1f" % physical_time + " seconds gone")
 
@@ -164,7 +165,10 @@ def main():
     root.mainloop()
     print('Modelling finished!')
     if collect_stats:
-        pass
+        data = read_stats('stats.txt')
+        vt_graph(data)
+        rt_graph(data)
+        vr_graph(data)
 
 
 if __name__ == "__main__":

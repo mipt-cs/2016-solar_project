@@ -13,14 +13,13 @@ def calculate_force(body, space_objects):
     **body** — тело, для которого нужно вычислить дейстующую силу.
     **space_objects** — список объектов, которые воздействуют на тело.
     """
-    G=6.67*10**(-11)
     body.Fx = body.Fy = 0
     for obj in space_objects:
         if body == obj:
             continue  # тело не действует гравитационной силой на само себя!
         r = ((body.x - obj.x)**2 + (body.y - obj.y)**2)**0.5
-        body.Fx -= G*body.m*obj.m*(body.x - obj.x)/(r**3)
-        body.Fy -= G*body.m*obj.m*(body.y - obj.y)/(r**3)
+        body.Fx -= gravitational_constant*body.m*obj.m*(body.x - obj.x)/(r**3)
+        body.Fy -= gravitational_constant*body.m*obj.m*(body.y - obj.y)/(r**3)
 
 
 def move_space_object(body, dt):

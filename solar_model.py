@@ -29,15 +29,13 @@ def move_space_object(body, dt):
 
     **body** — тело, которое нужно переместить.
     """
-
     ax = float(body.Fx)/body.m
-    body.x += body.Vx*dt+ax*(dt**2)/2  # FIXME: не понимаю как менять...
-    body.Vx += ax*dt
+    body.x += body.Vx * dt + ax * (dt ** 2) / 2
+    body.Vx += ax * dt
     ay = body.Fy / body.m
     body.y += body.Vy * dt + ay * (dt ** 2) / 2
     body.Vy += ay * dt
 
-    # FIXME: not done recalculation of y coordinate!
 
 
 def recalculate_space_objects_positions(space_objects, dt):
@@ -48,11 +46,13 @@ def recalculate_space_objects_positions(space_objects, dt):
     **space_objects** — список оьъектов, для которых нужно пересчитать координаты.
     **dt** — шаг по времени
     """
+    n = 256
+    for i in range(n):
+        for body in space_objects:
+            calculate_force(body, space_objects)
+        for body in space_objects:
+            move_space_object(body, dt/n)
 
-    for body in space_objects:
-        calculate_force(body, space_objects)
-    for body in space_objects:
-        move_space_object(body, dt)
 
 
 if __name__ == "__main__":

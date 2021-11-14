@@ -38,6 +38,7 @@ def execution():
     for body in space_objects:
         update_object_position(space, body)
     physical_time += time_step.get()
+    # print(int(physical_time)/31536000)
     displayed_time.set("%.1f" % physical_time + " seconds gone")
 
     if perform_execution:
@@ -79,6 +80,8 @@ def open_file_dialog():
     for obj in space_objects:
         space.delete(obj.image)  # удаление старых изображений планет
     in_filename = askopenfilename(filetypes=(("Text file", ".txt"),))
+    if in_filename.split('/')[len(in_filename.split('/')) - 1] == "one_satellite.txt":
+        print('gusdgmfhrgggkutgrhdtfghgrjfgrgutkfaeJHFDHSVKGGRMHrzdfhkugsgzcnkdugsrhm')
     space_objects = read_space_objects_data_from_file(in_filename)
     max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in space_objects])
     calculate_scale_factor(max_distance)

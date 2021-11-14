@@ -23,6 +23,10 @@ def read_space_objects_data_from_file(input_filename):
                 star = Star()
                 parse_star_parameters(line, star)
                 objects.append(star)
+            elif object_type == 'planet':
+                planet = Planet()
+                parse_planet_parameters(line, planet)
+                objects.append(planet)
             else:
                 print("Unknown space object")
 
@@ -96,10 +100,13 @@ def write_space_objects_data_to_file(output_filename, space_objects):
         for obj in space_objects:
             if obj.type == 'star':
                 type = 'Star'
-            else:
+            elif obj.type == 'planet':
                 type = 'Planet'
-            out_file.write(type, obj.R, obj.color, obj.m, obj.x, obj.y, obj.Vx, obj.Vy)
-            # FIXME: should store real values
+            else:
+                type = 'Unknown'
+            out_file.write(type + ' ' + str(obj.R) + ' ' + str(obj.color) + ' ' + str(obj.m) + ' ' +
+                           str(obj.x) + ' ' + str(obj.y) + ' ' + str(obj.Vx) + ' ' + str(obj.Vy) + '\n')
+            out_file.write('\n')
 
 # FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл...
 

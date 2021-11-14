@@ -97,8 +97,14 @@ def save_file_dialog():
     функцию считывания параметров системы небесных тел из данного файла.
     Считанные объекты сохраняются в глобальный список space_objects
     """
-    out_filename = asksaveasfilename(filetypes=(("Text file", ".txt"),))
-    write_space_objects_data_to_file(out_filename, space_objects)
+    if len(space_objects) == 0:
+        print('Can not save empty file')
+    else:
+        out_filename = asksaveasfilename(filetypes=(("Text file", ".txt"),))
+        if out_filename == '':
+            pass
+        else:
+            write_space_objects_data_to_file(out_filename, space_objects)
 
 
 def main():

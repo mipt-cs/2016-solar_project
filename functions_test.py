@@ -1,4 +1,4 @@
-star = []
+objects = []
 
 
 def parse_star_parameters(line, star):
@@ -7,14 +7,13 @@ def parse_star_parameters(line, star):
         if line[i] == ' ':
             star_list.append(i)
     print(star_list)
-    star[0] = int(line[star_list[0] + 1:star_list[1]])
-    star[1] = (line[star_list[1] + 1:star_list[2]])
-    star[2] = int(line[star_list[2] + 1:star_list[3]])
-    star[3] = int(line[star_list[3] + 1:star_list[4]])
-    star[4] = int(line[star_list[4] + 1:star_list[5]])
-    star[5] = int(line[star_list[5] + 1:star_list[6]])
-    star[6] = int(line[star_list[6] + 1:])
-
+    star.append(int(float(line[star_list[0] + 1:star_list[1]])))
+    star.append((line[star_list[1] + 1:star_list[2]]))
+    star.append(int(float(line[star_list[2] + 1:star_list[3]])))
+    star.append(int(float(line[star_list[3] + 1:star_list[4]])))
+    star.append(int(float(line[star_list[4] + 1:star_list[5]])))
+    star.append(int(float(line[star_list[5] + 1:star_list[6]])))
+    star.append(int(float(line[star_list[6] + 1:])))
 
 
 def read_space_objects_data_from_file(input_filename):
@@ -44,3 +43,4 @@ def read_space_objects_data_from_file(input_filename):
 
 read_space_objects_data_from_file('double_star.txt')
 
+print(objects)

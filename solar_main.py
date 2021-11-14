@@ -34,7 +34,10 @@ def execution():
     """
     global physical_time
     global displayed_time
+    global collect_stats
     recalculate_space_objects_positions(space_objects, time_step.get())
+    if collect_stats:
+        write_obj_stats(physical_time, space_objects, False)
     for body in space_objects:
         update_object_position(space, body)
     physical_time += time_step.get()
@@ -76,13 +79,15 @@ def open_file_dialog():
     """
     global space_objects
     global perform_execution
+    global collect_stats
     perform_execution = False
     for obj in space_objects:
         space.delete(obj.image)  # удаление старых изображений планет
     in_filename = askopenfilename(filetypes=(("Text file", ".txt"),))
-    if in_filename.split('/')[len(in_filename.split('/')) - 1] == "one_satellite.txt":
-        print('gusdgmfhrgggkutgrhdtfghgrjfgrgutkfaeJHFDHSVKGGRMHrzdfhkugsgzcnkdugsrhm')
     space_objects = read_space_objects_data_from_file(in_filename)
+    if in_filename.split('/')[len(in_filename.split('/')) - 1] == "one_satellite.txt":
+        write_obj_stats(physical_time, space_objects, True)
+        collect_stats = True
     max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in space_objects])
     calculate_scale_factor(max_distance)
 
@@ -120,9 +125,11 @@ def main():
     global time_speed
     global space
     global start_button
+    global collect_stats
 
     print('Modelling started!')
     physical_time = 0
+    collect_stats = False
 
     root = tkinter.Tk()
     # космическое пространство отображается на холсте типа Canvas
@@ -156,6 +163,8 @@ def main():
 
     root.mainloop()
     print('Modelling finished!')
+    if collect_stats:
+        pass
 
 
 if __name__ == "__main__":

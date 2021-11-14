@@ -108,6 +108,26 @@ def write_space_objects_data_to_file(output_filename, space_objects):
                            str(obj.x) + ' ' + str(obj.y) + ' ' + str(obj.Vx) + ' ' + str(obj.Vy) + '\n')
             out_file.write('\n')
 
+def write_obj_stats(physical_time, space_objects, first_time):
+    """Сохраняет данные о космических объектах в файл.
+    Строки должны иметь следующий формат:
+    Star <радиус в пикселах> <цвет> <масса> <x> <y> <Vx> <Vy>
+    Planet <радиус в пикселах> <цвет> <масса> <x> <y> <Vx> <Vy>
+
+    Параметры:
+
+    **output_filename** — имя входного файла
+    **space_objects** — список объектов планет и звёзд
+    """
+    if first_time:
+        operation = 'w'
+    else:
+        operation = 'a'
+    with open('stats.txt', operation) as out_file:
+        V = str((space_objects[1].Vx ** 2 + space_objects[1].Vy ** 2)**(1/2))
+        R = str(((space_objects[1].x - space_objects[0].x) ** 2 + (space_objects[1].y - space_objects[0].y) ** 2)**(1/2))
+        out_file.write(str(physical_time) + ' ' + V + ' ' + R + '\n')
+
 # FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл...
 
 if __name__ == "__main__":

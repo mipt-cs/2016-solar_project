@@ -50,14 +50,14 @@ def parse_star_parameters(line, star):
     star_list = []
     for i in range(len(line)): 
         if line[i] == ' ': 
-            starlist.append(i)
-    star.r = int(line[star_list[0]+1:star_list[1]-1])
+            star_list.append(i)
+    star.R = int(line[star_list[0]+1:star_list[1]-1])
     star.color = (line[star_list[1] + 1:star_list[2] - 1])
     star.m = int(line[star_list[2] + 1:star_list[3] - 1])
     star.x = int(line[star_list[3] + 1:star_list[4] - 1])
     star.y = int(line[star_list[4] + 1:star_list[5] - 1])
     star.Vx = int(line[star_list[5] + 1:star_list[6] - 1])
-    star.Vy = int(line[star_list[6] + 1:star_list[7] - 1])
+    star.Vy = int(line[star_list[6] + 1:])
 
 
 def parse_planet_parameters(line, planet):
@@ -78,8 +78,8 @@ def parse_planet_parameters(line, planet):
     planet_list = []
     for i in range(len(line)):
         if line[i] == ' ':
-            planetlist.append(i)
-    planet.r = int(line[planet_list[0] + 1:planet_list[1] - 1])
+            planet_list.append(i)
+    planet.R = int(line[planet_list[0] + 1:planet_list[1] - 1])
     planet.color = (line[planet_list[1] + 1:planet_list[2] - 1])
     planet.m = int(line[planet_list[2] + 1:planet_list[3] - 1])
     planet.x = int(line[planet_list[3] + 1:planet_list[4] - 1])

@@ -14,6 +14,7 @@ def parse_star_parameters(line, star):
     star.append(int(float(line[star_list[4] + 1:star_list[5]])))
     star.append(int(float(line[star_list[5] + 1:star_list[6]])))
     star.append(int(float(line[star_list[6] + 1:])))
+    print(star)
 
 
 def read_space_objects_data_from_file(input_filename):

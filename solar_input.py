@@ -51,12 +51,12 @@ def parse_star_parameters(line, star):
     for i in range(len(line)): 
         if line[i] == ' ': 
             star_list.append(i)
-    star.R = int(float(line[star_list[0]+1:star_list[1]-1]))
-    star.color = (line[star_list[1] + 1:star_list[2] - 1])
-    star.m = int(float(line[star_list[2] + 1:star_list[3] - 1]))
-    star.x = int(float(line[star_list[3] + 1:star_list[4] - 1]))
-    star.y = int(float(line[star_list[4] + 1:star_list[5] - 1]))
-    star.Vx = int(float(line[star_list[5] + 1:star_list[6] - 1]))
+    star.R = int(float(line[star_list[0]+1:star_list[1]]))
+    star.color = (line[star_list[1] + 1:star_list[2]])
+    star.m = int(float(line[star_list[2] + 1:star_list[3]]))
+    star.x = int(float(line[star_list[3] + 1:star_list[4]]))
+    star.y = int(float(line[star_list[4] + 1:star_list[5]]))
+    star.Vx = int(float(line[star_list[5] + 1:star_list[6]]))
     star.Vy = int(float(line[star_list[6] + 1:]))
 
 

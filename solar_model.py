@@ -46,7 +46,7 @@ def recalculate_space_objects_positions(space_objects, dt):
     **space_objects** — список оьъектов, для которых нужно пересчитать координаты.
     **dt** — шаг по времени
     """
-    n = 256
+    n = 500
     for i in range(n):
         for body in space_objects:
             calculate_force(body, space_objects)

@@ -73,6 +73,13 @@ def stop_execution():
     print('Paused execution.')
 
 
+def make_plots():
+    data = read_stats('stats.txt')
+    vt_graph(data)
+    rt_graph(data)
+    vr_graph(data)
+
+
 def open_file_dialog():
     """Открывает диалоговое окно выбора имени файла и вызывает
     функцию считывания параметров системы небесных тел из данного файла.
@@ -85,20 +92,27 @@ def open_file_dialog():
     for obj in space_objects:
         space.delete(obj.image)  # удаление старых изображений планет
     in_filename = askopenfilename(filetypes=(("Text file", ".txt"),))
-    space_objects = read_space_objects_data_from_file(in_filename)
-    if in_filename.split('/')[len(in_filename.split('/')) - 1] == "one_satellite.txt":
-        write_obj_stats(physical_time, space_objects, True)
-        collect_stats = True
-    max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in space_objects])
-    calculate_scale_factor(max_distance)
-
-    for obj in space_objects:
-        if obj.type == 'star':
-            create_star_image(space, obj)
-        elif obj.type == 'planet':
-            create_planet_image(space, obj)
+    if in_filename == '':
+        pass
+    else:
+        space_objects = read_space_objects_data_from_file(in_filename)
+        if collect_stats:
+            make_plots()
+        if in_filename.split('/')[len(in_filename.split('/')) - 1] == "one_satellite.txt":
+            write_obj_stats(physical_time, space_objects, True)
+            collect_stats = True
         else:
-            raise AssertionError()
+            collect_stats = False
+        max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in space_objects])
+        calculate_scale_factor(max_distance)
+
+        for obj in space_objects:
+            if obj.type == 'star':
+                create_star_image(space, obj)
+            elif obj.type == 'planet':
+                create_planet_image(space, obj)
+            else:
+                raise AssertionError()
 
 
 def save_file_dialog():
@@ -165,10 +179,7 @@ def main():
     root.mainloop()
     print('Modelling finished!')
     if collect_stats:
-        data = read_stats('stats.txt')
-        vt_graph(data)
-        rt_graph(data)
-        vr_graph(data)
+        make_plots()
 
 
 if __name__ == "__main__":

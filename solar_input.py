@@ -57,9 +57,6 @@ def parse_star_parameters(line, star):
     star.Vy=float(par[7])
 
 
-
-
-
 def parse_planet_parameters(line, planet):
     """Считывает данные о планете из строки.
     Предполагается такая строка:
@@ -108,7 +105,51 @@ def write_space_objects_data_to_file(output_filename, space_objects):
                            str(obj.x) + ' ' + str(obj.y) + ' ' + str(obj.Vx) + ' ' + str(obj.Vy) + '\n')
             out_file.write('\n')
 
-# FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл...
+
+def write_obj_stats(physical_time, space_objects, first_time):
+    """Сохраняет данные о космических объектах в файл.
+    Строки должны иметь следующий формат:
+    Star <радиус в пикселах> <цвет> <масса> <x> <y> <Vx> <Vy>
+    Planet <радиус в пикселах> <цвет> <масса> <x> <y> <Vx> <Vy>
+
+    Параметры:
+
+    **output_filename** — имя входного файла
+    **space_objects** — список объектов планет и звёзд
+    """
+    if first_time:
+        operation = 'w'
+    else:
+        operation = 'a'
+    with open('stats.txt', operation) as out_file:
+        V = str(int((space_objects[1].Vx ** 2 + space_objects[1].Vy ** 2)**(1/2)))
+        R = str(int(((space_objects[1].x - space_objects[0].x) ** 2 + (space_objects[1].y - space_objects[0].y) ** 2)**(1/2)))
+        out_file.write(str(physical_time) + ' ' + V + ' ' + R + '\n')
+
+
+def read_stats(stats):
+    time = []
+    velocity = []
+    radius = []
+    with open(stats, 'r') as input_file:
+        for line in input_file:
+            time.append(float(line.split()[0]))
+            velocity.append(float(line.split()[1]))
+            radius.append(float(line.split()[2]))
+    if len(time) > 1000:
+        temp_time = []
+        temp_velocity = []
+        temp_radius = []
+        n = 1000
+        for i in range(n):
+            temp_time.append(time[i * len(time) // n])
+            temp_velocity.append(velocity[i * len(time) // n])
+            temp_radius.append(radius[i * len(time) // n])
+        time = temp_time
+        velocity = temp_velocity
+        radius = temp_radius
+    return [time, velocity, radius]
+
 
 if __name__ == "__main__":
     print("This module is not for direct call!")

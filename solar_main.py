@@ -2,6 +2,7 @@
 # license: GPLv3
 
 import tkinter
+import matplotlib.pyplot as plt
 from tkinter.filedialog import *
 
 from solar_input import *

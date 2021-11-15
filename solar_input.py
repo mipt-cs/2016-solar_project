@@ -127,7 +127,7 @@ def statistic(stat_file, space_objects): # Должна срабатывать �
         dx = space_objects[0].x-space_objects[1].x
         dy = space_objects[0].y-space_objects[1].y
         dr = (dx**2 + dy**2)**0.5
-        v = (space_objects[1].Vx ** 2 + space_objects.Vy[1] ** 2) ** 0.5
+        v = (space_objects[1].Vx ** 2 + space_objects[1].Vy ** 2) ** 0.5
         # FIXME    t = нужно время в солнечной системе из main
         out_file.write(
             str(dr) + ' ' +

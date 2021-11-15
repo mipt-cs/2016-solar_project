@@ -123,16 +123,16 @@ def statistic(stat_file, space_objects): # Должна срабатывать �
     В итоговом файле будет строка вида r t v
     где r - расстояние между звездой и спутником, t - время, v - полная скорость спутника
     """
-    with open(stat_file, 'w+') as out_file:
-        dx = space_objects[0].x-space_objects[1].x
-        dy = space_objects[0].y-space_objects[1].y
-        dr = (dx**2 + dy**2)**0.5
-        v = (space_objects[1].Vx ** 2 + space_objects[1].Vy ** 2) ** 0.5
-        t = physical_time
-        out_file.write(
-            str(dr) + ' ' +
-            # FIXME    str(t) + ' ' +
-            str(v) + '\n')
+    with open(stat_file, 'a') as out_file:
+        for obj in space_objects:
+            if obj.type == 'planet':
+                dx = space_objects[0].x - space_objects[1].x
+                dy = space_objects[0].y - space_objects[1].y
+                dr = (dx ** 2 + dy ** 2) ** 0.5
+                v = (space_objects[1].Vx ** 2 + space_objects[1].Vy ** 2) ** 0.5
+                t = physical_time
+                print(str(t))
+                print(' '.join(["{:.0f}".format(item) for item in [dr, v, t]]), file=out_file)
     with open(stat_file, 'w+') as input_file:
         for line in input_file:
             list = []

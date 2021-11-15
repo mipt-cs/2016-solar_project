@@ -4,6 +4,26 @@
 from solar_objects import Star, Planet
 
 
+def translate_number_to_line_with_e(x):
+    """Преобразует заданное число в строку с символом Е.
+
+    Параметры:
+
+    **x** — число, которое необходимо трансформировать в строку.
+    """
+
+    log = 0
+    while x > 10:
+        x = x / 10
+        log = log + 1
+    x = str(x)
+    if len(x) > 4:
+        x = x[0] + x[1] + x[2] + x[3] + x[4] + 'E' + str(log)
+    else:
+        x = x + 'E' + str(log)
+    return x
+
+
 def read_space_objects_data_from_file(input_filename):
     """Cчитывает данные о космических объектах из файла, создаёт сами объекты
     и вызывает создание их графических образов
@@ -40,7 +60,8 @@ def parse_star_parameters(line, star):
 
     Здесь (x, y) — координаты зведы, (Vx, Vy) — скорость.
     Пример строки:
-    Star 10 red 1000 1 2 3 4
+    Planet 10 red 1E3 1E0 2E0 3E0 4E0
+    Здесь число после Е обозначает спорядок величины
 
     Параметры:
 
@@ -51,11 +72,13 @@ def parse_star_parameters(line, star):
     star.R = int(line.split()[1])
     star.color = line.split()[2]
     m = line.split()[3]
-    star.m = float(m.split('E')[0]) * 10**int(m.split('E')[1])
+    star.m = float(m.split('E')[0]) * 10 ** int(m.split('E')[1])
     x = line.split()[4]
     star.x = float(x.split('E')[0]) * 10 ** int(x.split('E')[1])
-    star.y = line.split()[5]
-    star.Vx = line.split()[6]
+    y = line.split()[5]
+    star.y = float(y.split('E')[0]) * 10 ** int(y.split('E')[1])
+    Vx = line.split()[6]
+    star.Vx = float(Vx.split('E')[0]) * 10 ** int(Vx.split('E')[1])
     Vy = line.split()[7]
     star.Vy = float(Vy.split('E')[0]) * 10 ** int(Vy.split('E')[1])
 
@@ -68,7 +91,8 @@ def parse_planet_parameters(line, planet):
 
     Здесь (x, y) — координаты планеты, (Vx, Vy) — скорость.
     Пример строки:
-    Planet 10 red 1000 1 2 3 4
+    Planet 10 red 1E3 1E0 2E0 3E0 4E0
+    Здесь число после Е обозначает спорядок величины
 
     Параметры:
 
@@ -82,8 +106,10 @@ def parse_planet_parameters(line, planet):
     planet.m = float(m.split('E')[0]) * 10 ** int(m.split('E')[1])
     x = line.split()[4]
     planet.x = float(x.split('E')[0]) * 10 ** int(x.split('E')[1])
-    planet.y = line.split()[5]
-    planet.Vx = line.split()[6]
+    y = line.split()[5]
+    planet.y = float(y.split('E')[0]) * 10 ** int(y.split('E')[1])
+    Vx = line.split()[6]
+    planet.Vx = float(Vx.split('E')[0]) * 10 ** int(Vx.split('E')[1])
     Vy = line.split()[7]
     planet.Vy = float(Vy.split('E')[0]) * 10 ** int(Vy.split('E')[1])
 

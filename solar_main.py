@@ -74,7 +74,9 @@ def stop_execution():
 
 
 def make_plots():
-    data = read_stats('stats.txt')
+    """Вызывает из модуля solar_graph.py функции рисующие графики v(t), r(t) и v(r) для спутника
+    """
+    data = read_stats()
     vt_graph(data)
     rt_graph(data)
     vr_graph(data)

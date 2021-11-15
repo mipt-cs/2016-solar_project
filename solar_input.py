@@ -48,13 +48,13 @@ def parse_star_parameters(line, star):
     **star** — объект звезды.
     """
     par=line.split()
-    star.R=float(par[1])
-    star.color=par[2]
-    star.m=float(par[3])
-    star.x=float(par[4])
-    star.y=float(par[5])
-    star.Vx=float(par[6])
-    star.Vy=float(par[7])
+    star.R = float(par[1])
+    star.color = par[2]
+    star.m = float(par[3])
+    star.x = float(par[4])
+    star.y = float(par[5])
+    star.Vx = float(par[6])
+    star.Vy = float(par[7])
 
 
 def parse_planet_parameters(line, planet):
@@ -107,27 +107,42 @@ def write_space_objects_data_to_file(output_filename, space_objects):
 
 
 def write_obj_stats(physical_time, space_objects, first_time):
-    """Сохраняет данные о космических объектах в файл.
+    """Сохраняет данные о спутнике в файл stats.txt
     Строки должны иметь следующий формат:
     Star <радиус в пикселах> <цвет> <масса> <x> <y> <Vx> <Vy>
     Planet <радиус в пикселах> <цвет> <масса> <x> <y> <Vx> <Vy>
 
     Параметры:
 
-    **output_filename** — имя входного файла
+    **physical_time** — физическое прошедшее время
     **space_objects** — список объектов планет и звёзд
+    **first_time** — флаг:
+        1 — перезаписываем файл при первом обращении к нему,
+        0 — добавляем новые строки при повторном обращении
     """
     if first_time:
         operation = 'w'
     else:
         operation = 'a'
     with open('stats.txt', operation) as out_file:
-        V = str(int((space_objects[1].Vx ** 2 + space_objects[1].Vy ** 2)**(1/2)))
+        V = str(int((space_objects[1].Vx ** 2 + space_objects[1].Vy ** 2) ** (1/2)))
         R = str(int(((space_objects[1].x - space_objects[0].x) ** 2 + (space_objects[1].y - space_objects[0].y) ** 2)**(1/2)))
         out_file.write(str(physical_time) + ' ' + V + ' ' + R + '\n')
 
 
-def read_stats(stats):
+def read_stats(stats = 'stats.txt'):
+    """Читает данные о спутнике из файла stats.txt
+        Строки должны иметь следующий формат:
+
+        Параметры:
+
+        **stats** — файл, из которого читать (по умолчанию "stats.txt")
+
+        Вывод:
+
+        [time, velocity, radius] — массив из 3-х массивов, в которых содержатся контрольные значения времени,
+        модуля скорости и расстояния до притягивающего центра
+    """
     time = []
     velocity = []
     radius = []
@@ -141,6 +156,7 @@ def read_stats(stats):
         temp_velocity = []
         temp_radius = []
         n = 1000
+        """Параметр n отвечает за количество контрольных точек для графика"""
         for i in range(n):
             temp_time.append(time[i * len(time) // n])
             temp_velocity.append(velocity[i * len(time) // n])

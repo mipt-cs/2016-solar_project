@@ -127,10 +127,12 @@ def write_space_objects_data_to_file(output_filename, space_objects):
     """
     with open(output_filename, 'w') as out_file:
         for obj in space_objects:
-            print(out_file, "%s %d %s %f" % ('1', 2, '3', 4.5))
-            # FIXME: should store real values
-
-# FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл...
+            m = translate_number_to_line_with_e(obj.m)
+            x = translate_number_to_line_with_e(obj.x)
+            y = translate_number_to_line_with_e(obj.y)
+            Vx = translate_number_to_line_with_e(obj.Vx)
+            Vy = translate_number_to_line_with_e(obj.Vy)
+            print(obj.type, obj.R, obj.color, m, x, y, Vx, Vy, file=out_file)
 
 
 if __name__ == "__main__":

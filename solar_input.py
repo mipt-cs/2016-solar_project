@@ -1,6 +1,6 @@
 # coding: utf-8
 # license: GPLv3
-
+import matplotlib.pyplot as plt
 from solar_objects import Star, Planet
 
 
@@ -112,7 +112,45 @@ def write_space_objects_data_to_file(output_filename, space_objects):
                 str(obj.Vy) + '\n')
 
 
-# FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл..
+def statistic(stat_file, space_objects): # Должна срабатывать каждый тик физического времени
+    """
+    Функция, записывающая статистику для движения только одного спутника вокруг звезды
+    Параметры:
+
+    **stat_file** - файл со статистикой
+    **space_objects** - список космических объектов
+
+    В итоговом файле будет строка вида r t v
+    где r - расстояние между звездой и спутником, t - время, v - полная скорость спутника
+    """
+    with open(stat_file, 'w+') as out_file:
+        dx = space_objects[0].x-space_objects[1].x
+        dy = space_objects[1].y-space_objects[1].y
+        dr = (dx**2 + dy**2)**0.5
+        v = (space_objects ** 2 + dy ** 2) ** 0.5
+        # FIXME    t = нужно время в солнечной системе из main
+        out_file.write(
+            str(dr) + ' ' +
+            # FIXME    str(t) + ' ' +
+            str(v) + '\n')
+    with open(stat_file, 'w+') as input_file:
+        for line in input_file:
+            list = []
+            V = []
+            R = []
+            t = []
+            for i in range(len(line)):
+                if line[i] == ' ':
+                    list.append(i)
+            V.append(int(float(line[:list[0]])))
+            t.append(int(float(line[list[0] + 1:list[1]])))
+            R.append(int(float(line[list[1] + 1:list[2]])))
+            plt.plot(t, V)
+            plt.show()
+            plt.plot(t, R)
+            plt.show()
+            plt.plot(R, V)
+            plt.show()
 
 
 if __name__ == "__main__":

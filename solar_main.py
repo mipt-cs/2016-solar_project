@@ -10,7 +10,7 @@ from solar_model import *
 from solar_vis import *
 
 
-class SolarSystemModel:
+class SpaceModel:
     """Класс SolarSystemModel (Модель Солнечной системы)"""
     def __init__(self):
 
@@ -52,6 +52,9 @@ class SolarSystemModel:
         self.start_button = tkinter.Button(self.frame, text="Start", command=self.start_execution, width=6)
         self.start_button.pack(side=tkinter.LEFT)
 
+        self.graph_button = tkinter.Button(self.frame, text="Graphics", command=self.graphics_show, width=6)
+        self.graph_button.pack(side=tkinter.LEFT)
+
         self.time_step = tkinter.DoubleVar()
         self.time_step.set(1)
         self.time_step_entry = tkinter.Entry(self.frame, textvariable=self.time_step)
@@ -85,7 +88,8 @@ class SolarSystemModel:
         for body in self.space_objects:
             update_object_position(self.space, body)
         self.physical_time += self.time_step.get()
-        self.displayed_time.set("%.1f" % self.physical_time + " seconds gone")
+        self.displayed_time.set(str(self.physical_time) + " seconds gone")
+        statistic("stats.txt", self.space_objects, self.physical_time)
 
         if self.perform_execution:
             self.space.after(101 - int(self.time_speed.get()), self.execution)
@@ -109,6 +113,19 @@ class SolarSystemModel:
         self.start_button['text'] = "Start"
         self.start_button['command'] = self.start_execution
         print('Paused execution.')
+
+    def graphics_show(self):
+        graphics("stats.txt")
+
+        """self.perform_execution = False
+        self.start_button['text'] = "Start"
+        self.start_button['command'] = self.start_execution
+        self.space_objects = []
+        self.physical_time = 0
+        with open("stats.txt", 'w') as out_file:
+            out_file.write(str(self. + ' ' + str(0) + ' ' + str(self.physical_time))
+        print('Ended execution.') """
+
 
     def open_file_dialog(self):
         """Открывает диалоговое окно выбора имени файла и вызывает
@@ -141,7 +158,7 @@ class SolarSystemModel:
 
 def main():
     """Функция запускает программу."""
-    model = SolarSystemModel()
+    model = SpaceModel()
     return model
 
 

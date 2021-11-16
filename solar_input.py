@@ -3,7 +3,6 @@
 
 from solar_objects import Star, Planet
 
-
 def read_space_objects_data_from_file(input_filename):
     """Cчитывает данные о космических объектах из файла, создаёт сами объекты
     и вызывает создание их графических образов
@@ -92,10 +91,16 @@ def write_space_objects_data_to_file(output_filename, space_objects):
                 attribute_string += f"{getattr(obj, attr)} "
             print(attribute_string.strip(), file=out_file)
 
+t = 0
+
 def log_space_object_positions_to_file(log_filename, space_objects):
+    global t
     with open(log_filename, 'a') as log:
+        t += 1
+        print(f'### steps elapsed = {t}', file=log)
         for obj in space_objects:
-            print(obj.x, obj.y, end='\n', file=log)
+            print(obj.type, obj.x, obj.y, end='\n', file=log)
+
 
 # FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл...
 

@@ -6,6 +6,7 @@ from tkinter.filedialog import *
 from solar_vis import *
 from solar_model import *
 from solar_input import *
+from solar_graph import *
 
 perform_execution = False
 """Флаг цикличности выполнения расчёта"""
@@ -34,10 +35,14 @@ def execution():
     """
     global physical_time
     global displayed_time
+    global collect_stats
     recalculate_space_objects_positions(space_objects, time_step.get())
     for body in space_objects:
         update_object_position(space, body)
     physical_time += time_step.get()
+    if collect_stats:
+        write_obj_stats(physical_time, space_objects, False)
+    # print(int(physical_time)/31536000)
     displayed_time.set("%.1f" % physical_time + " seconds gone")
 
     if perform_execution:
@@ -68,6 +73,15 @@ def stop_execution():
     print('Paused execution.')
 
 
+def make_plots():
+    """Вызывает из модуля solar_graph.py функции рисующие графики v(t), r(t) и v(r) для спутника
+    """
+    data = read_stats()
+    vt_graph(data)
+    rt_graph(data)
+    vr_graph(data)
+
+
 def open_file_dialog():
     """Открывает диалоговое окно выбора имени файла и вызывает
     функцию считывания параметров системы небесных тел из данного файла.
@@ -75,21 +89,32 @@ def open_file_dialog():
     """
     global space_objects
     global perform_execution
+    global collect_stats
     perform_execution = False
     for obj in space_objects:
         space.delete(obj.image)  # удаление старых изображений планет
     in_filename = askopenfilename(filetypes=(("Text file", ".txt"),))
-    space_objects = read_space_objects_data_from_file(in_filename)
-    max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in space_objects])
-    calculate_scale_factor(max_distance)
-
-    for obj in space_objects:
-        if obj.type == 'star':
-            create_star_image(space, obj)
-        elif obj.type == 'planet':
-            create_planet_image(space, obj)
+    if in_filename == '':
+        pass
+    else:
+        space_objects = read_space_objects_data_from_file(in_filename)
+        if collect_stats:
+            make_plots()
+        if in_filename.split('/')[len(in_filename.split('/')) - 1] == "one_satellite.txt":
+            write_obj_stats(physical_time, space_objects, True)
+            collect_stats = True
         else:
-            raise AssertionError()
+            collect_stats = False
+        max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in space_objects])
+        calculate_scale_factor(max_distance)
+
+        for obj in space_objects:
+            if obj.type == 'star':
+                create_star_image(space, obj)
+            elif obj.type == 'planet':
+                create_planet_image(space, obj)
+            else:
+                raise AssertionError()
 
 
 def save_file_dialog():
@@ -97,8 +122,14 @@ def save_file_dialog():
     функцию считывания параметров системы небесных тел из данного файла.
     Считанные объекты сохраняются в глобальный список space_objects
     """
-    out_filename = asksaveasfilename(filetypes=(("Text file", ".txt"),))
-    write_space_objects_data_to_file(out_filename, space_objects)
+    if len(space_objects) == 0:
+        print('Can not save empty file')
+    else:
+        out_filename = asksaveasfilename(filetypes=(("Text file", ".txt"),))
+        if out_filename == '':
+            pass
+        else:
+            write_space_objects_data_to_file(out_filename, space_objects)
 
 
 def main():
@@ -111,9 +142,11 @@ def main():
     global time_speed
     global space
     global start_button
+    global collect_stats
 
     print('Modelling started!')
     physical_time = 0
+    collect_stats = False
 
     root = tkinter.Tk()
     # космическое пространство отображается на холсте типа Canvas
@@ -147,6 +180,9 @@ def main():
 
     root.mainloop()
     print('Modelling finished!')
+    if collect_stats:
+        make_plots()
+
 
 if __name__ == "__main__":
     main()

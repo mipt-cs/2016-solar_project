@@ -25,6 +25,8 @@ time_step = None
 space_objects = []
 """Список космических объектов."""
 
+log_filename = None
+"""Имя файла для сохранения статистики"""
 
 def execution():
     """Функция исполнения -- выполняется циклически, вызывая обработку всех небесных тел,
@@ -35,6 +37,7 @@ def execution():
     global physical_time
     global displayed_time
     recalculate_space_objects_positions(space_objects, time_step.get())
+    loglog_space_object_positions_to_file(space_objects, )
     for body in space_objects:
         update_object_position(space, body)
     physical_time += time_step.get()
@@ -55,6 +58,7 @@ def start_execution():
 
     execution()
     print('Started execution...')
+    print(space_objects[0].x, space_objects[0].y)
 
 
 def stop_execution():
@@ -66,6 +70,7 @@ def stop_execution():
     start_button['text'] = "Start"
     start_button['command'] = start_execution
     print('Paused execution.')
+    print(space_objects[0].x, space_objects[0].y)
 
 
 def open_file_dialog():
@@ -75,6 +80,7 @@ def open_file_dialog():
     """
     global space_objects
     global perform_execution
+    global log_filename
     perform_execution = False
     for obj in space_objects:
         space.delete(obj.image)  # удаление старых изображений планет

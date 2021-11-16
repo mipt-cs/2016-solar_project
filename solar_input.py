@@ -14,8 +14,8 @@ def read_space_objects_data_from_file(input_filename):
     """
 
     objects = []
-    with open(input_filename) as input_file:
-        for line in input_file:
+    with open(input_filename, 'r') as input_file:
+        for line in input_file.readlines():
             if len(line.strip()) == 0 or line[0] == '#':
                 continue  # пустые строки и строки-комментарии пропускаем
             object_type = line.split()[0].lower()
@@ -25,7 +25,7 @@ def read_space_objects_data_from_file(input_filename):
                 objects.append(star)
             elif object_type == "planet":  
                 planet = Planet()
-                parse_planet_parameters(line, star)
+                parse_planet_parameters(line, planet)
                 objects.append(planet)
             else:
                 print("Unknown space object")
@@ -92,8 +92,14 @@ def write_space_objects_data_to_file(output_filename, space_objects):
                 attribute_string += f"{getattr(obj, attr)} "
             print(attribute_string.strip(), file=out_file)
 
+def log_space_object_positions_to_file(log_filename, space_objects):
+    with open(log_filename, 'a') as log:
+        for obj in space_objects:
+            print(obj.x, obj.y, end='\n', file=log)
 
 # FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл...
 
 if __name__ == "__main__":
     print("This module is not for direct call!")
+    space_objects = read_space_objects_data_from_file('one_satellite.txt')
+    write_space_objects_data_to_file('le_maoo.txt', space_objects)

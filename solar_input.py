@@ -3,7 +3,6 @@
 import matplotlib.pyplot as plt
 import pylab
 from matplotlib.ticker import (AutoMinorLocator)
-import numpy as np
 from solar_objects import Star, Planet
 
 
@@ -115,7 +114,7 @@ def write_space_objects_data_to_file(output_filename, space_objects):
                 str(obj.Vy) + '\n')
 
 
-def statistic(stat_file, space_objects, physical_time): # Должна срабатывать каждый тик физического времени
+def statistic(stat_file, space_objects, physical_time):  # Должна срабатывать каждый тик физического времени
     """
     Функция, записывающая статистику для движения только одного спутника вокруг звезды
     Параметры:
@@ -134,25 +133,36 @@ def statistic(stat_file, space_objects, physical_time): # Должна сраб�
                 dr = (dx ** 2 + dy ** 2) ** 0.5
                 v = (space_objects[1].Vx ** 2 + space_objects[1].Vy ** 2) ** 0.5
                 t = physical_time
-                print(str(t))
                 print(' '.join(["{:.0f}".format(item) for item in [dr, v, t]]), file=out_file)
 
-def draw_ticks(name):
-    name.xaxis.set_minor_locator(AutoMinorLocator())
-    name.tick_params(which='both', width=2)
-    name.tick_params(which='major', length=5)
-    name.tick_params(which='minor', length=4, color='r')
 
-    name.grid(which='minor', alpha=0.2)
-    name.grid(which='major', alpha=0.5)
+def draw_ticks(name_graph):
+    """Рисует сетку на графике.
+    Параметры:
+
+    **name_graph** - название графика, на котором рисуется сетка.
+    """
+    name_graph.xaxis.set_minor_locator(AutoMinorLocator())
+    name_graph.tick_params(which='both', width=2)
+    name_graph.tick_params(which='major', length=5)
+    name_graph.tick_params(which='minor', length=4, color='r')
+
+    name_graph.grid(which='minor', alpha=0.2)
+    name_graph.grid(which='major', alpha=0.5)
+
 
 def graphics(stat_file):
+    """Рисует 3 графика по данным, считанным из файла.
+    Параметры:
+
+    **stat_file** - файл со статистикой
+    """
     fig = plt.figure(figsize=(12, 12))
-    V_t = fig.add_subplot(2, 2, 1)  # будет рисовать два на два графика, этот под номером 1
-    R_t = fig.add_subplot(2, 2, 2)  # будет рисовать два на два графика, этот под номером 1
-    V_R = fig.add_subplot(2, 2, 3)
-    R = []
-    V = []
+    v_t = fig.add_subplot(2, 2, 1)  # будет рисовать два на два графика, этот под номером 1
+    r_t = fig.add_subplot(2, 2, 2)  # будет рисовать два на два графика, этот под номером 1
+    v_r = fig.add_subplot(2, 2, 3)
+    v = []
+    r = []
     t = []
     list = []
     with open(stat_file, 'r') as input_file:
@@ -160,37 +170,38 @@ def graphics(stat_file):
             for i in range(len(line)):
                 if line[i] == ' ':
                     list.append(i)
-            R.append(int(line.split(' ')[0]))  # по умолчанию разделение в каждой строке идёт по ' '
-            V.append(int(line.split(' ')[1]))
+            r.append(int(line.split(' ')[0]))
+            v.append(int(line.split(' ')[1]))
             t.append(int(line.split(' ')[2]))
 
-    draw_ticks(V_t)
-    draw_ticks(R_t)
-    draw_ticks(V_R)
+    draw_ticks(v_t)  # рисуем сетку на графиках
+    draw_ticks(r_t)
+    draw_ticks(v_r)
 
     plt.grid(True)
 
     # Две строки, два столбца. Текущая ячейка - 1
     pylab.subplot(2, 2, 1)
-    pylab.plot(t, V, 'o', color='red')
+    pylab.plot(t, v, color='red')
     pylab.xlabel(r'$t, c$', fontsize=7)
     plt.ylabel(r'$V, м/с$', fontsize=7)
     pylab.title("Зависимость скорости планеты от времени V(t)", fontsize=7)
 
-    # Две строки, два столбца. Текущая ячейка - 3
+    # Две строки, два столбца. Текущая ячейка - 2
     pylab.subplot(2, 2, 2)
-    pylab.plot(t, R, 's', color='blue')
+    pylab.plot(t, r, color='blue')
     pylab.xlabel(r'$t, c$', fontsize=7)
     plt.ylabel(r'$R, м$', fontsize=7)
     pylab.title("Зависимость расстояния между звездой и планетой от времени R(t)", fontsize=7)
 
+    # Две строки, два столбца. Текущая ячейка - 3
     pylab.subplot(2, 2, 3)
-    pylab.plot(R, V, '^', color='green', label="Зависимость скорости планеты от расстояния до звезды V(R)")
+    pylab.plot(r, v, color='green', label="Зависимость скорости планеты от расстояния до звезды V(R)")
     pylab.xlabel(r'$R, м$', fontsize=7)
     plt.ylabel(r'$V, м/с$', fontsize=7)
     pylab.title("Зависимость скорости планеты от расстояния до звезды V(R)", fontsize=7)
 
-    plt.show()
+    plt.show()  # отрисовка графиков
 
 
 if __name__ == "__main__":

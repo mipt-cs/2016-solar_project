@@ -2,9 +2,7 @@
 # license: GPLv3
 
 import tkinter
-import matplotlib.pyplot as plt
 from tkinter.filedialog import *
-
 from solar_input import *
 from solar_model import *
 from solar_vis import *
@@ -70,7 +68,7 @@ class SpaceModel:
         self.save_file_button.pack(side=tkinter.LEFT)
 
         self.displayed_time = tkinter.StringVar()
-        self.displayed_time.set(str(self.physical_time) + " seconds gone")
+        self.displayed_time.set("%.1f" % self.physical_time + " seconds gone")
         self.time_label = tkinter.Label(self.frame, textvariable=self.displayed_time, width=30)
         self.time_label.pack(side=tkinter.RIGHT)
 
@@ -88,7 +86,7 @@ class SpaceModel:
         for body in self.space_objects:
             update_object_position(self.space, body)
         self.physical_time += self.time_step.get()
-        self.displayed_time.set(str(self.physical_time) + " seconds gone")
+        self.displayed_time.set("%.1f" % self.physical_time + " seconds gone")
         statistic("stats.txt", self.space_objects, self.physical_time)
 
         if self.perform_execution:
@@ -115,23 +113,23 @@ class SpaceModel:
         print('Paused execution.')
 
     def graphics_show(self):
+        """Обработчик события нажатия на кнопку Graphics.
+        Останавливает циклическое исполнение функции execution.
+        Показывает графики в отдельном окне.
+        """
+        self.stop_execution()
         graphics("stats.txt")
-
-        """self.perform_execution = False
-        self.start_button['text'] = "Start"
-        self.start_button['command'] = self.start_execution
-        self.space_objects = []
-        self.physical_time = 0
-        with open("stats.txt", 'w') as out_file:
-            out_file.write(str(self. + ' ' + str(0) + ' ' + str(self.physical_time))
-        print('Ended execution.') """
-
 
     def open_file_dialog(self):
         """Открывает диалоговое окно выбора имени файла и вызывает
         функцию считывания параметров системы небесных тел из данного файла.
         Считанные объекты сохраняются в список space_objects
+        Отчищает файл "stats.txt" для записи новой статистики.
         """
+        self.physical_time = 0
+        self.displayed_time.set("%.1f" % self.physical_time + " seconds gone")
+        open('stats.txt', 'w').close()
+
         self.perform_execution = False
         for obj in self.space_objects:
             self.space.delete(obj.image)  # удаление старых изображений планет

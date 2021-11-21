@@ -7,6 +7,9 @@ from solar_vis import *
 from solar_model import *
 from solar_input import *
 
+data_collection = False
+""" data collection flag """
+
 perform_execution = False
 """Флаг цикличности выполнения расчёта"""
 
@@ -25,6 +28,17 @@ time_step = None
 space_objects = []
 """Список космических объектов."""
 
+def start_making_plot():  #FIXME write function to start collect data
+    """This function starts the process of collecting data to make plots"""
+    data_collection_flag = True
+    start_grafics_button['text'] = "Make plots"
+    start_grafics_button['command'] = make_plots
+    
+def make_plots():
+    """This function use mathplotlib.piplot to make plots and return start_grafics_button into start position """
+    data_collection_flag = False
+    start_grafics_button['text'] = "Start plots"
+    start_grafics_button['command'] = start_making_plot  #FIXME need to make plots
 
 def execution():
     """Функция исполнения -- выполняется циклически, вызывая обработку всех небесных тел,
@@ -111,6 +125,7 @@ def main():
     global time_speed
     global space
     global start_button
+    global start_grafics_button
 
     print('Modelling started!')
     physical_time = 0
@@ -139,7 +154,7 @@ def main():
     load_file_button.pack(side=tkinter.LEFT)
     save_file_button = tkinter.Button(frame, text="Save to file...", command=save_file_dialog)
     save_file_button.pack(side=tkinter.LEFT)
-    start_grafics_button = tkinter.Button(frame, text="Start grafics", command=None) #FIXME write function to start collect data
+    start_grafics_button = tkinter.Button(frame, text="Start plots", command=start_making_plot) 
     start_grafics_button.pack(side=tkinter.LEFT)
 
     displayed_time = tkinter.StringVar()

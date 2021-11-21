@@ -53,6 +53,7 @@ def execution():
         update_object_position(space, body)
     physical_time += time_step.get()
     displayed_time.set("%.1f" % physical_time + " seconds gone")
+    save_statistics("stats.txt", space_objects)
 
     if perform_execution:
         space.after(101 - int(time_speed.get()), execution)
@@ -66,6 +67,7 @@ def start_execution():
     perform_execution = True
     start_button['text'] = "Pause"
     start_button['command'] = stop_execution
+    reset_statistics("stats.txt")
 
     execution()
     print('Started execution...')

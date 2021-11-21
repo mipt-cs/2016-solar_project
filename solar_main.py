@@ -28,17 +28,21 @@ time_step = None
 space_objects = []
 """Список космических объектов."""
 
-def start_making_plot():  #FIXME write function to start collect data
+
+def start_making_plot():
     """This function starts the process of collecting data to make plots"""
     data_collection_flag = True
     start_grafics_button['text'] = "Make plots"
     start_grafics_button['command'] = make_plots
-    
+    reset_statistics("stats.txt")
+
+
 def make_plots():
     """This function use mathplotlib.piplot to make plots and return start_grafics_button into start position """
     data_collection_flag = False
     start_grafics_button['text'] = "Start plots"
     start_grafics_button['command'] = start_making_plot  #FIXME need to make plots
+
 
 def execution():
     """Функция исполнения -- выполняется циклически, вызывая обработку всех небесных тел,
@@ -53,7 +57,8 @@ def execution():
         update_object_position(space, body)
     physical_time += time_step.get()
     displayed_time.set("%.1f" % physical_time + " seconds gone")
-    save_statistics("stats.txt", space_objects)
+    # if data_collection_flag:
+    #     save_statistics("stats.txt", space_objects)
 
     if perform_execution:
         space.after(101 - int(time_speed.get()), execution)
@@ -67,7 +72,6 @@ def start_execution():
     perform_execution = True
     start_button['text'] = "Pause"
     start_button['command'] = stop_execution
-    reset_statistics("stats.txt")
 
     execution()
     print('Started execution...')

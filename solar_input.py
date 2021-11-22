@@ -154,6 +154,8 @@ def reset_statistics(statistics_filename, space_objects):
 
 def save_statistics_to_file(statistics_filename, space_objects):
     """Сохраняет статистику значений положений и скоростей в заданный файл.
+    Формат координат в строках:
+    <x> <y> <Vx> <Vy>
 
     Параметры:
 
@@ -169,19 +171,33 @@ def save_statistics_to_file(statistics_filename, space_objects):
 
 def read_statistics_from_file(statistics_filename):
     """Получает статистику положений и скоростей из заданного файла.
+    Возвращает кортеж из двух списков:
+    Список постоянных параметров каждого объектов:
+    (<тип объекта>, <радиус в пикселах>, <цвет>, <масса>)
+
+    Список снимков координат каждого объекта:
+    [[<x1>, <y1>, <Vx1>, <Vy1>],
+     [<x2>, <y2>, <Vx2>, <Vy2>],
+     ...]
 
     Параметры:
 
     **statistics_filename** — имя заданного файла
+
     """
     with open(statistics_filename, 'r') as stats_file:
         data = stats_file.read().split('\n\n')
+
+    # format of initial parameters
     object_properties = [row.split() for row in data.pop(0).split('\n')]
-    data = [[[float(x)
+    object_properties = [(obj[0], int(obj[0]), obj[0], float(obj[0]))
+                         for obj in object_properties]
+
+    data = [[[float(x)  # all coordinates are floats
               for x in row.split()]
              for row in entry.split('\n')]
             for entry in data]
-    print(object_properties, data[:5])
+
     return object_properties, data
 
 # FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл

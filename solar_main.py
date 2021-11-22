@@ -65,7 +65,7 @@ def execution():
     physical_time += time_step.get()
     displayed_time.set("%.1f" % physical_time + " seconds gone")
     if data_collection_flag:
-        save_statistics_to_file("stats.txt", space_objects)
+        save_statistics_to_file("stats.txt", space_objects, physical_time)
     if perform_execution:
         space.after(101 - int(time_speed.get()), execution)
 

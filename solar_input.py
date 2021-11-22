@@ -149,12 +149,13 @@ def reset_statistics(statistics_filename, space_objects):
         for obj in space_objects:
             obj_data = (obj.type, obj.R, obj.color, obj.m)
             print_data_to_file(obj_data, out_file)
-        print(file=out_file)
 
 
-def save_statistics_to_file(statistics_filename, space_objects):
+def save_statistics_to_file(statistics_filename, space_objects, time):
     """Сохраняет статистику значений положений и скоростей в заданный файл.
-    Формат координат в строках:
+    Формат снимка состояния:
+    <время>
+    Списки координат и скоростей каждого тела на новой строке в формате:
     <x> <y> <Vx> <Vy>
 
     Параметры:
@@ -163,22 +164,24 @@ def save_statistics_to_file(statistics_filename, space_objects):
     **space_objects** — список объектов планет и звёзд
     """
     with open(statistics_filename, 'a') as out_file:
+        print('\n' + str(time), file=out_file)
         for obj in space_objects:
             obj_data = (obj.x, obj.y, obj.Vx, obj.Vy)
             print_data_to_file(obj_data, out_file)
-        print(file=out_file)
 
 
 def read_statistics_from_file(statistics_filename):
     """Получает статистику положений и скоростей из заданного файла.
-    Возвращает кортеж из двух списков:
-    Список постоянных параметров каждого объектов:
+    Возвращает кортеж из двух контейнеров:
+    Список постоянных параметров (кортеж) каждого объектов:
     (<тип объекта>, <радиус в пикселах>, <цвет>, <масса>)
 
-    Список снимков координат каждого объекта:
-    [[<x1>, <y1>, <Vx1>, <Vy1>],
-     [<x2>, <y2>, <Vx2>, <Vy2>],
-     ...]
+    Список снимков (кортежей) состояний системы:
+    (<time>:
+     Список координат и скоростей каждого объекта:
+     [[<x1>, <y1>, <Vx1>, <Vy1>],
+      [<x2>, <y2>, <Vx2>, <Vy2>],
+      ...])
 
     Параметры:
 
@@ -192,11 +195,13 @@ def read_statistics_from_file(statistics_filename):
     object_properties = [row.split() for row in data.pop(0).split('\n')]
     object_properties = [(obj[0], int(obj[1]), obj[2], float(obj[3]))
                          for obj in object_properties]
-
-    data = [[[float(x)  # all coordinates are floats
-              for x in row.split()]
-             for row in entry.split('\n')]
+    # divide entry to time and coords
+    data = [entry.partition('\n') for entry in data]
+    data = [(float(entry[0]),  # time
+             [[float(x) for x in row.split()]  # all coordinates are floats
+              for row in entry[2].split('\n')])
             for entry in data]
+
     return object_properties, data
 
 # FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл

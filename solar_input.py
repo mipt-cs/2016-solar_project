@@ -197,7 +197,6 @@ def read_statistics_from_file(statistics_filename):
               for x in row.split()]
              for row in entry.split('\n')]
             for entry in data]
-
     return object_properties, data
 
 # FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл

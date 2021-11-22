@@ -6,8 +6,9 @@ from tkinter.filedialog import *
 from solar_vis import *
 from solar_model import *
 from solar_input import *
+from solar_plots import *
 
-data_collection = False
+data_collection_flag = False
 """ data collection flag """
 
 perform_execution = False
@@ -31,18 +32,21 @@ space_objects = []
 
 def start_making_plot():
     """This function starts the process of collecting data to make plots"""
+    global data_collection_flag
     data_collection_flag = True
     start_grafics_button['text'] = "Make plots"
     start_grafics_button['command'] = make_plots
-    # reset_statistics("stats.txt", space_objects)
+    reset_statistics("stats.txt", space_objects)
 
 
 def make_plots():
     """This function use mathplotlib.piplot to make plots and return start_grafics_button into start position """
+    global data_collection_flag
     data_collection_flag = False
     start_grafics_button['text'] = "Start plots"
     start_grafics_button['command'] = start_making_plot
-    # read_statistics_from_file("stats.txt")
+    a, b = read_statistics_from_file("stats.txt")
+    making_plots(a, b)
     #FIXME need to make plots
 
 
@@ -54,13 +58,14 @@ def execution():
     """
     global physical_time
     global displayed_time
+    global data_collection_flag
     recalculate_space_objects_positions(space_objects, time_step.get())
     for body in space_objects:
         update_object_position(space, body)
     physical_time += time_step.get()
     displayed_time.set("%.1f" % physical_time + " seconds gone")
-    # if data_collection_flag:
-    #     save_statistics_to_file("stats.txt", space_objects)
+    if data_collection_flag:
+        save_statistics_to_file("stats.txt", space_objects)
     if perform_execution:
         space.after(101 - int(time_speed.get()), execution)
 

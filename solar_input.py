@@ -105,50 +105,54 @@ def parse_planet_parameters(line, planet):
     # FIXED: assign fileds of object from input
 
 
-def get_space_objects_data(space_objects):
-    """Получает данные о космических объектах в виде строк.
+def print_data_to_file(obj_data, out_file):
+    """Записывает данные об объекте в виде строки.
+
+    Параметры:
+
+    **obj_data** — список параметров объекта
+    **out_file** — файл для записи
+    """
+    print(' '.join(map(str, obj_data)), file=out_file)
+
+
+def write_space_objects_data_to_file(output_filename, space_objects):
+    """Сохраняет данные о космических объектах в файл.
     Строки имеют следующий формат:
     Star <радиус в пикселах> <цвет> <масса> <x> <y> <Vx> <Vy>
     Planet <радиус в пикселах> <цвет> <масса> <x> <y> <Vx> <Vy>
 
     Параметры:
 
-    **space_objects** — список объектов планет и звёзд
-    """
-    data = ''
-    for obj in space_objects:
-        obj_data = (obj.type, obj.R, obj.color, obj.m,
-                    obj.x, obj.y, obj.Vx, obj.Vy)
-        data += ' '.join(map(str, obj_data)) + '\n'
-    return data
-
-
-def write_space_objects_data_to_file(output_filename, space_objects):
-    """Сохраняет данные о космических объектах в файл.
-
-    Параметры:
-
     **output_filename** — имя входного файла
     **space_objects** — список объектов планет и звёзд
     """
-    output_data = get_space_objects_data(space_objects)
     with open(output_filename, 'w') as out_file:
-        print(output_data, file=out_file)
+        for obj in space_objects:
+            obj_data = (obj.type, obj.R, obj.color, obj.m,
+                        obj.x, obj.y, obj.Vx, obj.Vy)
+            print_data_to_file(obj_data, out_file)
         # FIXED: store real values of parameters in file
 
 
-def reset_statistics(statistics_filename):
-    """Обнулить статистику в файле.
+def reset_statistics(statistics_filename, space_objects):
+    """Сбросить статистику в файле к начальному состоянию.
+    В начале приводятся постоянные характеристики объектов:
+    <тип объекта> <радиус в пикселах> <цвет> <масса>
 
     Параметры:
 
     **statistics_filename** — имя файла статистики
+    **space_objects** — список объектов планет и звёзд
     """
     with open(statistics_filename, 'w') as out_file:
-        out_file.write('')
+        for obj in space_objects:
+            obj_data = (obj.type, obj.R, obj.color, obj.m)
+            print_data_to_file(obj_data, out_file)
+        print(file=out_file)
 
 
-def save_statistics(statistics_filename, space_objects):
+def save_statistics_to_file(statistics_filename, space_objects):
     """Сохраняет статистику значений положений и скоростей в заданный файл.
 
     Параметры:
@@ -156,13 +160,30 @@ def save_statistics(statistics_filename, space_objects):
     **statistics_filename** — имя заданного файла
     **space_objects** — список объектов планет и звёзд
     """
-    current_data = get_space_objects_data(space_objects)
+    with open(statistics_filename, 'a') as out_file:
+        for obj in space_objects:
+            obj_data = (obj.x, obj.y, obj.Vx, obj.Vy)
+            print_data_to_file(obj_data, out_file)
+        print(file=out_file)
 
-    with open(statistics_filename, 'r') as out_file:
-        previous_data = out_file.read()
 
-    with open(statistics_filename, 'w') as out_file:
-        print(previous_data + current_data, file=out_file)
+def read_statistics_from_file(statistics_filename):
+    """Получает статистику положений и скоростей из заданного файла.
+
+    Параметры:
+
+    **statistics_filename** — имя заданного файла
+    """
+    with open(statistics_filename, 'r') as stats_file:
+        data = stats_file.read().split('\n\n')
+    object_properties = [row.split() for row in data.pop(0).split('\n')]
+    data = [[[float(x)
+              for x in row.split()]
+             for row in entry.split('\n')]
+            for entry in data]
+    print(object_properties, data[:5])
+    return object_properties, data
+
 # FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл
 
 

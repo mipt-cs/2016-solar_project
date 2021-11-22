@@ -34,14 +34,16 @@ def start_making_plot():
     data_collection_flag = True
     start_grafics_button['text'] = "Make plots"
     start_grafics_button['command'] = make_plots
-    reset_statistics("stats.txt")
+    # reset_statistics("stats.txt", space_objects)
 
 
 def make_plots():
     """This function use mathplotlib.piplot to make plots and return start_grafics_button into start position """
     data_collection_flag = False
     start_grafics_button['text'] = "Start plots"
-    start_grafics_button['command'] = start_making_plot  #FIXME need to make plots
+    start_grafics_button['command'] = start_making_plot
+    # read_statistics_from_file("stats.txt")
+    #FIXME need to make plots
 
 
 def execution():
@@ -58,8 +60,7 @@ def execution():
     physical_time += time_step.get()
     displayed_time.set("%.1f" % physical_time + " seconds gone")
     # if data_collection_flag:
-    #     save_statistics("stats.txt", space_objects)
-
+    #     save_statistics_to_file("stats.txt", space_objects)
     if perform_execution:
         space.after(101 - int(time_speed.get()), execution)
 
@@ -160,7 +161,7 @@ def main():
     load_file_button.pack(side=tkinter.LEFT)
     save_file_button = tkinter.Button(frame, text="Save to file...", command=save_file_dialog)
     save_file_button.pack(side=tkinter.LEFT)
-    start_grafics_button = tkinter.Button(frame, text="Start plots", command=start_making_plot) 
+    start_grafics_button = tkinter.Button(frame, text="Start plots", command=start_making_plot)
     start_grafics_button.pack(side=tkinter.LEFT)
 
     displayed_time = tkinter.StringVar()

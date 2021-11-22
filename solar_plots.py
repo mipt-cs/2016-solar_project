@@ -20,18 +20,21 @@ def making_plots(object_properties, data_input):
         sp = plt.subplot(number, 3, i*3+1)
         plt.plot(x[0], y[0])
         plt.grid(True)
+        plt.title(object_properties[i][0]+' '+object_properties[i][2]+' '+'V(R)')
         x, y = [], []
         x = np.arange(0, len(data)-1, 1)
         y.append([Pifagor(data[j][2], data[j][3]) for j in range(len(data)-1)])
         sp = plt.subplot(number, 3, i*3+2)
         plt.plot(x, y[0])
         plt.grid(True)
+        plt.title(object_properties[i][0]+' '+object_properties[i][2]+' '+'V(t)')
         x, y = [], []
         x = np.arange(0, len(data)-1, 1)
         y.append([Pifagor(data[j][0], data[j][1]) for j in range(len(data)-1)])
         sp = plt.subplot(number, 3, i*3+3)
         plt.plot(x, y[0])
         plt.grid(True)
+        plt.title(object_properties[i][0]+' '+object_properties[i][2]+' '+'R(t)')
     plt.show()
         
         

@@ -190,7 +190,7 @@ def read_statistics_from_file(statistics_filename):
 
     # format of initial parameters
     object_properties = [row.split() for row in data.pop(0).split('\n')]
-    object_properties = [(obj[0], int(obj[0]), obj[0], float(obj[0]))
+    object_properties = [(obj[0], int(obj[1]), obj[2], float(obj[3]))
                          for obj in object_properties]
 
     data = [[[float(x)  # all coordinates are floats

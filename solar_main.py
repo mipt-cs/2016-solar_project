@@ -47,7 +47,7 @@ def make_plots():
     start_grafics_button['command'] = start_making_plot
     a, b = read_statistics_from_file("stats.txt")
     making_plots(a, b)
-    #FIXME need to make plots
+    #FIXED make plots
 
 
 def execution():

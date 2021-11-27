@@ -1,0 +1,8 @@
+# Solar sistem - just Sun, Earth and Moon
+Star 20 red 1.98892E30 0 0 0 0
+
+#Earth e = 0
+Planet 4 green 5.974E24 149.60E9 0 0 29.783E3
+
+#Moon 
+Planet 2 yellow 7.3477E22 149984400E3 0 0 30.806E3 

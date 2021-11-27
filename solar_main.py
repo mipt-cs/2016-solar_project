@@ -100,6 +100,10 @@ def save_file_dialog():
     out_filename = asksaveasfilename(filetypes=(("Text file", ".txt"),))
     write_space_objects_data_to_file(out_filename, space_objects)
 
+def chart():
+    ""
+    pass
+
 
 def main():
     """Главная функция главного модуля.
@@ -141,6 +145,9 @@ def main():
     load_file_button.pack(side=tkinter.LEFT)
     save_file_button = tkinter.Button(frame, text="Save to file...", command=save_file_dialog)
     save_file_button.pack(side=tkinter.LEFT)
+
+    chart_button = tkinter.Button(frame, text="Построить график", command=chart)
+    chart_button.pack(side=tkinter.LEFT)
 
     displayed_time = tkinter.StringVar()
     displayed_time.set(str(physical_time) + " seconds gone")

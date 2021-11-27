@@ -98,10 +98,14 @@ def save_file_dialog():
     Считанные объекты сохраняются в глобальный список space_objects
     """
     out_filename = asksaveasfilename(filetypes=(("Text file", ".txt"),))
+    stats = 'stats.txt' #Мокро!
     write_space_objects_data_to_file(out_filename, space_objects)
+    write_space_objects_data_to_file(stats, space_objects, physical_time) #Важно!!
 
 def chart():
     "Открывает окно для построения графика. Строит по сохраненной статистике"
+    stats = 'stats.txt'
+    build_graph(stats)
     pass
 
 

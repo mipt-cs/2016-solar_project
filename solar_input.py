@@ -1,6 +1,7 @@
 # coding: utf-8
 # license: GPLv3
-
+import numpy as np
+import matplotlib.pyplot as plt
 from solar_objects import Star, Planet
 
 
@@ -102,6 +103,51 @@ def write_space_objects_data_to_file(output_filename, space_objects):
                            + ' ' + obj.x + ' ' + obj.y + ' ' + obj.Vx + ' ' + obj.Vy + '\n')
             # FIXME: should store real values
         out_file.close()
+
+
+def write_space_objects_data_to_file_stats(output_filename_stats, space_objects, T):
+    """Сохраняет данные о космических объектах в файл статистики.
+    Строки должны иметь следующий формат:
+    Star <радиус в пикселах> <цвет> <масса> <x> <y> <Vx> <Vy>
+    Planet <радиус в пикселах> <цвет> <масса> <x> <y> <Vx> <Vy>
+
+    Параметры:
+
+    **output_filename** — имя входного файла
+    **space_objects** — список объектов планет и звёзд
+    """
+    with open(output_filename_stats) as out_file:
+        for obj in space_objects:
+            out_file.write(obj.type + ' ' + obj.R + ' ' + obj.color + ' ' + obj.m
+                           + ' ' + obj.x + ' ' + obj.y + ' ' + obj.Vx + ' ' + obj.Vy + T + '\n')
+            # FIXME: should store real values
+        out_file.close()
+
+
+def build_graph(filename_stats):
+    """Строит график
+    """
+
+    T = []
+    V = []
+    with open(filename_stats) as input_file:
+        for line in input_file:
+            if len(line.strip()) == 0 or line[0] == '#':
+                continue  # пустые строки и строки-комментарии пропускаем
+            object_type = line.split()[0].lower()
+            '''if object_type == "star":  # FIXME: do the same for planet
+                star = Star()
+                parse_star_parameters(line, star)
+                objects.append(star)'''
+            if object_type == "planet":
+                T.append(line.split()[8].lower())
+                V.append((((float(line.split()[6].lower())) ** 2 + (float(line.split()[7].lower())) ** 2)) ** 0.5)
+
+        data_t = np.array(T)
+        data_vx = np.array(V)
+
+        plt.plot(data_t, data_vx)
+        plt.show()
 
 
 # FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл...

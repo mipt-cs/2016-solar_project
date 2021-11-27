@@ -50,11 +50,11 @@ def parse_star_parameters(line, star):
 
     star.R = int(line.split()[1].lower())
     star.color = line.split()[2].lower()
-    star.m = int(line.split()[3].lower())
+    star.m = round((line.split()[3].lower()))
     star.x = int(line.split()[4].lower())
     star.y = int(line.split()[5].lower())
-    star.Vx = int(line.split()[6].lower())
-    star.Vy = int(line.split()[7].lower())
+    star.Vx = round(line.split()[6].lower())
+    star.Vy = round(line.split()[7].lower())
     pass
 
 
@@ -76,11 +76,11 @@ def parse_planet_parameters(line, planet):
 
     planet.R = int(line.split()[1].lower())
     planet.color = line.split()[2].lower()
-    planet.m = int(line.split()[3].lower())
+    planet.m = round(line.split()[3].lower())
     planet.x = int(line.split()[4].lower())
     planet.y = int(line.split()[5].lower())
-    planet.Vx = int(line.split()[6].lower())
-    planet.Vy = int(line.split()[7].lower())
+    planet.Vx = round(line.split()[6].lower())
+    planet.Vy = round(line.split()[7].lower())
     pass  # FIXME: not done yet...
 
 

@@ -101,7 +101,7 @@ def save_file_dialog():
     write_space_objects_data_to_file(out_filename, space_objects)
 
 def chart():
-    ""
+    "Открывает окно для построения графика. Строит по сохраненной статистике"
     pass
 
 

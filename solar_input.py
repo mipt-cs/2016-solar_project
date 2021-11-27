@@ -131,24 +131,43 @@ def build_graph(filename_stats):
 
     T = []
     V = []
+    X = []
+    Y = []
+    R = []
     with open(filename_stats) as input_file:
         for line in input_file:
             if len(line.strip()) == 0 or line[0] == '#':
                 continue  # пустые строки и строки-комментарии пропускаем
             object_type = line.split()[0].lower()
-            '''if object_type == "star":  # FIXME: do the same for planet
-                star = Star()
-                parse_star_parameters(line, star)
-                objects.append(star)'''
-            if object_type == "planet":
+            if object_type == "star":  # FIXME: do the same for planet
+                X.append(round(float(line.split()[4].lower())))
+                Y.append(round(float(line.split()[5].lower())))
+            elif object_type == "planet":
                 T.append(line.split()[8].lower())
                 V.append(((float(line.split()[6].lower())) ** 2 + (float(line.split()[7].lower())) ** 2) ** 0.5)
+                R.append(((X[-1]-round(float(line.split()[4].lower())))**2+(Y[-1]-round(float(line.split()[5].lower())))**2)**0.5)
 
         data_t = np.array(T)
         data_vx = np.array(V)
+        data_r = np.array(R)
 
+        sp = plt.subplot(221)
         plt.plot(data_t, data_vx)
+        plt.title('V_x OT t')
+        plt.grid(True)
+
+        sp = plt.subplot(222)
+        plt.plot(data_t, data_r)
+        plt.title('R OT t')
+        plt.grid(True)
+
+        sp = plt.subplot(223)
+        plt.plot(data_r, data_vx)
+        plt.title('V_x OT R')
+        plt.grid(True)
+
         plt.show()
+
 
 
 # FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл...

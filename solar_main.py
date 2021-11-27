@@ -40,6 +40,8 @@ def execution():
     physical_time += time_step.get()
     displayed_time.set("%.1f" % physical_time + " seconds gone")
 
+    write_space_objects_data_to_file_stats('stats', space_objects, physical_time)
+
     if perform_execution:
         space.after(101 - int(time_speed.get()), execution)
 
@@ -54,7 +56,6 @@ def start_execution():
     start_button['command'] = stop_execution
 
     execution()
-    write_space_objects_data_to_file_stats('stats', space_objects, physical_time)
     print('Started execution...')
 
 

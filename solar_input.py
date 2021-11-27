@@ -116,10 +116,11 @@ def write_space_objects_data_to_file_stats(output_filename_stats, space_objects,
     **output_filename** — имя входного файла
     **space_objects** — список объектов планет и звёзд
     """
-    with open(output_filename_stats) as out_file:
+    with open(output_filename_stats, 'a') as out_file:
         for obj in space_objects:
             out_file.write(obj.type + ' ' + str(obj.R) + ' ' + str(obj.color) + ' ' + str(obj.m)
-                           + ' ' + str(obj.x) + ' ' + str(obj.y) + ' ' + str(obj.Vx) + ' ' + str(obj.Vy) + ' ' + str(T) + '\n')
+                           + ' ' + str(obj.x) + ' ' + str(obj.y) + ' ' + str(obj.Vx) + ' ' + str(obj.Vy) + ' ' + str(T)
+                           + '\n')
             # FIXME: should store real values
         out_file.close()
 

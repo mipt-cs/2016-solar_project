@@ -54,6 +54,7 @@ def start_execution():
     start_button['command'] = stop_execution
 
     execution()
+    write_space_objects_data_to_file('stats', space_objects, physical_time)
     print('Started execution...')
 
 

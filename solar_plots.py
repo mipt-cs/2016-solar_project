@@ -27,23 +27,23 @@ def making_plots(object_properties, data_input_row):
         x.append([Pifagor(data[j][0]-data_star[j][0], data[j][1]-data_star[j][1])  for j in range(len(data))])
         y.append([Pifagor(data[j][2], data[j][3]) for j in range(len(data))])
         sp = plt.subplot(number, 3, i*3+1)
-        plt.plot(x[0], y[0])
+        plt.plot(x[0], y[0], label = object_properties[i][0]+' '+object_properties[i][2]+' '+'V(R)')
         plt.grid(True)
-        plt.title(object_properties[i][0]+' '+object_properties[i][2]+' '+'V(R)')
+        plt.legend(loc='best', fontsize=5)
         x, y = [], []
         x = time
         y.append([Pifagor(data[j][2], data[j][3]) for j in range(len(data))])
         sp = plt.subplot(number, 3, i*3+2)
-        plt.plot(x, y[0])
+        plt.plot(x, y[0], label = object_properties[i][0]+' '+object_properties[i][2]+' '+'V(t)')
         plt.grid(True)
-        plt.title(object_properties[i][0]+' '+object_properties[i][2]+' '+'V(t)')
+        plt.legend(loc='best', fontsize=5)
         x, y = [], []
         x = time
         y.append([Pifagor(data[j][0]-data_star[j][0], data[j][1]-data_star[j][1]) for j in range(len(data))])
         sp = plt.subplot(number, 3, i*3+3)
-        plt.plot(x, y[0])
+        plt.plot(x, y[0], label = object_properties[i][0]+' '+object_properties[i][2]+' '+'R(t)')
         plt.grid(True)
-        plt.title(object_properties[i][0]+' '+object_properties[i][2]+' '+'R(t)')
+        plt.legend(loc='best', fontsize=5)
     plt.show()
         
         

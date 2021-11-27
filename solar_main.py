@@ -116,6 +116,8 @@ def main():
     physical_time = 0
 
     root = tkinter.Tk()
+    window_size = str(window_width)+"x"+str(window_height+60)
+    root.geometry(window_size)
     # космическое пространство отображается на холсте типа Canvas
     space = tkinter.Canvas(root, width=window_width, height=window_height, bg="black")
     space.pack(side=tkinter.TOP)

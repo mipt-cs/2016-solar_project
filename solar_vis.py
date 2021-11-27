@@ -3,7 +3,7 @@
 
 """Модуль визуализации.
 Нигде, кроме этого модуля, не используются экранные координаты объектов.
-Функции, создающие гaрафические объекты и перемещающие их на экране, принимают физические координаты
+Функции, создающие графические объекты и перемещающие их на экране, принимают физические координаты
 """
 
 header_font = "Arial-16"
@@ -23,7 +23,6 @@ scale_factor = None
 
 def calculate_scale_factor(max_distance):
     """Вычисляет значение глобальной переменной **scale_factor** по данной характерной длине"""
-    global scale_factor
     scale_factor = 0.4*min(window_height, window_width)/max_distance
     print('Scale factor:', scale_factor)
 
@@ -54,7 +53,7 @@ def scale_y(y):
     **y** — y-координата модели.
     """
 
-    return -int(y*scale_factor) + window_height//2 
+    return int(y*scale_factor) + window_height//2 
 
 
 def create_star_image(space, star):

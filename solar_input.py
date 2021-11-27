@@ -119,7 +119,7 @@ def write_space_objects_data_to_file_stats(output_filename_stats, space_objects,
     with open(output_filename_stats) as out_file:
         for obj in space_objects:
             out_file.write(obj.type + ' ' + obj.R + ' ' + obj.color + ' ' + obj.m
-                           + ' ' + obj.x + ' ' + obj.y + ' ' + obj.Vx + ' ' + obj.Vy + T + '\n')
+                           + ' ' + obj.x + ' ' + obj.y + ' ' + obj.Vx + ' ' + obj.Vy + ' ' + T + '\n')
             # FIXME: should store real values
         out_file.close()
 
@@ -141,7 +141,7 @@ def build_graph(filename_stats):
                 objects.append(star)'''
             if object_type == "planet":
                 T.append(line.split()[8].lower())
-                V.append((((float(line.split()[6].lower())) ** 2 + (float(line.split()[7].lower())) ** 2)) ** 0.5)
+                V.append(((float(line.split()[6].lower())) ** 2 + (float(line.split()[7].lower())) ** 2) ** 0.5)
 
         data_t = np.array(T)
         data_vx = np.array(V)

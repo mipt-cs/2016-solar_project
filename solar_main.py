@@ -54,7 +54,7 @@ def start_execution():
     start_button['command'] = stop_execution
 
     execution()
-    write_space_objects_data_to_file('stats', space_objects, physical_time)
+    write_space_objects_data_to_file_stats('stats', space_objects, physical_time)
     print('Started execution...')
 
 
@@ -101,7 +101,6 @@ def save_file_dialog():
     out_filename = asksaveasfilename(filetypes=(("Text file", ".txt"),))
     stats = 'stats.txt' #Мокро!
     write_space_objects_data_to_file(out_filename, space_objects)
-    write_space_objects_data_to_file(stats, space_objects, physical_time) #Важно!!
 
 def chart():
     "Открывает окно для построения графика. Строит по сохраненной статистике"

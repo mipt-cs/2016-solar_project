@@ -1,0 +1,15 @@
+@startuml
+object input
+object main
+object vis
+object model
+object objects
+object text.files
+object stats.txt
+text.files <|.. input
+input <.. objects
+main <.. vis 
+main <.. model 
+main <.. input
+stats <.. main
+@enduml

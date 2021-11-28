@@ -117,8 +117,9 @@ def write_space_objects_data_to_file_stats(output_filename_stats, space_objects,
     **space_objects** — список объектов планет и звёзд
     """
     with open(output_filename_stats, 'a') as out_file:
-        for obj in space_objects:
-            out_file.write(obj.type + ' ' + str(obj.R) + ' ' + str(obj.color) + ' ' + str(obj.m)
+        if T%10 == 0:
+            for obj in space_objects:
+                out_file.write(obj.type + ' ' + str(obj.R) + ' ' + str(obj.color) + ' ' + str(obj.m)
                            + ' ' + str(obj.x) + ' ' + str(obj.y) + ' ' + str(obj.Vx) + ' ' + str(obj.Vy) + ' ' + str(T)
                            + '\n')
             # FIXME: should store real values
@@ -139,7 +140,7 @@ def build_graph(filename_stats):
             if len(line.strip()) == 0 or line[0] == '#':
                 continue  # пустые строки и строки-комментарии пропускаем
             object_type = line.split()[0].lower()
-            if object_type == "star":  # FIXME: do the same for planet
+            if object_type == "star":
                 X.append(round(float(line.split()[4].lower())))
                 Y.append(round(float(line.split()[5].lower())))
             elif object_type == "planet":

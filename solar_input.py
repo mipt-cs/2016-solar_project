@@ -44,8 +44,10 @@ def parse_star_parameters(line, star):
     **line** — строка с описание звезды.
     **star** — объект звезды.
     """
+    line_quantities = line.split()
     (star.R, star.color, star.m, star.x, star.y, star.Vx, star.Vy) = (
-        int(line[1]), line[2], int(line[3]), int(line[4]), int(line[5]), int(line[6]), int(line[7]))
+        int(line_quantities[1]), line_quantities[2], int(line_quantities[3]), int(line_quantities[4]),
+        int(line_quantities[5]), int(line_quantities[6]), int(line_quantities[7]))
     # FIXME: not done yet. Change names? they are global now
 
 
@@ -64,8 +66,10 @@ def parse_planet_parameters(line, planet):
     **line** — строка с описание планеты.
     **planet** — объект планеты.
     """
+    line_quantities = line.split()
     (planet.R, planet.color, planet.m, planet.x, planet.y, planet.Vx, planet.Vy) = (
-        int(line[1]), line[2], int(line[3]), int(line[4]), int(line[5]), int(line[6]), int(line[7]))
+        int(line_quantities[1]), line_quantities[2], int(line_quantities[3]), int(line_quantities[4]),
+        int(line_quantities[5]), int(line_quantities[6]), int(line_quantities[7]))
     pass  # FIXME: not done yet...
 
 

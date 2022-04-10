@@ -51,7 +51,6 @@ def recalculate_space_objects_positions(space_objects, dt):
 
     for body in space_objects:
         calculate_force(body, space_objects)
-    for body in space_objects:
         move_space_object(body, dt)
 
 

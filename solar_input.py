@@ -37,7 +37,7 @@ def read_space_objects_data_from_file(input_filename):
             if len(line.strip()) == 0 or line[0] == '#':
                 continue  # пустые строки и строки-комментарии пропускаем
             object_type = line.split()[0].lower()
-            if object_type == "star":  # FIXME: do the same for planet
+            if object_type == "star":
                 star = Star()
                 parse_star_parameters(line, star)
                 objects.append(star)
@@ -48,7 +48,7 @@ def read_space_objects_data_from_file(input_filename):
     return objects
 
 
-def parse_star_parameters(line, star_obj):
+def parse_star_parameters(parameters_line, star_obj):
     """Считывает данные о звезде из строки.
     Входная строка должна иметь слеюущий формат:
     Star <радиус в пикселах> <цвет> <масса> <x> <y> <Vx> <Vy>
@@ -56,22 +56,16 @@ def parse_star_parameters(line, star_obj):
     Здесь (x, y) — координаты зведы, (Vx, Vy) — скорость.
     Пример строки:
     Star 10 red 1000 1 2 3 4
-
-    Параметры:
-
-    **line** — строка с описание звезды.
-    **star** — объект звезды.
     """
-    line_quantities = line.split()
+    line_quantities = parameters_line.split()
     (star_obj.R, star_obj.color, star_obj.m, star_obj.x, star_obj.y, star_obj.Vx, star_obj.Vy) = (
         read_float_quantity(line_quantities[1]), line_quantities[2], read_float_quantity(line_quantities[3]),
         read_float_quantity(line_quantities[4]),
         read_float_quantity(line_quantities[5]), read_float_quantity(line_quantities[6]),
         read_float_quantity(line_quantities[7]))
-    # FIXME: not done yet. Change names? they are global now
 
 
-def parse_planet_parameters(line, planet_obj):
+def parse_planet_parameters(parameters_line, planet_obj):
     """Считывает данные о планете из строки.
     Предполагается такая строка:
     Входная строка должна иметь слеюущий формат:
@@ -80,19 +74,14 @@ def parse_planet_parameters(line, planet_obj):
     Здесь (x, y) — координаты планеты, (Vx, Vy) — скорость.
     Пример строки:
     Planet 10 red 1000 1 2 3 4
-
-    Параметры:
-
-    **line** — строка с описание планеты.
-    **planet** — объект планеты.
     """
-    line_quantities = line.split()
+    line_quantities = parameters_line.split()
     (planet_obj.R, planet_obj.color, planet_obj.m, planet_obj.x, planet_obj.y, planet_obj.Vx, planet_obj.Vy) = (
         read_float_quantity(line_quantities[1]), line_quantities[2], read_float_quantity(line_quantities[3]),
         read_float_quantity(line_quantities[4]),
         read_float_quantity(line_quantities[5]), read_float_quantity(line_quantities[6]),
         read_float_quantity(line_quantities[7]))
-    pass  # FIXME: not done yet...
+
 
 
 def write_space_objects_data_to_file(output_filename, space_objects):

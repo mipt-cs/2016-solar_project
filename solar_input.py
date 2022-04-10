@@ -1,7 +1,25 @@
-    # coding: utf-8
+# coding: utf-8
 # license: GPLv3
 
 from solar_objects import Star, Planet
+
+
+def read_float_quantity(number_str):
+    if number_str.isdigit():
+        return float(number_str)
+    else:
+        chislo = ""
+        stepen = ""
+        stepen_flag = 0
+        for i in range(len(number_str)):
+            if not number_str[i].isalpha():
+                if stepen_flag:
+                    stepen += number_str[i]
+                else:
+                    chislo += number_str[i]
+            else: stepen_flag = 1
+        print(stepen, chislo)
+        return float(chislo) * (10 ** int(stepen))
 
 
 def read_space_objects_data_from_file(input_filename):
@@ -25,12 +43,12 @@ def read_space_objects_data_from_file(input_filename):
                 objects.append(star)
             elif object_type == "planet":
                 planet = Planet()
-            parse_planet_parameters(line, planet)
-            objects.append(planet)
+                parse_planet_parameters(line, planet)
+                objects.append(planet)
     return objects
 
 
-def parse_star_parameters(line, star):
+def parse_star_parameters(line, star_obj):
     """Считывает данные о звезде из строки.
     Входная строка должна иметь слеюущий формат:
     Star <радиус в пикселах> <цвет> <масса> <x> <y> <Vx> <Vy>
@@ -45,13 +63,15 @@ def parse_star_parameters(line, star):
     **star** — объект звезды.
     """
     line_quantities = line.split()
-    (star.R, star.color, star.m, star.x, star.y, star.Vx, star.Vy) = (
-        int(line_quantities[1]), line_quantities[2], int(line_quantities[3]), int(line_quantities[4]),
-        int(line_quantities[5]), int(line_quantities[6]), int(line_quantities[7]))
+    (star_obj.R, star_obj.color, star_obj.m, star_obj.x, star_obj.y, star_obj.Vx, star_obj.Vy) = (
+        read_float_quantity(line_quantities[1]), line_quantities[2], read_float_quantity(line_quantities[3]),
+        read_float_quantity(line_quantities[4]),
+        read_float_quantity(line_quantities[5]), read_float_quantity(line_quantities[6]),
+        read_float_quantity(line_quantities[7]))
     # FIXME: not done yet. Change names? they are global now
 
 
-def parse_planet_parameters(line, planet):
+def parse_planet_parameters(line, planet_obj):
     """Считывает данные о планете из строки.
     Предполагается такая строка:
     Входная строка должна иметь слеюущий формат:
@@ -67,9 +87,11 @@ def parse_planet_parameters(line, planet):
     **planet** — объект планеты.
     """
     line_quantities = line.split()
-    (planet.R, planet.color, planet.m, planet.x, planet.y, planet.Vx, planet.Vy) = (
-        int(line_quantities[1]), line_quantities[2], int(line_quantities[3]), int(line_quantities[4]),
-        int(line_quantities[5]), int(line_quantities[6]), int(line_quantities[7]))
+    (planet_obj.R, planet_obj.color, planet_obj.m, planet_obj.x, planet_obj.y, planet_obj.Vx, planet_obj.Vy) = (
+        read_float_quantity(line_quantities[1]), line_quantities[2], read_float_quantity(line_quantities[3]),
+        read_float_quantity(line_quantities[4]),
+        read_float_quantity(line_quantities[5]), read_float_quantity(line_quantities[6]),
+        read_float_quantity(line_quantities[7]))
     pass  # FIXME: not done yet...
 
 

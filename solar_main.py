@@ -35,11 +35,14 @@ def execution():
     """
     global physical_time
     global displayed_time
-    recalculate_space_objects_positions(space_objects, time_step.get())
+    global space_objects
+    space_objects = recalculate_space_objects_positions(space_objects, time_step.get())
     for body in space_objects:
         update_object_position(space, body)
     physical_time += time_step.get()
     displayed_time.set("%.1f" % physical_time + " seconds gone")
+
+    print("execute")
 
     if perform_execution:
         space.after(101 - int(time_speed.get()), execution)
@@ -145,6 +148,8 @@ def main():
     displayed_time.set(str(physical_time) + " seconds gone")
     time_label = tkinter.Label(frame, textvariable=displayed_time, width=30)
     time_label.pack(side=tkinter.RIGHT)
+
+
 
     root.mainloop()
     print('Modelling finished!')

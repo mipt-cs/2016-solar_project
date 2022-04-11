@@ -28,48 +28,48 @@ space_objects = []
 """Список космических объектов."""
 '''
 
+
 class Quantities:
     def __init__(self):
         self.physical_time = 0
-        self.displayed_time = None
-        self.time_step = None
-        self.time_speed = None
-        self.space = None
-        self.start_button = None
+        self.displayed_time = 0
+        self.time_step = 0
+        self.time_speed = 0
+        self.space = 0
+        self.start_button = tkinter.Button(tkinter.Frame(tkinter.Tk()))
         self.perform_execution = False
         self.space_objects = []
 
-def execution():
+
+def execution(quantities_class):
     """Функция исполнения -- выполняется циклически, вызывая обработку всех небесных тел,
     а также обновляя их положение на экране.
     Цикличность выполнения зависит от значения глобальной переменной perform_execution.
     При perform_execution == True функция запрашивает вызов самой себя по таймеру через от 1 мс до 100 мс.
     """
-    #global physical_time
-    #global displayed_time
-    #global space_objects
-    space_objects = recalculate_space_objects_positions(space_objects, time_step.get())
-    for body in space_objects:
-        update_object_position(space, body)
-    physical_time += time_step.get()
-    displayed_time.set("%.1f" % physical_time + " seconds gone")
+    quantities_class.space_objects = recalculate_space_objects_positions(quantities_class.space_objects,
+                                                                         quantities_class.time_step.get())
+    for body in quantities_class.space_objects:
+        update_object_position(quantities_class.space, body)
+    quantities_class.physical_time += quantities_class.time_step.get()
+    quantities_class.displayed_time.set("%.1f" % quantities_class.physical_time + " seconds gone")
 
     print("execute")
 
-    if perform_execution:
-        space.after(101 - int(time_speed.get()), execution)
+    if quantities_class.perform_execution:
+        quantities_class.space.after(101 - int(quantities_class.time_speed.get()), execution(quantities_class))
 
 
 def start_execution(quantities_class):
     """Обработчик события нажатия на кнопку Start.
     Запускает циклическое исполнение функции execution.
     """
-    #global perform_execution
+    # global perform_execution
     quantities_class.perform_execution = True
     quantities_class.start_button['text'] = "Pause"
     quantities_class.start_button['command'] = stop_execution(quantities_class)
 
-    execution()
+    execution(quantities_class)
     print('Started execution...')
 
 
@@ -89,8 +89,8 @@ def open_file_dialog(quantities_class):
     функцию считывания параметров системы небесных тел из данного файла.
     Считанные объекты сохраняются в глобальный список space_objects
     """
-    #global space_objects
-    #global perform_execution
+    # global space_objects
+    # global perform_execution
     quantities_class.perform_execution = False
     for obj in quantities_class.space_objects:
         quantities_class.space.delete(obj.image)  # удаление старых изображений планет
@@ -139,7 +139,7 @@ def main(quantities_class):
     frame = tkinter.Frame(root)
     frame.pack(side=tkinter.BOTTOM)
 
-    quantities_class.start_button = tkinter.Button(frame, text="Start", command=start_execution, width=6)
+    quantities_class.start_button = tkinter.Button(frame, text="Start", command=start_execution(quantities_class), width=6)
     quantities_class.start_button.pack(side=tkinter.LEFT)
 
     quantities_class.time_step = tkinter.DoubleVar()
@@ -151,9 +151,9 @@ def main(quantities_class):
     scale = tkinter.Scale(frame, variable=quantities_class.time_speed, orient=tkinter.HORIZONTAL)
     scale.pack(side=tkinter.LEFT)
 
-    load_file_button = tkinter.Button(frame, text="Open file...", command=open_file_dialog)
+    load_file_button = tkinter.Button(frame, text="Open file...", command=open_file_dialog(quantities_class))
     load_file_button.pack(side=tkinter.LEFT)
-    save_file_button = tkinter.Button(frame, text="Save to file...", command=save_file_dialog)
+    save_file_button = tkinter.Button(frame, text="Save to file...", command=save_file_dialog(quantities_class))
     save_file_button.pack(side=tkinter.LEFT)
 
     quantities_class.displayed_time = tkinter.StringVar()
@@ -161,10 +161,9 @@ def main(quantities_class):
     time_label = tkinter.Label(frame, textvariable=quantities_class.displayed_time, width=30)
     time_label.pack(side=tkinter.RIGHT)
 
-
-
     root.mainloop()
     print('Modelling finished!')
+
 
 quantities = Quantities()
 

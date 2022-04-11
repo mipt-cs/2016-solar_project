@@ -1,8 +1,8 @@
 # coding: utf-8
 # license: GPLv3
 
-#FIXME Убрать import*
-
+# FIXME Убрать import*
+import time
 import tkinter
 from tkinter.filedialog import *
 from solar_vis import *
@@ -39,6 +39,8 @@ class Quantities:
         self.time_speed = 0
         self.space = 0
         self.start_button = tkinter.Button(tkinter.Frame(tkinter.Tk()))
+        self.load_file_button = tkinter.Button(tkinter.Frame(tkinter.Tk()))
+        self.save_file_button = tkinter.Button(tkinter.Frame(tkinter.Tk()))
         self.perform_execution = False
         self.space_objects = []
 
@@ -58,8 +60,8 @@ def execution(quantities_class):
 
     print("execute")
 
-    if quantities_class.perform_execution:
-        quantities_class.space.after(101 - int(quantities_class.time_speed.get()), execution(quantities_class))
+    # if quantities_class.perform_execution:
+    # quantities_class.space.after(101 - int(quantities_class.time_speed.get()), execution(quantities_class))
 
 
 def start_execution(quantities_class):
@@ -69,13 +71,13 @@ def start_execution(quantities_class):
     # global perform_execution
     quantities_class.perform_execution = True
     quantities_class.start_button['text'] = "Pause"
-    quantities_class.start_button['command'] = lambda : stop_execution(quantities_class)
+    quantities_class.start_button['command'] = lambda: stop_execution(quantities_class)
 
     execution(quantities_class)
     print('Started execution...')
 
 
-#FIXME Эта штука пытается вернуть какое-то значение, а не изменить объект класса
+# FIXME Эта штука пытается вернуть какое-то значение, а не изменить объект класса
 
 def stop_execution(quantities_class):
     """Обработчик события нажатия на кнопку Start.
@@ -84,7 +86,7 @@ def stop_execution(quantities_class):
 
     quantities_class.perform_execution = False
     quantities_class.start_button['text'] = "Start"
-    quantities_class.start_button['command'] = lambda : start_execution(quantities_class)
+    quantities_class.start_button['command'] = lambda: start_execution(quantities_class)
     print('Paused execution.')
 
 
@@ -143,7 +145,8 @@ def main(quantities_class):
     frame = tkinter.Frame(root)
     frame.pack(side=tkinter.BOTTOM)
 
-    quantities_class.start_button = tkinter.Button(frame, text="Start", command= lambda : start_execution(quantities_class), width=6)
+    quantities_class.start_button = tkinter.Button(frame, text="Start",
+                                                   command=lambda: start_execution(quantities_class), width=6)
     quantities_class.start_button.pack(side=tkinter.LEFT)
 
     quantities_class.time_step = tkinter.DoubleVar()
@@ -155,15 +158,19 @@ def main(quantities_class):
     scale = tkinter.Scale(frame, variable=quantities_class.time_speed, orient=tkinter.HORIZONTAL)
     scale.pack(side=tkinter.LEFT)
 
-    load_file_button = tkinter.Button(frame, text="Open file...", command = lambda : open_file_dialog(quantities_class))
+    load_file_button = tkinter.Button(frame, text="Open file...", command=lambda: open_file_dialog(quantities_class))
     load_file_button.pack(side=tkinter.LEFT)
-    save_file_button = tkinter.Button(frame, text="Save to file...", command= lambda : save_file_dialog(quantities_class))
+    save_file_button = tkinter.Button(frame, text="Save to file...", command=lambda: save_file_dialog(quantities_class))
     save_file_button.pack(side=tkinter.LEFT)
 
     quantities_class.displayed_time = tkinter.StringVar()
     quantities_class.displayed_time.set(str(quantities_class.physical_time) + " seconds gone")
     time_label = tkinter.Label(frame, textvariable=quantities_class.displayed_time, width=30)
     time_label.pack(side=tkinter.RIGHT)
+
+    if quantities_class.perform_execution:
+        execution(quantities_class)
+        # quantities_class.space.after(101 - int(quantities_class.time_speed.get()), execution(quantities_class))
 
     root.mainloop()
     print('Modelling finished!')

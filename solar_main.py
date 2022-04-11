@@ -37,6 +37,7 @@ class Quantities:
         self.space = None
         self.start_button = None
         self.perform_execution = False
+        self.space_objects = []
 
 def execution():
     """Функция исполнения -- выполняется циклически, вызывая обработку всех небесных тел,
@@ -59,61 +60,61 @@ def execution():
         space.after(101 - int(time_speed.get()), execution)
 
 
-def start_execution():
+def start_execution(quantities_class):
     """Обработчик события нажатия на кнопку Start.
     Запускает циклическое исполнение функции execution.
     """
     #global perform_execution
-    perform_execution = True
-    start_button['text'] = "Pause"
-    start_button['command'] = stop_execution
+    quantities_class.perform_execution = True
+    quantities_class.start_button['text'] = "Pause"
+    quantities_class.start_button['command'] = stop_execution(quantities_class)
 
     execution()
     print('Started execution...')
 
 
-def stop_execution():
+def stop_execution(quantities_class):
     """Обработчик события нажатия на кнопку Start.
     Останавливает циклическое исполнение функции execution.
     """
-    global perform_execution
-    perform_execution = False
-    start_button['text'] = "Start"
-    start_button['command'] = start_execution
+
+    quantities_class.perform_execution = False
+    quantities_class.start_button['text'] = "Start"
+    quantities_class.start_button['command'] = start_execution(quantities_class)
     print('Paused execution.')
 
 
-def open_file_dialog():
+def open_file_dialog(quantities_class):
     """Открывает диалоговое окно выбора имени файла и вызывает
     функцию считывания параметров системы небесных тел из данного файла.
     Считанные объекты сохраняются в глобальный список space_objects
     """
     #global space_objects
     #global perform_execution
-    perform_execution = False
-    for obj in space_objects:
-        space.delete(obj.image)  # удаление старых изображений планет
+    quantities_class.perform_execution = False
+    for obj in quantities_class.space_objects:
+        quantities_class.space.delete(obj.image)  # удаление старых изображений планет
     in_filename = askopenfilename(filetypes=(("Text file", ".txt"),))
-    space_objects = read_space_objects_data_from_file(in_filename)
-    max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in space_objects])
+    quantities_class.space_objects = read_space_objects_data_from_file(in_filename)
+    max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in quantities_class.space_objects])
     calculate_scale_factor(max_distance)
 
-    for obj in space_objects:
+    for obj in quantities_class.space_objects:
         if obj.type == 'star':
-            create_star_image(space, obj)
+            create_star_image(quantities_class.space, obj)
         elif obj.type == 'planet':
-            create_planet_image(space, obj)
+            create_planet_image(quantities_class.space, obj)
         else:
             raise AssertionError()
 
 
-def save_file_dialog():
+def save_file_dialog(quantities_class):
     """Открывает диалоговое окно выбора имени файла и вызывает
     функцию считывания параметров системы небесных тел из данного файла.
     Считанные объекты сохраняются в глобальный список space_objects
     """
     out_filename = asksaveasfilename(filetypes=(("Text file", ".txt"),))
-    write_space_objects_data_to_file(out_filename, space_objects)
+    write_space_objects_data_to_file(out_filename, quantities_class.space_objects)
 
 
 def main(quantities_class):

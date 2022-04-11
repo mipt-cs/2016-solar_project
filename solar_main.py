@@ -1,6 +1,8 @@
 # coding: utf-8
 # license: GPLv3
 
+#FIXME Убрать import*
+
 import tkinter
 from tkinter.filedialog import *
 from solar_vis import *
@@ -67,11 +69,13 @@ def start_execution(quantities_class):
     # global perform_execution
     quantities_class.perform_execution = True
     quantities_class.start_button['text'] = "Pause"
-    quantities_class.start_button['command'] = stop_execution(quantities_class)
+    quantities_class.start_button['command'] = lambda : stop_execution(quantities_class)
 
     execution(quantities_class)
     print('Started execution...')
 
+
+#FIXME Эта штука пытается вернуть какое-то значение, а не изменить объект класса
 
 def stop_execution(quantities_class):
     """Обработчик события нажатия на кнопку Start.
@@ -80,7 +84,7 @@ def stop_execution(quantities_class):
 
     quantities_class.perform_execution = False
     quantities_class.start_button['text'] = "Start"
-    quantities_class.start_button['command'] = start_execution(quantities_class)
+    quantities_class.start_button['command'] = lambda : start_execution(quantities_class)
     print('Paused execution.')
 
 
@@ -139,7 +143,7 @@ def main(quantities_class):
     frame = tkinter.Frame(root)
     frame.pack(side=tkinter.BOTTOM)
 
-    quantities_class.start_button = tkinter.Button(frame, text="Start", command=start_execution(quantities_class), width=6)
+    quantities_class.start_button = tkinter.Button(frame, text="Start", command= lambda : start_execution(quantities_class), width=6)
     quantities_class.start_button.pack(side=tkinter.LEFT)
 
     quantities_class.time_step = tkinter.DoubleVar()
@@ -151,9 +155,9 @@ def main(quantities_class):
     scale = tkinter.Scale(frame, variable=quantities_class.time_speed, orient=tkinter.HORIZONTAL)
     scale.pack(side=tkinter.LEFT)
 
-    load_file_button = tkinter.Button(frame, text="Open file...", command=open_file_dialog(quantities_class))
+    load_file_button = tkinter.Button(frame, text="Open file...", command = lambda : open_file_dialog(quantities_class))
     load_file_button.pack(side=tkinter.LEFT)
-    save_file_button = tkinter.Button(frame, text="Save to file...", command=save_file_dialog(quantities_class))
+    save_file_button = tkinter.Button(frame, text="Save to file...", command= lambda : save_file_dialog(quantities_class))
     save_file_button.pack(side=tkinter.LEFT)
 
     quantities_class.displayed_time = tkinter.StringVar()

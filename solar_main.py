@@ -8,6 +8,7 @@ from solar_model import *
 from solar_input import *
 
 # Hello
+'''
 perform_execution = False
 """Флаг цикличности выполнения расчёта"""
 
@@ -25,6 +26,7 @@ time_step = None
 
 space_objects = []
 """Список космических объектов."""
+'''
 
 class Quantities:
     def __init__(self):
@@ -34,6 +36,7 @@ class Quantities:
         self.time_speed = None
         self.space = None
         self.start_button = None
+        self.perform_execution = False
 
 def execution():
     """Функция исполнения -- выполняется циклически, вызывая обработку всех небесных тел,
@@ -41,9 +44,9 @@ def execution():
     Цикличность выполнения зависит от значения глобальной переменной perform_execution.
     При perform_execution == True функция запрашивает вызов самой себя по таймеру через от 1 мс до 100 мс.
     """
-    global physical_time
-    global displayed_time
-    global space_objects
+    #global physical_time
+    #global displayed_time
+    #global space_objects
     space_objects = recalculate_space_objects_positions(space_objects, time_step.get())
     for body in space_objects:
         update_object_position(space, body)
@@ -60,7 +63,7 @@ def start_execution():
     """Обработчик события нажатия на кнопку Start.
     Запускает циклическое исполнение функции execution.
     """
-    global perform_execution
+    #global perform_execution
     perform_execution = True
     start_button['text'] = "Pause"
     start_button['command'] = stop_execution
@@ -85,8 +88,8 @@ def open_file_dialog():
     функцию считывания параметров системы небесных тел из данного файла.
     Считанные объекты сохраняются в глобальный список space_objects
     """
-    global space_objects
-    global perform_execution
+    #global space_objects
+    #global perform_execution
     perform_execution = False
     for obj in space_objects:
         space.delete(obj.image)  # удаление старых изображений планет
@@ -113,38 +116,38 @@ def save_file_dialog():
     write_space_objects_data_to_file(out_filename, space_objects)
 
 
-def main():
+def main(quantities_class):
     """Главная функция главного модуля.
     Создаёт объекты графического дизайна библиотеки tkinter: окно, холст, фрейм с кнопками, кнопки.
     """
-    global physical_time
-    global displayed_time
-    global time_step
-    global time_speed
-    global space
-    global start_button
+    physical_time = quantities_class.physical_time
+    displayed_time = quantities_class.displayed_time
+    time_step = quantities_class.time_step
+    time_speed = quantities_class.time_speed
+    space = quantities_class.space
+    start_button = quantities_class.start_button
 
     print('Modelling started!')
-    physical_time = 0
+    quantities_class.physical_time = 0
 
     root = tkinter.Tk()
     # космическое пространство отображается на холсте типа Canvas
-    space = tkinter.Canvas(root, width=window_width, height=window_height, bg="black")
-    space.pack(side=tkinter.TOP)
+    quantities_class.space = tkinter.Canvas(root, width=window_width, height=window_height, bg="black")
+    quantities_class.space.pack(side=tkinter.TOP)
     # нижняя панель с кнопками
     frame = tkinter.Frame(root)
     frame.pack(side=tkinter.BOTTOM)
 
-    start_button = tkinter.Button(frame, text="Start", command=start_execution, width=6)
-    start_button.pack(side=tkinter.LEFT)
+    quantities_class.start_button = tkinter.Button(frame, text="Start", command=start_execution, width=6)
+    quantities_class.start_button.pack(side=tkinter.LEFT)
 
-    time_step = tkinter.DoubleVar()
-    time_step.set(1)
-    time_step_entry = tkinter.Entry(frame, textvariable=time_step)
+    quantities_class.time_step = tkinter.DoubleVar()
+    quantities_class.time_step.set(1)
+    time_step_entry = tkinter.Entry(frame, textvariable=quantities_class.time_step)
     time_step_entry.pack(side=tkinter.LEFT)
 
-    time_speed = tkinter.DoubleVar()
-    scale = tkinter.Scale(frame, variable=time_speed, orient=tkinter.HORIZONTAL)
+    quantities_class.time_speed = tkinter.DoubleVar()
+    scale = tkinter.Scale(frame, variable=quantities_class.time_speed, orient=tkinter.HORIZONTAL)
     scale.pack(side=tkinter.LEFT)
 
     load_file_button = tkinter.Button(frame, text="Open file...", command=open_file_dialog)
@@ -152,9 +155,9 @@ def main():
     save_file_button = tkinter.Button(frame, text="Save to file...", command=save_file_dialog)
     save_file_button.pack(side=tkinter.LEFT)
 
-    displayed_time = tkinter.StringVar()
-    displayed_time.set(str(physical_time) + " seconds gone")
-    time_label = tkinter.Label(frame, textvariable=displayed_time, width=30)
+    quantities_class.displayed_time = tkinter.StringVar()
+    quantities_class.displayed_time.set(str(quantities_class.physical_time) + " seconds gone")
+    time_label = tkinter.Label(frame, textvariable=quantities_class.displayed_time, width=30)
     time_label.pack(side=tkinter.RIGHT)
 
 
@@ -165,4 +168,4 @@ def main():
 quantities = Quantities()
 
 if __name__ == "__main__":
-    main()
+    main(quantities)

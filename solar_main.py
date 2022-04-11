@@ -26,6 +26,14 @@ time_step = None
 space_objects = []
 """Список космических объектов."""
 
+class Quantities:
+    def __init__(self):
+        self.physical_time = 0
+        self.displayed_time = None
+        self.time_step = None
+        self.time_speed = None
+        self.space = None
+        self.start_button = None
 
 def execution():
     """Функция исполнения -- выполняется циклически, вызывая обработку всех небесных тел,
@@ -154,6 +162,7 @@ def main():
     root.mainloop()
     print('Modelling finished!')
 
+quantities = Quantities()
 
 if __name__ == "__main__":
     main()

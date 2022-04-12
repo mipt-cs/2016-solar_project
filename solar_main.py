@@ -237,7 +237,7 @@ def main(quantities_class, scale_factor_class):
 
 def read_statistics():
     """
-    Функция считывает данные из файла и строит графики
+    Функция считывает данные из файла
     """
     parameters = open('stats.txt', 'r')
     time_array = x_array = y_array = vx_array = vy_array = np.array([])
@@ -253,13 +253,32 @@ def read_statistics():
 
     parameters.close()
 
+    return time_array, x_array, y_array, vx_array, vy_array
+
+
+def print_graph():
+    """
+    Функция строит графики по считанным данным
+    """
+    time_array, x_array, y_array, vx_array, vy_array = read_statistics()
     fig_1, ax_1 = plt.subplots()
     ax_1.plot(time_array, np.sqrt(vx_array ** 2 + vy_array ** 2))
-    fig_1, ax_2 = plt.subplots()
+    ax_1.set_title("График зависимости модуля скорости планеты от времени")
+    ax_1.set_xlabel("Время, c")
+    ax_1.set_ylabel("Скорость, м/c")
+
+    fig_2, ax_2 = plt.subplots()
     ax_2.plot(time_array, np.sqrt(x_array ** 2 + y_array ** 2))
-    fig_1, ax_3 = plt.subplots()
+    ax_2.set_title("График зависимости расстояния спутник-планета от времени")
+    ax_2.set_xlabel("Время, c")
+    ax_2.set_ylabel("Расстояние, м")
+
+    fig_3, ax_3 = plt.subplots()
     ax_3.plot(np.sqrt(x_array ** 2 + y_array ** 2), np.sqrt(vx_array ** 2 + vy_array ** 2))
-    plt.legend()
+    ax_3.set_title("График зависимости расстояния спутник-планета \n от модуля скорости планеты")
+    ax_3.set_xlabel("Расстояние, м")
+    ax_3.set_ylabel("Скорость, м/c")
+
     plt.show()
 
 
@@ -267,4 +286,4 @@ if __name__ == "__main__":
     quantities = Quantities()
     scale_factor = solar_vis.ScaleFactor()
     main(quantities, scale_factor)
-    read_statistics()
+    print_graph()

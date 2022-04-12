@@ -45,7 +45,8 @@ def execution(quantities_class):
 
 
 def start_execution(quantities_class):
-    """Обработчик события нажатия на кнопку Start.
+    """
+    Обработчик события нажатия на кнопку Start.
     Запускает циклическое исполнение функции execution.
 
     :param quantities_class: класс, хранящий глобальные переменные
@@ -59,7 +60,8 @@ def start_execution(quantities_class):
 
 
 def stop_execution(quantities_class):
-    """Обработчик события нажатия на кнопку Start.
+    """
+    Обработчик события нажатия на кнопку Start.
     Останавливает циклическое исполнение функции execution.
 
     :param quantities_class: класс, хранящий глобальные переменные
@@ -72,7 +74,8 @@ def stop_execution(quantities_class):
 
 
 def open_file_dialog(quantities_class):
-    """Открывает диалоговое окно выбора имени файла и вызывает
+    """
+    Открывает диалоговое окно выбора имени файла и вызывает
     функцию считывания параметров системы небесных тел из данного файла.
     Считанные объекты сохраняются в глобальный список space_objects
 
@@ -97,7 +100,8 @@ def open_file_dialog(quantities_class):
 
 
 def save_file_dialog(quantities_class):
-    """Открывает диалоговое окно выбора имени файла и вызывает
+    """
+    Открывает диалоговое окно выбора имени файла и вызывает
     функцию считывания параметров системы небесных тел из данного файла.
     Считанные объекты сохраняются в глобальный список space_objects
 
@@ -107,45 +111,92 @@ def save_file_dialog(quantities_class):
     solar_input.write_space_objects_data_to_file(out_filename, quantities_class.space_objects)
 
 
+def start_button(quantities_class, frame):
+    """
+    Отрисовка кнопки старт
+    :param quantities_class: класс, хранящий глобальные переменные
+    :param frame: кадр
+    """
+    quantities_class.start_button = tkinter.Button(frame, text="Start",
+                                                   command=lambda: start_execution(quantities_class), width=6)
+    quantities_class.start_button.pack(side=tkinter.LEFT)
+
+
+def load_and_save_button(quantities_class, frame):
+    """
+    Отрисовка кнопок открыть и сохранить
+    :param quantities_class: класс, хранящий глобальные переменные
+    :param frame: кадр
+    """
+    load_file_button = tkinter.Button(frame, text="Open file...", command=lambda: open_file_dialog(quantities_class))
+    load_file_button.pack(side=tkinter.LEFT)
+    save_file_button = tkinter.Button(frame, text="Save to file...", command=lambda: save_file_dialog(quantities_class))
+    save_file_button.pack(side=tkinter.LEFT)
+
+
+def time(quantities_class, frame):
+    """
+    Индикатор времени
+    :param quantities_class: класс, хранящий глобальные переменные
+    :param frame: кадр
+    """
+    quantities_class.displayed_time = tkinter.StringVar()
+    quantities_class.displayed_time.set(str(quantities_class.physical_time) + " seconds gone")
+    time_label = tkinter.Label(frame, textvariable=quantities_class.displayed_time, width=30)
+    time_label.pack(side=tkinter.RIGHT)
+
+
+def time_step(quantities_class, frame):
+    """
+    Настройка шага расчета
+    :param quantities_class: класс, хранящий глобальные переменные
+    :param frame: кадр
+    :return:
+    """
+    quantities_class.time_step = tkinter.DoubleVar()
+    quantities_class.time_step.set(1)
+    time_step_entry = tkinter.Entry(frame, textvariable=quantities_class.time_step)
+    time_step_entry.pack(side=tkinter.LEFT)
+
+
+def set_quantities_class(root, frame, quantities_class):
+    """
+    Заполнение класса Quantities
+    :param root: главное окно Tkinter
+    :param frame: кадр
+    :param quantities_class: класс, хранящий глобальные переменные
+    """
+    start_button(quantities_class, frame)
+    time(quantities_class, frame)
+    time_step(quantities_class, frame)
+    quantities_class.physical_time = 0
+    quantities_class.space = tkinter.Canvas(root, width=solar_vis.window_width, height=solar_vis.window_height,
+                                            bg="black")
+    quantities_class.space.pack(side=tkinter.TOP)
+    quantities_class.time_speed = tkinter.DoubleVar()
+
+
 def main(quantities_class):
-    """Главная функция главного модуля.
+    """
+    Главная функция главного модуля.
     Создаёт объекты графического дизайна библиотеки tkinter: окно, холст, фрейм с кнопками, кнопки.
 
     :param quantities_class: класс, хранящий глобальные переменные
     """
 
     print('Modelling started!')
-    quantities_class.physical_time = 0
 
     root = tkinter.Tk()
-    quantities_class.space = tkinter.Canvas(root, width=solar_vis.window_width, height=solar_vis.window_height,
-                                            bg="black")
-    quantities_class.space.pack(side=tkinter.TOP)
+
     frame = tkinter.Frame(root)
     frame.pack(side=tkinter.BOTTOM)
 
-    quantities_class.start_button = tkinter.Button(frame, text="Start",
-                                                   command=lambda: start_execution(quantities_class), width=6)
-    quantities_class.start_button.pack(side=tkinter.LEFT)
+    set_quantities_class(root, frame, quantities_class)
 
-    quantities_class.time_step = tkinter.DoubleVar()
-    quantities_class.time_step.set(1)
-    time_step_entry = tkinter.Entry(frame, textvariable=quantities_class.time_step)
-    time_step_entry.pack(side=tkinter.LEFT)
-
-    quantities_class.time_speed = tkinter.DoubleVar()
     scale = tkinter.Scale(frame, variable=quantities_class.time_speed, orient=tkinter.HORIZONTAL)
     scale.pack(side=tkinter.LEFT)
 
-    load_file_button = tkinter.Button(frame, text="Open file...", command=lambda: open_file_dialog(quantities_class))
-    load_file_button.pack(side=tkinter.LEFT)
-    save_file_button = tkinter.Button(frame, text="Save to file...", command=lambda: save_file_dialog(quantities_class))
-    save_file_button.pack(side=tkinter.LEFT)
-
-    quantities_class.displayed_time = tkinter.StringVar()
-    quantities_class.displayed_time.set(str(quantities_class.physical_time) + " seconds gone")
-    time_label = tkinter.Label(frame, textvariable=quantities_class.displayed_time, width=30)
-    time_label.pack(side=tkinter.RIGHT)
+    load_and_save_button(quantities_class, frame)
 
     root.mainloop()
     print('Modelling finished!')

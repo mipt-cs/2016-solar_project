@@ -22,7 +22,7 @@ class Quantities:
         self.space_objects = []
 
 
-def execution(quantities_class):
+def execution(quantities_class, scale_factor_class):
     """
     Функция исполнения -- выполняется циклически, вызывая обработку всех небесных тел,
     а также обновляя их положение на экране.
@@ -30,56 +30,61 @@ def execution(quantities_class):
     При perform_execution == True функция запрашивает вызов самой себя по таймеру через от 1 мс до 100 мс.
 
     :param quantities_class: класс, хранящий глобальные переменные
+    :param scale_factor_class: класс, хранящий показатель масштабирования
     """
     quantities_class.space_objects = solar_model.recalculate_space_objects_positions(quantities_class.space_objects,
                                                                                      quantities_class.time_step.get())
     for body in quantities_class.space_objects:
-        solar_vis.update_object_position(quantities_class.space, body)
+        solar_vis.update_object_position(quantities_class.space, body, scale_factor_class)
     quantities_class.physical_time += quantities_class.time_step.get()
     quantities_class.displayed_time.set("%.1f" % quantities_class.physical_time + " seconds gone")
 
     print("execute")
 
     if quantities_class.perform_execution:
-        quantities_class.space.after(101 - int(quantities_class.time_speed.get()), lambda: execution(quantities_class))
+        quantities_class.space.after(101 - int(quantities_class.time_speed.get()),
+                                     lambda: execution(quantities_class, scale_factor_class))
 
 
-def start_execution(quantities_class):
+def start_execution(quantities_class, scale_factor_class):
     """
     Обработчик события нажатия на кнопку Start.
     Запускает циклическое исполнение функции execution.
 
     :param quantities_class: класс, хранящий глобальные переменные
+    :param scale_factor_class: класс, хранящий показатель масштабирования
     """
     quantities_class.perform_execution = True
     quantities_class.start_button['text'] = "Pause"
-    quantities_class.start_button['command'] = lambda: stop_execution(quantities_class)
+    quantities_class.start_button['command'] = lambda: stop_execution(quantities_class, scale_factor_class)
 
-    execution(quantities_class)
+    execution(quantities_class, scale_factor_class)
     print('Started execution...')
 
 
-def stop_execution(quantities_class):
+def stop_execution(quantities_class, scale_factor_class):
     """
     Обработчик события нажатия на кнопку Start.
     Останавливает циклическое исполнение функции execution.
 
     :param quantities_class: класс, хранящий глобальные переменные
+    :param scale_factor_class: класс, хранящий показатель масштабирования
     """
 
     quantities_class.perform_execution = False
     quantities_class.start_button['text'] = "Start"
-    quantities_class.start_button['command'] = lambda: start_execution(quantities_class)
+    quantities_class.start_button['command'] = lambda: start_execution(quantities_class, scale_factor_class)
     print('Paused execution.')
 
 
-def open_file_dialog(quantities_class):
+def open_file_dialog(quantities_class, scale_factor_class):
     """
     Открывает диалоговое окно выбора имени файла и вызывает
     функцию считывания параметров системы небесных тел из данного файла.
     Считанные объекты сохраняются в глобальный список space_objects
 
     :param quantities_class: класс, хранящий глобальные переменные
+    :param scale_factor_class: класс, хранящий показатель масштабирования
     """
 
     quantities_class.perform_execution = False
@@ -88,13 +93,13 @@ def open_file_dialog(quantities_class):
     in_filename = askopenfilename(filetypes=(("Text file", ".txt"),))
     quantities_class.space_objects = solar_input.read_space_objects_data_from_file(in_filename)
     max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in quantities_class.space_objects])
-    solar_vis.calculate_scale_factor(max_distance)
+    solar_vis.calculate_scale_factor(max_distance, scale_factor_class)
 
     for obj in quantities_class.space_objects:
         if obj.type == 'star':
-            solar_vis.create_star_image(quantities_class.space, obj)
+            solar_vis.create_star_image(quantities_class.space, obj, scale_factor_class)
         elif obj.type == 'planet':
-            solar_vis.create_planet_image(quantities_class.space, obj)
+            solar_vis.create_planet_image(quantities_class.space, obj, scale_factor_class)
         else:
             raise AssertionError()
 
@@ -111,26 +116,31 @@ def save_file_dialog(quantities_class):
     solar_input.write_space_objects_data_to_file(out_filename, quantities_class.space_objects)
 
 
-def start_button(quantities_class, frame):
+def start_button(quantities_class, frame, scale_factor_class):
     """
     Отрисовка кнопки старт
     :param quantities_class: класс, хранящий глобальные переменные
     :param frame: кадр
+    :param scale_factor_class: класс, хранящий показатель масштабирования
     """
     quantities_class.start_button = tkinter.Button(frame, text="Start",
-                                                   command=lambda: start_execution(quantities_class), width=6)
+                                                   command=lambda: start_execution(quantities_class,
+                                                                                   scale_factor_class), width=6)
     quantities_class.start_button.pack(side=tkinter.LEFT)
 
 
-def load_and_save_button(quantities_class, frame):
+def load_and_save_button(quantities_class, frame, scale_factor_class):
     """
     Отрисовка кнопок открыть и сохранить
     :param quantities_class: класс, хранящий глобальные переменные
     :param frame: кадр
+    :param scale_factor_class: класс, хранящий показатель масштабирования
     """
-    load_file_button = tkinter.Button(frame, text="Open file...", command=lambda: open_file_dialog(quantities_class))
+    load_file_button = tkinter.Button(frame, text="Open file...",
+                                      command=lambda: open_file_dialog(quantities_class, scale_factor_class))
     load_file_button.pack(side=tkinter.LEFT)
-    save_file_button = tkinter.Button(frame, text="Save to file...", command=lambda: save_file_dialog(quantities_class))
+    save_file_button = tkinter.Button(frame, text="Save to file...",
+                                      command=lambda: save_file_dialog(quantities_class))
     save_file_button.pack(side=tkinter.LEFT)
 
 
@@ -159,29 +169,31 @@ def time_step(quantities_class, frame):
     time_step_entry.pack(side=tkinter.LEFT)
 
 
-def set_quantities_class(root, frame, quantities_class):
+def set_quantities_class(root, frame, quantities_class, scale_factor_class):
     """
     Заполнение класса Quantities
     :param root: главное окно Tkinter
     :param frame: кадр
     :param quantities_class: класс, хранящий глобальные переменные
+    :param scale_factor_class: класс, хранящий показатель масштабирования
     """
-    start_button(quantities_class, frame)
+    start_button(quantities_class, frame, scale_factor_class)
     time(quantities_class, frame)
     time_step(quantities_class, frame)
     quantities_class.physical_time = 0
-    quantities_class.space = tkinter.Canvas(root, width=solar_vis.window_width, height=solar_vis.window_height,
+    quantities_class.space = tkinter.Canvas(root, width=solar_vis.WINDOW_WIDTH, height=solar_vis.WINDOW_HEIGHT,
                                             bg="black")
     quantities_class.space.pack(side=tkinter.TOP)
     quantities_class.time_speed = tkinter.DoubleVar()
 
 
-def main(quantities_class):
+def main(quantities_class, scale_factor_class):
     """
     Главная функция главного модуля.
     Создаёт объекты графического дизайна библиотеки tkinter: окно, холст, фрейм с кнопками, кнопки.
 
     :param quantities_class: класс, хранящий глобальные переменные
+    :param scale_factor_class: класс, хранящий показатель масштабирования
     """
 
     print('Modelling started!')
@@ -191,12 +203,12 @@ def main(quantities_class):
     frame = tkinter.Frame(root)
     frame.pack(side=tkinter.BOTTOM)
 
-    set_quantities_class(root, frame, quantities_class)
+    set_quantities_class(root, frame, quantities_class, scale_factor_class)
 
     scale = tkinter.Scale(frame, variable=quantities_class.time_speed, orient=tkinter.HORIZONTAL)
     scale.pack(side=tkinter.LEFT)
 
-    load_and_save_button(quantities_class, frame)
+    load_and_save_button(quantities_class, frame, scale_factor_class)
 
     root.mainloop()
     print('Modelling finished!')
@@ -204,4 +216,5 @@ def main(quantities_class):
 
 if __name__ == "__main__":
     quantities = Quantities()
-    main(quantities)
+    scale_factor = solar_vis.ScaleFactor()
+    main(quantities, scale_factor)

@@ -3,7 +3,7 @@
 
 """Модуль визуализации.
 Нигде, кроме этого модуля, не используются экранные координаты объектов.
-Функции, создающие гaрафические объекты и перемещающие их на экране, принимают физические координаты
+Функции, создающие графические объекты и перемещающие их на экране, принимают физические координаты
 """
 
 HEADER_FONT = "Arial-16"
@@ -31,7 +31,7 @@ class ScaleFactor:
 def calculate_scale_factor(max_distance, scale_factor_class):
     """
     Вычисляет значение глобальной переменной **scale_factor** по данной характерной длине
-    :param max_distance: физирческий размер поля
+    :param max_distance: физический размер поля
     :param scale_factor_class: класс, хранящий показатель масштабирования
     """
     scale_factor_class.value = 0.4 * min(WINDOW_HEIGHT, WINDOW_WIDTH) / max_distance
@@ -80,20 +80,6 @@ def create_image(space, body, scale_factor_class):
     y = scale_y(body.y, scale_factor_class)
     r = body.R
     body.image = space.create_oval([x - r, y - r], [x + r, y + r], fill=body.color)
-
-
-def create_planet_image(space, planet, scale_factor_class):
-    """
-    Создаёт отображаемый объект планеты.
-
-    :param space: холст для рисования.
-    :param planet: объект планеты.
-    :param scale_factor_class: класс, хранящий показатель масштабирования
-    """
-    x = scale_x(planet.x, scale_factor_class)
-    y = scale_y(planet.y, scale_factor_class)
-    r = planet.R
-    planet.image = space.create_oval([x - r, y - r], [x + r, y + r], fill=planet.color)
 
 
 def update_system_name(space, system_name):

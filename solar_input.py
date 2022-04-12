@@ -45,7 +45,6 @@ def read_space_objects_data_from_file(input_filename):
         for line in input_file:
             if len(line.strip()) == 0 or line[0] == '#':
                 continue  # пустые строки и строки-комментарии пропускаем
-            object_type = line.split()[0].lower()
             obj = SpaceObject()
             parse_object_parameters(line, obj)
             objects.append(obj)

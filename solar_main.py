@@ -9,6 +9,9 @@ import solar_input
 
 #hello neighbour
 
+
+#Hello there
+
 class Quantities:
     def __init__(self):
         self.physical_time = 0

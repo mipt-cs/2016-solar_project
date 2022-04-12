@@ -67,19 +67,19 @@ def scale_y(y, scale_factor_class):
     return - int(y * scale_factor_class.value) + WINDOW_HEIGHT // 2
 
 
-def create_star_image(space, star, scale_factor_class):
+def create_image(space, body, scale_factor_class):
     """
     Создание отображаемого объекта звезды.
 
     :param space: холст для рисования
-    :param star: звезда
+    :param body: звезда
     :param scale_factor_class: класс, хранящий показатель масштабирования
     """
 
-    x = scale_x(star.x, scale_factor_class)
-    y = scale_y(star.y, scale_factor_class)
-    r = star.R
-    star.image = space.create_oval([x - r, y - r], [x + r, y + r], fill=star.color)
+    x = scale_x(body.x, scale_factor_class)
+    y = scale_y(body.y, scale_factor_class)
+    r = body.R
+    body.image = space.create_oval([x - r, y - r], [x + r, y + r], fill=body.color)
 
 
 def create_planet_image(space, planet, scale_factor_class):
@@ -122,8 +122,6 @@ def update_object_position(space, body, scale_factor_class):
         space.coords(body.image, WINDOW_WIDTH + r, WINDOW_HEIGHT + r,
                      WINDOW_WIDTH + 2 * r, WINDOW_HEIGHT + 2 * r)
     space.coords(body.image, x - r, y - r, x + r, y + r)
-
-    print("drawing")
 
 
 if __name__ == "__main__":

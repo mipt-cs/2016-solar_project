@@ -96,10 +96,9 @@ def open_file_dialog(quantities_class, scale_factor_class):
     solar_vis.calculate_scale_factor(max_distance, scale_factor_class)
 
     for obj in quantities_class.space_objects:
-        if obj.type == 'star':
-            solar_vis.create_star_image(quantities_class.space, obj, scale_factor_class)
-        elif obj.type == 'planet':
-            solar_vis.create_planet_image(quantities_class.space, obj, scale_factor_class)
+        if obj.type == 'star' or 'planet':
+            solar_vis.create_image(quantities_class.space, obj, scale_factor_class)
+
         else:
             raise AssertionError()
 

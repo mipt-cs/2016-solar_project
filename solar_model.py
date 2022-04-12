@@ -38,8 +38,6 @@ def move_space_object(body, dt):
     body.Vy += ay * dt
     body.y += body.Vy * dt
 
-    print(body.color, body.x, body.y)
-
 
 def recalculate_space_objects_positions(space_objects, dt):
     """
@@ -52,7 +50,7 @@ def recalculate_space_objects_positions(space_objects, dt):
     for body in space_objects:
         calculate_force(body, space_objects)
         move_space_object(body, dt)
-    print("recalculating")
+
     return space_objects
 
 

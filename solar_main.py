@@ -39,8 +39,6 @@ def execution(quantities_class, scale_factor_class):
     quantities_class.physical_time += quantities_class.time_step.get()
     quantities_class.displayed_time.set("%.1f" % quantities_class.physical_time + " seconds gone")
 
-    print("execute")
-
     if quantities_class.perform_execution:
         quantities_class.space.after(101 - int(quantities_class.time_speed.get()),
                                      lambda: execution(quantities_class, scale_factor_class))

@@ -22,66 +22,68 @@ time_step = None
 """Шаг по времени при моделировании.
 Тип: float"""
 
-space_objects = []
+space_objects = [[]]
 """Список космических объектов."""
 
 
-def execution(perform, physical_time):
+def execution(perform, physical_time, displayed_time, time_step, time_speed, space):
     """Функция исполнения -- выполняется циклически, вызывая обработку всех небесных тел,
     а также обновляя их положение на экране.
     Цикличность выполнения зависит от значения глобальной переменной perform_execution.
     При perform_execution == True функция запрашивает вызов самой себя по таймеру через от 1 мс до 100 мс.
     """
-    #global physical_time
-    global displayed_time
-    recalculate_space_objects_positions(space_objects, time_step.get())
-    for body in space_objects:
+    # global physical_time
+    # global displayed_time
+    recalculate_space_objects_positions(space_objects[0], time_step.get())
+    for body in space_objects[0]:
         # print(body.x, body.y) удалить в конце
         update_object_position(space, body)
     physical_time[0] += time_step.get()
-    displayed_time.set("%.1f" % physical_time[0] + " seconds gone")
+    displayed_time[0].set("%.1f" % physical_time[0] + " seconds gone")
     if perform[0]:
-        space.after(101 - int(time_speed.get()), lambda: execution(perform, physical_time))
+        space.after(101 - int(time_speed.get()),
+                    lambda: execution(perform, physical_time, displayed_time, time_step, time_speed, space))
 
 
-def start_execution(perform, button, physical_time):
+def start_execution(perform, button, physical_time, displayed_time, time_step, time_speed, space):
     """Обработчик события нажатия на кнопку Start.
     Запускает циклическое исполнение функции execution.
     """
 
     perform[0] = True
     button['text'] = "Pause"
-    button['command'] = lambda: stop_execution(perform, button, physical_time)
+    button['command'] = lambda: stop_execution(perform, button, physical_time, displayed_time, time_step, time_speed,
+                                               space)
 
-    execution(perform, physical_time)
+    execution(perform, physical_time, displayed_time, time_step, time_speed, space)
     print('Started execution...')
 
 
-def stop_execution(perform, button, physical_time):
+def stop_execution(perform, button, physical_time, displayed_time, time_step, time_speed, space):
     """Обработчик события нажатия на кнопку Start.
     Останавливает циклическое исполнение функции execution.
     """
     perform[0] = False
     button['text'] = "Start"
-    button['command'] = lambda: start_execution(perform, button, physical_time)
+    button['command'] = lambda: start_execution(perform, button, physical_time, displayed_time, time_step, time_speed,
+                                                space)
     print('Paused execution.')
 
 
-def open_file_dialog(perform):
+def open_file_dialog(perform, space, space_objects):
     """Открывает диалоговое окно выбора имени файла и вызывает
     функцию считывания параметров системы небесных тел из данного файла.
     Считанные объекты сохраняются в глобальный список space_objects
     """
-    global space_objects
     perform[0] = False
-    for obj in space_objects:
+    for obj in space_objects[0]:
         space.delete(obj.image)  # удаление старых изображений планет
     in_filename = askopenfilename(filetypes=(("Text file", ".txt"),))
-    space_objects = read_space_objects_data_from_file(in_filename)
-    max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in space_objects])
-    calculate_scale_factor(max_distance)
+    space_objects[0] = read_space_objects_data_from_file(in_filename)
+    max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in space_objects[0]])
+    calculate_scale_factor(max_distance, scale_factor)
 
-    for obj in space_objects:
+    for obj in space_objects[0]:
         if obj.type == 'star':
             create_star_image(space, obj)
         elif obj.type == 'planet':
@@ -96,19 +98,19 @@ def save_file_dialog():
     Считанные объекты сохраняются в глобальный список space_objects
     """
     out_filename = asksaveasfilename(filetypes=(("Text file", ".txt"),))
-    write_space_objects_data_to_file(out_filename, space_objects)
+    write_space_objects_data_to_file(out_filename, space_objects[0])
 
 
 def main():
     """Главная функция главного модуля.
     Создаёт объекты графического дизайна библиотеки tkinter: окно, холст, фрейм с кнопками, кнопки.
     """
-    #global physical_time
-    global displayed_time
-    global time_step
-    global time_speed
-    global space
-    #global start_button
+    # global physical_time
+    # global displayed_time
+    # global time_step
+    # global time_speed
+    # global space
+    # global start_button
 
     print('Modelling started!')
     physical_time = [0]
@@ -121,8 +123,10 @@ def main():
     frame = tkinter.Frame(root)
     frame.pack(side=tkinter.BOTTOM)
 
-    start_button = tkinter.Button(frame, text="Start", command=lambda: start_execution(perform_execution, start_button, physical_time), width=6)
-    start_button.pack(side=tkinter.LEFT)
+    displayed_time = [tkinter.StringVar()]
+    displayed_time[0].set(str(physical_time[0]) + " seconds gone")
+    time_label = tkinter.Label(frame, textvariable=displayed_time[0], width=30)
+    time_label.pack(side=tkinter.RIGHT)
 
     time_step = tkinter.DoubleVar()
     time_step.set(1)
@@ -133,15 +137,17 @@ def main():
     scale = tkinter.Scale(frame, variable=time_speed, orient=tkinter.HORIZONTAL)
     scale.pack(side=tkinter.LEFT)
 
-    load_file_button = tkinter.Button(frame, text="Open file...", command=lambda: open_file_dialog(perform_execution))
+    start_button = tkinter.Button(frame, text="Start",
+                                  command=lambda: start_execution(perform_execution, start_button, physical_time,
+                                                                  displayed_time, time_step, time_speed, space),
+                                  width=6)
+    start_button.pack(side=tkinter.LEFT)
+
+    load_file_button = tkinter.Button(frame, text="Open file...",
+                                      command=lambda: open_file_dialog(perform_execution, space, space_objects))
     load_file_button.pack(side=tkinter.LEFT)
     save_file_button = tkinter.Button(frame, text="Save to file...", command=save_file_dialog)
     save_file_button.pack(side=tkinter.LEFT)
-
-    displayed_time = tkinter.StringVar()
-    displayed_time.set(str(physical_time) + " seconds gone")
-    time_label = tkinter.Label(frame, textvariable=displayed_time, width=30)
-    time_label.pack(side=tkinter.RIGHT)
 
     root.mainloop()
     print('Modelling finished!')

@@ -26,7 +26,6 @@ def read_float_quantity(number_str):
                 chislo += number_str[i]
         else:
             stepen_flag = 1
-    print(stepen, chislo)
     if stepen != "":
         return float(chislo) * (10 ** int(stepen))
     else:

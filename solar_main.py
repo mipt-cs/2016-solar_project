@@ -6,6 +6,8 @@ from tkinter.filedialog import askopenfilename, asksaveasfilename
 import solar_vis
 import solar_model
 import solar_input
+import numpy as np
+import matplotlib.pyplot as plt
 
 
 class Quantities:
@@ -28,7 +30,7 @@ class Quantities:
 
 def write_statistics(quantities_class):
     """
-    Функция записывает в файл значения координаты и скорости спутника для дальнейшей обрадотки
+    Функция записывает в файл значения координаты и скорости спутника
     :param quantities_class: объект класса Quantities
     """
     write_line = ""
@@ -233,7 +235,34 @@ def main(quantities_class, scale_factor_class):
     print('Modelling finished!')
 
 
+def read_statistics():
+    parameters = open('stats.txt', 'r')
+    time_array = x_array = y_array = vx_array = vy_array = np.array([])
+
+    data = parameters.readlines()
+
+    for line in data:
+        array = [i for i in line.split()]
+        time_array = np.append(time_array, float(array[0]))
+        x_array = np.append(x_array, float(array[3]))
+        y_array = np.append(y_array, float(array[4]))
+        vx_array = np.append(vx_array, float(array[5]))
+        vy_array = np.append(vy_array, float(array[6]))
+
+    parameters.close()
+
+    fig_1, ax_1 = plt.subplots()
+    ax_1.plot(time_array, np.sqrt(vx_array ** 2 + vy_array ** 2))
+    fig_1, ax_2 = plt.subplots()
+    ax_2.plot(time_array, np.sqrt(x_array ** 2 + y_array ** 2))
+    fig_1, ax_3 = plt.subplots()
+    ax_3.plot(np.sqrt(x_array ** 2 + y_array ** 2), np.sqrt(vx_array ** 2 + vy_array ** 2))
+
+    plt.show()
+
+
 if __name__ == "__main__":
     quantities = Quantities()
     scale_factor = solar_vis.ScaleFactor()
     main(quantities, scale_factor)
+    read_statistics()

@@ -35,7 +35,6 @@ def calculate_scale_factor(max_distance, scale_factor_class):
     :param scale_factor_class: класс, хранящий показатель масштабирования
     """
     scale_factor_class.value = 0.4 * min(WINDOW_HEIGHT, WINDOW_WIDTH) / max_distance
-    print('Scale factor:', scale_factor_class.value)
 
 
 def scale_x(x, scale_factor_class):

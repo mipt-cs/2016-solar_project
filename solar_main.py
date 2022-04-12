@@ -236,9 +236,11 @@ def main(quantities_class, scale_factor_class):
 
 
 def read_statistics():
+    """
+    Функция считывает данные из файла и строит графики
+    """
     parameters = open('stats.txt', 'r')
     time_array = x_array = y_array = vx_array = vy_array = np.array([])
-
     data = parameters.readlines()
 
     for line in data:
@@ -257,7 +259,7 @@ def read_statistics():
     ax_2.plot(time_array, np.sqrt(x_array ** 2 + y_array ** 2))
     fig_1, ax_3 = plt.subplots()
     ax_3.plot(np.sqrt(x_array ** 2 + y_array ** 2), np.sqrt(vx_array ** 2 + vy_array ** 2))
-
+    plt.legend()
     plt.show()
 
 

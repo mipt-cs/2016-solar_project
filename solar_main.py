@@ -7,7 +7,7 @@ import solar_vis
 import solar_model
 import solar_input
 
-#hello
+#hello neighbour
 
 class Quantities:
     def __init__(self):

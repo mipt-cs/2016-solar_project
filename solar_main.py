@@ -38,9 +38,9 @@ class Quantities:
         self.time_step = 0
         self.time_speed = 0
         self.space = 0
-        self.start_button = tkinter.Button(tkinter.Frame(tkinter.Tk()))
-        self.load_file_button = tkinter.Button(tkinter.Frame(tkinter.Tk()))
-        self.save_file_button = tkinter.Button(tkinter.Frame(tkinter.Tk()))
+        self.start_button = 0
+        self.load_file_button = 0
+        self.save_file_button = 0
         self.perform_execution = False
         self.space_objects = []
 
@@ -60,8 +60,8 @@ def execution(quantities_class):
 
     print("execute")
 
-    # if quantities_class.perform_execution:
-    # quantities_class.space.after(101 - int(quantities_class.time_speed.get()), execution(quantities_class))
+    if quantities_class.perform_execution:
+        quantities_class.space.after(101 - int(quantities_class.time_speed.get()), lambda :  execution(quantities_class))
 
 
 def start_execution(quantities_class):
@@ -167,10 +167,6 @@ def main(quantities_class):
     quantities_class.displayed_time.set(str(quantities_class.physical_time) + " seconds gone")
     time_label = tkinter.Label(frame, textvariable=quantities_class.displayed_time, width=30)
     time_label.pack(side=tkinter.RIGHT)
-
-    if quantities_class.perform_execution:
-        execution(quantities_class)
-        # quantities_class.space.after(101 - int(quantities_class.time_speed.get()), execution(quantities_class))
 
     root.mainloop()
     print('Modelling finished!')

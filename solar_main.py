@@ -7,12 +7,12 @@ import solar_vis
 import solar_model
 import solar_input
 
-#hello neighbour
-
-
-#Hello there
 
 class Quantities:
+    """
+    Это класс, который хранит в себе значения глобальных переменнных
+    """
+
     def __init__(self):
         self.physical_time = 0
         self.displayed_time = 0
@@ -24,6 +24,19 @@ class Quantities:
         self.save_file_button = 0
         self.perform_execution = False
         self.space_objects = []
+
+
+def write_statistics(quantities_class):
+    """
+    Функция записывает в файл значения координаты и скорости спутника для дальнейшей обрадотки
+    :param quantities_class: объект класса Quantities
+    """
+    write_line = ""
+    obj = quantities_class.space_objects[1]
+    write_line += str(quantities_class.displayed_time.get()) + " " + str(obj.x) + " " + str(obj.y) + " " + str(
+        obj.Vx) + " " + str(obj.Vy) + "\n"
+    with open("stats.txt", 'a') as out_file:
+        out_file.write(write_line)
 
 
 def execution(quantities_class, scale_factor_class):
@@ -42,6 +55,8 @@ def execution(quantities_class, scale_factor_class):
         solar_vis.update_object_position(quantities_class.space, body, scale_factor_class)
     quantities_class.physical_time += quantities_class.time_step.get()
     quantities_class.displayed_time.set("%.1f" % quantities_class.physical_time + " seconds gone")
+
+    write_statistics(quantities_class)
 
     if quantities_class.perform_execution:
         quantities_class.space.after(101 - int(quantities_class.time_speed.get()),
@@ -198,6 +213,9 @@ def main(quantities_class, scale_factor_class):
     """
 
     print('Modelling started!')
+
+    with open("stats.txt", 'w'):
+        pass
 
     root = tkinter.Tk()
 

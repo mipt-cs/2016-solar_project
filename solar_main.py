@@ -2,6 +2,7 @@
 # license: GPLv3
 
 import tkinter
+
 from tkinter.filedialog import *
 from solar_vis import *
 from solar_model import *
@@ -9,7 +10,7 @@ from solar_input import *
 
 perform_execution = False
 """Флаг цикличности выполнения расчёта"""
-
+#test commit
 physical_time = 0
 """Физическое время от начала расчёта.
 Тип: float"""
@@ -147,6 +148,7 @@ def main():
 
     root.mainloop()
     print('Modelling finished!')
+
 
 if __name__ == "__main__":
     main()
